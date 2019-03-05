@@ -90,3 +90,7 @@ input, .button {
     cursor: pointer;
     outline: none;
 }
+
+.no-offers {
+    border: 2px solid red;
+}
