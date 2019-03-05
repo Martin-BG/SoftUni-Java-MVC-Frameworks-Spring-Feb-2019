@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+</head>
+<body>
+<section>
+    <div id="roof">
+    </div>
+    <div id="building"></div>
+    <div class="apartment" th:each="offer: ${offers}" th:if="${offers!=null and !offers.isEmpty()}">
+        <p th:text="|Rent: | + ${offer.apartmentRent}"></p>
+        <p th:text="|Type: | + ${offer.apartmentType}"></p>
+        <p th:text="|Commission: | + ${offer.agencyCommission}"></p>
+    </div>
+    <div class="apartment no-offers" th:if="${offers==null or offers.isEmpty()}">
+        There aren't any offers!
+    </div>
+    <div id="offerManager">
+        <div id="regOffer">
+            <a class="button" href="/register">Reg Offer</a>
+        </div>
+        <div id="findOffer">
+            <a class="button" href="/find">Find Offer</a>
+        </div>
+    </div>
+</section>
+</body>
+</html>

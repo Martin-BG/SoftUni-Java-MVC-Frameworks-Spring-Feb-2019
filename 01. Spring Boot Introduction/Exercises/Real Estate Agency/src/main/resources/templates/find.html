@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+</head>
+<body>
+<section>
+    <div id="roof">
+    </div>
+    <div id="building"></div>
+    <div id="offerManager">
+        <div id="regOffer">
+            <form action="/find" method="post">
+                <h2>Find offer</h2>
+                <input max="9999999.99" min="0.01" name="familyBudget" placeholder="Family budget...." required
+                       step="0.01"
+                       type="number">
+                <input maxlength="255" minlength="1" name="apartmentType" placeholder="Apartment type..." required
+                       type="text">
+                <input maxlength="255" minlength="1" name="familyName" placeholder="Family name..." required
+                       type="text">
+                <button class="button" name="findOffer">Find offer</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

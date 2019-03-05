@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+</head>
+<body>
+<section>
+    <div id="roof">
+    </div>
+    <div id="building"></div>
+    <div id="offerManager">
+        <div id="regOffer">
+            <form action="/register" method="post">
+                <h2>Reg offer</h2>
+                <input max="999999.99" min="0.01" name="apartmentRent" placeholder="Rent price..." required step="0.01"
+                       type="number">
+                <input maxlength="255" minlength="1" name="apartmentType" placeholder="Apartment type..." required
+                       type="text">
+                <input max="100.00" min="0.0" name="agencyCommission" placeholder="Commission rate..." required
+                       step="0.01"
+                       type="number">
+                <button class="button" name="regOffer">Reg offer</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>
