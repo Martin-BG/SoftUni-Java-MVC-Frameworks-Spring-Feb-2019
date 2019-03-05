@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-
 @Controller
 public class OfferController {
 
@@ -49,7 +47,7 @@ public class OfferController {
     }
 
     @PostMapping("/find")
-    public ModelAndView findPost(@Valid OfferFindBindingModel model) {
+    public ModelAndView findPost(OfferFindBindingModel model) {
         if (service.findOffer(model, OfferViewModel.class).isPresent()) {
             return redirect("/");
         }
