@@ -10,6 +10,12 @@ import java.util.TimeZone;
 @Configuration
 public class ApplicationConfig {
 
+    /**
+     * Configure ModelMapper to use field instead of property access for mapping between classes
+     * and instances thus promoting better encapsulation and immutability.
+     *
+     * @return ModelMapper bean
+     */
     @Bean
     ModelMapper createModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -21,6 +27,9 @@ public class ApplicationConfig {
         return modelMapper;
     }
 
+    /**
+     * Set system {@link TimeZone} to "UTC" to match setting used for database connection
+     */
     @PostConstruct
     void started() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
