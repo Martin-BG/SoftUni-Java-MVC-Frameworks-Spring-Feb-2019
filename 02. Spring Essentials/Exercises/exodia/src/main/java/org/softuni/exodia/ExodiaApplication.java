@@ -24,6 +24,6 @@ public class ExodiaApplication extends SpringBootServletInitializer implements C
 
     @Override
     public void run(String... args) throws Exception {
-        log.log(Level.INFO, "Application deployed and ready to work");
+        log.log(Level.INFO, "Application deployed and ready to use");
     }
 }
