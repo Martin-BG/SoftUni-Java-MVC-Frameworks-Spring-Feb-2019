@@ -72,6 +72,22 @@
             <artifactId>Markdown2Pdf</artifactId>
             <version>2.0.1</version>
         </dependency>
+
+        <!--Password tool: https://github.com/kosprov/jargon2-api -->
+        <!-- https://mvnrepository.com/artifact/com.kosprov.jargon2/jargon2-api -->
+        <dependency>
+            <groupId>com.kosprov.jargon2</groupId>
+            <artifactId>jargon2-api</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.kosprov.jargon2/jargon2-native-ri-backend -->
+        <dependency>
+            <groupId>com.kosprov.jargon2</groupId>
+            <artifactId>jargon2-native-ri-backend</artifactId>
+            <version>1.1.1</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
