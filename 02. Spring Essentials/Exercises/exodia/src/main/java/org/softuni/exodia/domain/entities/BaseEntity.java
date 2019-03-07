@@ -16,7 +16,7 @@ abstract class BaseEntity<I> implements Identifiable<I> {
             return true;
         }
 
-        if (o == null || this.getClass() != o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
