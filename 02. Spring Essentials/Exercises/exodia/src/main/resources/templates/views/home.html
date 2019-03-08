@@ -1,0 +1,20 @@
+<hr class="bg-exodia hr-2"/>
+<div class="print-container container-fluid">
+    <div class="row mb-4 home-container" xmlns:th="http://www.thymeleaf.org">
+        <th:block th:each="document: ${documents}">
+            <div class="print-scheduled bg-exodia rounded">
+                <h5 class="text-center text-white font-weight-bold py-3 mt-3" th:text="${document.title}"></h5>
+                <hr class="bg-white"/>
+                <div class="buttons-holder w-75 mx-auto d-flex justify-content-between">
+                    <a th:href="@{/print/{id}(id=${document.id})}"
+                       class="btn bg-exodia text-white font-weight-bold mb-3">
+                        Print</a>
+                    <a th:href="@{/details/{id}(id=${document.id})}"
+                       class="btn bg-exodia text-white font-weight-bold mb-3">
+                        Details</a>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+<hr class="bg-exodia hr-2 mt-5"/>
