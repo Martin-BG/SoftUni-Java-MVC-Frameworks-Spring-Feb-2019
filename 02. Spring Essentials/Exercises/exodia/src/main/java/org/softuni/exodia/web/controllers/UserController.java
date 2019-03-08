@@ -6,6 +6,7 @@ import org.softuni.exodia.domain.models.view.user.UserLoggedViewModel;
 import org.softuni.exodia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register() {
-        return "register";
+    public String register(Model model) {
+        model.addAttribute("view", "views/register.html");
+        return "base-layout";
     }
 
     @PostMapping("/register")
@@ -38,8 +40,9 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "login";
+    public String login(Model model) {
+        model.addAttribute("view", "views/login.html");
+        return "base-layout";
     }
 
     @PostMapping("/login")
