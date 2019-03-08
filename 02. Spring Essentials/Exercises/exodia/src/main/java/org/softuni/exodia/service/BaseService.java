@@ -33,10 +33,10 @@ abstract class BaseService<E extends Identifiable<I>, I, R extends JpaRepository
     protected BaseService(R repository,
                           Validator validator,
                           ModelMapper mapper) {
-        entityClass = initEntityClass();
         this.repository = repository;
         this.validator = validator;
         this.mapper = mapper;
+        entityClass = initEntityClass();
     }
 
     protected abstract Logger logger();
