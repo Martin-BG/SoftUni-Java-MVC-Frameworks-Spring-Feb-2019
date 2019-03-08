@@ -20,6 +20,7 @@
         <hr class="bg-exodia hr-2"/>
         <div class="button-holder d-flex justify-content-center">
             <button class="btn bg-exodia text-white" type="submit">Print</button>
+            <a class="btn bg-exodia text-white ml-4" th:href="@{/download/{id}(id=${document.id})}">Download as PDF</a>
         </div>
     </form>
     <hr class="bg-exodia hr-2 mt-5"/>
