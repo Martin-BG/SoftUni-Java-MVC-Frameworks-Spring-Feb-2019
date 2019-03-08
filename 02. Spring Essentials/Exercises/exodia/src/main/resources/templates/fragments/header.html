@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-exodia rounded">
+        <a class="navbar-brand nav-link-white ml-3" th:href="@{/}">EXODIA</a>
+        <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarNav" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item ml-3">
+                    <a class="nav-link nav-link-white active" th:href="@{/}">Home</a>
+                </li>
+                <th:block th:if="${session == null or session.username == null}">
+                    <li class="nav-item ml-3">
+                        <a class="nav-link nav-link-white active" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item ml-3">
+                        <a class="nav-link nav-link-white active" th:href="@{/register}">Register</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${session != null && session.username != null}">
+                    <li class="nav-item ml-3">
+                        <a class="nav-link nav-link-white active" th:href="@{/schedule}">Schedule</a>
+                    </li>
+                    <li class="nav-item ml-3">
+                        <a class="nav-link nav-link-white active" th:href="@{/logout}">Logout</a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+</html>
