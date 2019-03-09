@@ -1,6 +1,5 @@
 package org.softuni.exodia.util;
 
-import com.kosprov.jargon2.api.Jargon2.*;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Component;
 
