@@ -2,7 +2,6 @@ package org.softuni.exodia.web.controllers;
 
 import org.softuni.exodia.domain.models.binding.user.UserLoginBindingModel;
 import org.softuni.exodia.domain.models.binding.user.UserRegisterBindingModel;
-import org.softuni.exodia.domain.models.view.user.UserLoggedViewModel;
 import org.softuni.exodia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserService service;
 
@@ -26,33 +24,32 @@ public class UserController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("view", "views/register.html");
-        return "base-layout";
+        return buildView("register", model);
     }
 
     @PostMapping("/register")
     public String registerPost(@ModelAttribute UserRegisterBindingModel model) {
         if (service.register(model)) {
-            return "redirect:/login";
+            return redirect("/login");
         }
 
-        return "register";
+        return redirect("/register");
     }
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("view", "views/login.html");
-        return "base-layout";
+        return buildView("login", model);
     }
 
     @PostMapping("/login")
     public String loginPost(@ModelAttribute UserLoginBindingModel model, HttpSession session) {
-        Optional<UserLoggedViewModel> user = service.login(model);
-        if (user.isPresent()) {
-            session.setAttribute("username", user.get().getUsername());
-            return "redirect:/";
-        }
-        return "login";
+        return service
+                .login(model)
+                .map(user -> {
+                    session.setAttribute("username", user.getUsername());
+                    return redirect("/");
+                })
+                .orElse(redirect("/login"));
     }
 
     @GetMapping("/logout")
@@ -60,6 +57,6 @@ public class UserController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return redirect("/");
     }
 }
