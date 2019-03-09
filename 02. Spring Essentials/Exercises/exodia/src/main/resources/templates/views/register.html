@@ -2,7 +2,7 @@
     <hr class="bg-exodia hr-2"/>
     <h1 class="text-center text-exodia">Register</h1>
     <hr class="bg-exodia w-25 hr-2"/>
-    <form class="mx-auto w-25" th:action="@{/register}" th:method="post">
+    <form class="mx-auto w-25" method="post" th:action="@{/register}">
         <div class="form-group">
             <label class="text-exodia" for="username">Username</label>
             <input class="form-control" id="username" name="username" placeholder="Username..." type="text">

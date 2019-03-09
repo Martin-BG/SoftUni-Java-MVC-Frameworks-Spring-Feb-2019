@@ -2,7 +2,7 @@
     <hr class="bg-exodia hr-2"/>
     <h1 class="text-center text-exodia" th:text="'Document - ' + ${document.id}"></h1>
     <hr class="bg-exodia hr-2 w-75"/>
-    <form class="mx-auto w-75" th:action="@{/print/{id}(id=${document.id})}" th:method="post">
+    <form class="mx-auto w-75" method="post" th:action="@{/print/{id}(id=${document.id})}">
         <div class="form-group">
             <div class="label-center d-flex justify-content-center">
                 <label class="text-exodia h3" for="title">Title</label>
