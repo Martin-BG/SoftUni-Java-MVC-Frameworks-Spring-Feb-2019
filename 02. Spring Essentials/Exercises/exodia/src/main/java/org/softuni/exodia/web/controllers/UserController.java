@@ -1,5 +1,6 @@
 package org.softuni.exodia.web.controllers;
 
+import org.softuni.exodia.annotations.AuthenticatedUser;
 import org.softuni.exodia.domain.models.binding.user.UserLoginBindingModel;
 import org.softuni.exodia.domain.models.binding.user.UserRegisterBindingModel;
 import org.softuni.exodia.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
+@AuthenticatedUser(authenticated = false)
 @Controller
 public class UserController extends BaseController {
 
@@ -52,6 +54,7 @@ public class UserController extends BaseController {
                 .orElse(redirect("/login"));
     }
 
+    @AuthenticatedUser
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         if (session != null) {

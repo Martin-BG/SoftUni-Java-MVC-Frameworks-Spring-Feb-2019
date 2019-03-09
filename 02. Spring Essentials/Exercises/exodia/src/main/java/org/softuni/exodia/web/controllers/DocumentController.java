@@ -1,6 +1,7 @@
 package org.softuni.exodia.web.controllers;
 
 import lombok.extern.java.Log;
+import org.softuni.exodia.annotations.AuthenticatedUser;
 import org.softuni.exodia.domain.models.binding.document.DocumentScheduleBindingModel;
 import org.softuni.exodia.domain.models.view.document.DocumentDetailsViewModel;
 import org.softuni.exodia.service.DocumentService;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 
 @Log
 @Controller
+@AuthenticatedUser
 public class DocumentController extends BaseController {
 
     private static final String APPLICATION_PDF = "application/pdf";
