@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 
 @Log
 @Controller
-public class DocumentController {
+public class DocumentController extends BaseController {
 
     private static final String APPLICATION_PDF = "application/pdf";
 
@@ -36,66 +35,61 @@ public class DocumentController {
 
     @GetMapping("/schedule")
     public String schedule(Model model) {
-        model.addAttribute("view", "views/schedule.html");
-        return "base-layout";
+        return buildView("schedule", model);
     }
 
     @PostMapping("/schedule")
     public String schedulePost(@ModelAttribute DocumentScheduleBindingModel model) {
-        return service
+        return redirect(service
                 .schedule(model)
-                .map(id -> "redirect:/details/" + id)
-                .orElse("redirect:/");
+                .map(id -> "/details/" + id)
+                .orElse("/schedule"));
     }
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable String id, Model model) {
-        Optional<DocumentDetailsViewModel> document = service
-                .findById(UUID.fromString(id), DocumentDetailsViewModel.class);
-        if (document.isPresent()) {
-            model.addAttribute("document", document.get());
-            model.addAttribute("view", "views/details.html");
-            return "base-layout";
-        }
-
-        return "redirect:/";
+        return uuid(id)
+                .flatMap(uuid -> service.findById(uuid, DocumentDetailsViewModel.class))
+                .map(document -> {
+                    model.addAttribute("document", document);
+                    return buildView("details", model);
+                })
+                .orElse(redirect("/"));
     }
 
     @GetMapping("/print/{id}")
     public String print(@PathVariable String id, Model model) {
-        Optional<DocumentDetailsViewModel> document = service
-                .findById(UUID.fromString(id), DocumentDetailsViewModel.class);
-        if (document.isPresent()) {
-            model.addAttribute("document", document.get());
-            model.addAttribute("view", "views/print.html");
-            return "base-layout";
-        }
-
-        return "redirect:/";
+        return uuid(id)
+                .flatMap(uuid -> service.findById(uuid, DocumentDetailsViewModel.class))
+                .map(document -> {
+                    model.addAttribute("document", document);
+                    return buildView("print", model);
+                })
+                .orElse(redirect("/"));
     }
 
     @PostMapping("/print/{id}")
     public String printPost(@PathVariable String id) {
         service.deleteById(UUID.fromString(id));
 
-        return "redirect:/";
+        return redirect("/");
     }
 
-    @GetMapping(value = "/download/{id}", produces = APPLICATION_PDF)
     @ResponseBody
+    @GetMapping(value = "/download/{id}", produces = APPLICATION_PDF)
     public void download(@PathVariable String id, HttpServletResponse response) {
-        service.findById(UUID.fromString(id), DocumentDetailsViewModel.class)
-                .flatMap(d -> pdfMaker.markdownToPdf(d.getTitle(), d.getContent()))
-                .ifPresent(data -> {
-                    String filename = id + ".pdf";
+        uuid(id)
+                .flatMap(uuid -> service.findById(uuid, DocumentDetailsViewModel.class))
+                .flatMap(doc -> pdfMaker.markdownToPdf(doc.getTitle(), doc.getContent()))
+                .ifPresent(pdfData -> {
                     response.setContentType(APPLICATION_PDF);
-                    response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
-                    response.setContentLength(data.length);
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + id + ".pdf\"");
+                    response.setContentLength(pdfData.length);
 
                     try (OutputStream output = response.getOutputStream()) {
-                        FileCopyUtils.copy(data, output);
+                        FileCopyUtils.copy(pdfData, output);
                     } catch (IOException e) {
-                        log.log(Level.SEVERE, "Write to response output stream failed", e);
+                        log.log(Level.SEVERE, "Sending data failed", e);
                     }
                 });
     }
