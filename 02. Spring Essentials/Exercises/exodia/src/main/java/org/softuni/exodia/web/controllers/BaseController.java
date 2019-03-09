@@ -24,7 +24,7 @@ class BaseController {
 
     protected String buildView(String view, Model model) {
         model.addAttribute("view", "views/" + view + ".html");
-        return "base-layout";
+        return "layouts/default";
     }
 
     protected String redirect(String url) {
