@@ -1,14 +1,14 @@
-<th:block xmlns:th="http://www.thymeleaf.org">
+<th:block th:object="${document}" xmlns:th="http://www.thymeleaf.org">
     <hr class="bg-exodia hr-2"/>
     <div class="caption-holder d-flex justify-content-between pt-1">
         <h5 class="text-left text-muted">Details</h5>
-        <h5 class="text-right text-muted" th:text="'Document - ' + ${document.id}|"></h5>
+        <h5 class="text-right text-muted">Document - [[*{id}]]</h5>
     </div>
     <hr class="bg-exodia hr-2"/>
     <div class="mx-auto w-75">
-        <h1 class="text-center text-exodia" th:text="${document.title}"></h1>
+        <h1 class="text-center text-exodia" th:text="*{title}"></h1>
         <hr class="bg-exodia hr-2"/>
-        <p class="text-justify" th:text="${document.content}"></p>
+        <p class="text-justify" th:text="*{content}"></p>
     </div>
     <hr class="bg-exodia hr-2 mt-5"/>
 </th:block>
