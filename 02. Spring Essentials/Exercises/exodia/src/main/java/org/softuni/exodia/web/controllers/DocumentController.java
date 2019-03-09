@@ -82,8 +82,8 @@ public class DocumentController {
     }
 
     @GetMapping(value = "/download/{id}", produces = APPLICATION_PDF)
-    public @ResponseBody
-    void download(@PathVariable String id, HttpServletResponse response) {
+    @ResponseBody
+    public void download(@PathVariable String id, HttpServletResponse response) {
         service.findById(UUID.fromString(id), DocumentDetailsViewModel.class)
                 .flatMap(d -> pdfMaker.markdownToPdf(d.getTitle(), d.getContent()))
                 .ifPresent(data -> {
