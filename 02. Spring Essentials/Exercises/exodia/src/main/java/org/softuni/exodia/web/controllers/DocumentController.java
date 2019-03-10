@@ -2,6 +2,8 @@ package org.softuni.exodia.web.controllers;
 
 import lombok.extern.java.Log;
 import org.softuni.exodia.annotations.AuthenticatedUser;
+import org.softuni.exodia.annotations.Layout;
+import org.softuni.exodia.config.WebConfig;
 import org.softuni.exodia.domain.models.binding.document.DocumentScheduleBindingModel;
 import org.softuni.exodia.domain.models.view.document.DocumentDetailsViewModel;
 import org.softuni.exodia.service.DocumentService;
@@ -19,6 +21,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 @Log
+@Layout
 @Controller
 @AuthenticatedUser
 public class DocumentController extends BaseController {
@@ -35,50 +38,50 @@ public class DocumentController extends BaseController {
         this.pdfMaker = pdfMaker;
     }
 
-    @GetMapping("/schedule")
-    public String schedule(Model model) {
-        return buildView("schedule", model);
+    @GetMapping(WebConfig.URL_SCHEDULE)
+    public String schedule() {
+        return "schedule";
     }
 
-    @PostMapping("/schedule")
+    @PostMapping(WebConfig.URL_SCHEDULE)
     public String schedulePost(@ModelAttribute DocumentScheduleBindingModel model) {
         return redirect(service
                 .schedule(model)
-                .map(id -> "/details/" + id)
-                .orElse("/schedule"));
+                .map(id -> WebConfig.URL_DETAILS + "/" + id)
+                .orElse(WebConfig.URL_SCHEDULE));
     }
 
-    @GetMapping("/details/{id}")
+    @GetMapping(WebConfig.URL_DETAILS + "/{id}")
     public String details(@PathVariable String id, Model model) {
         return uuid(id)
                 .flatMap(uuid -> service.findById(uuid, DocumentDetailsViewModel.class))
                 .map(document -> {
                     model.addAttribute("document", document);
-                    return buildView("details", model);
+                    return "details";
                 })
-                .orElse(redirect("/"));
+                .orElse(redirect(WebConfig.URL_INDEX));
     }
 
-    @GetMapping("/print/{id}")
+    @GetMapping(WebConfig.URL_PRINT + "/{id}")
     public String print(@PathVariable String id, Model model) {
         return uuid(id)
                 .flatMap(uuid -> service.findById(uuid, DocumentDetailsViewModel.class))
                 .map(document -> {
                     model.addAttribute("document", document);
-                    return buildView("print", model);
+                    return "print";
                 })
-                .orElse(redirect("/"));
+                .orElse(redirect(WebConfig.URL_INDEX));
     }
 
-    @PostMapping("/print/{id}")
+    @PostMapping(WebConfig.URL_PRINT + "/{id}")
     public String printPost(@PathVariable String id) {
         service.deleteById(UUID.fromString(id));
 
-        return redirect("/");
+        return redirect(WebConfig.URL_INDEX);
     }
 
     @ResponseBody
-    @GetMapping(value = "/download/{id}", produces = APPLICATION_PDF)
+    @GetMapping(value = WebConfig.URL_DOWNLOAD + "/{id}", produces = APPLICATION_PDF)
     public void download(@PathVariable String id, HttpServletResponse response) {
         uuid(id)
                 .flatMap(uuid -> service.findById(uuid, DocumentDetailsViewModel.class))
