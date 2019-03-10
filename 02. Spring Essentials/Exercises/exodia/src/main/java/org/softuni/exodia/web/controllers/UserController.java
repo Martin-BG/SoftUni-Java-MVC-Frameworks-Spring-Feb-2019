@@ -1,18 +1,20 @@
 package org.softuni.exodia.web.controllers;
 
 import org.softuni.exodia.annotations.AuthenticatedUser;
+import org.softuni.exodia.annotations.Layout;
+import org.softuni.exodia.config.WebConfig;
 import org.softuni.exodia.domain.models.binding.user.UserLoginBindingModel;
 import org.softuni.exodia.domain.models.binding.user.UserRegisterBindingModel;
 import org.softuni.exodia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
+@Layout
 @AuthenticatedUser(authenticated = false)
 @Controller
 public class UserController extends BaseController {
@@ -24,42 +26,42 @@ public class UserController extends BaseController {
         this.service = service;
     }
 
-    @GetMapping("/register")
-    public String register(Model model) {
-        return buildView("register", model);
+    @GetMapping(WebConfig.URL_REGISTER)
+    public String register() {
+        return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping(WebConfig.URL_REGISTER)
     public String registerPost(@ModelAttribute UserRegisterBindingModel model) {
         if (service.register(model)) {
-            return redirect("/login");
+            return redirect(WebConfig.URL_LOGIN);
         }
 
-        return redirect("/register");
+        return redirect(WebConfig.URL_REGISTER);
     }
 
-    @GetMapping("/login")
-    public String login(Model model) {
-        return buildView("login", model);
+    @GetMapping(WebConfig.URL_LOGIN)
+    public String login() {
+        return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping(WebConfig.URL_LOGIN)
     public String loginPost(@ModelAttribute UserLoginBindingModel model, HttpSession session) {
         return service
                 .login(model)
                 .map(user -> {
-                    session.setAttribute("username", user.getUsername());
-                    return redirect("/");
+                    session.setAttribute(WebConfig.SESSION_ATTRIBUTE_USERNAME, user.getUsername());
+                    return redirect(WebConfig.URL_INDEX);
                 })
-                .orElse(redirect("/login"));
+                .orElse(redirect(WebConfig.URL_LOGIN));
     }
 
     @AuthenticatedUser
-    @GetMapping("/logout")
+    @GetMapping(WebConfig.URL_LOGOUT)
     public String logout(HttpSession session) {
         if (session != null) {
             session.invalidate();
         }
-        return redirect("/");
+        return redirect(WebConfig.URL_INDEX);
     }
 }
