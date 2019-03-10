@@ -1,7 +1,6 @@
 package org.softuni.exodia.web.controllers;
 
 import lombok.extern.java.Log;
-import org.springframework.ui.Model;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -22,12 +21,7 @@ class BaseController {
         }
     }
 
-    protected String buildView(String view, Model model) {
-        model.addAttribute("view", "views/" + view + ".html");
-        return "layouts/default";
-    }
-
-    protected String redirect(String url) {
+    protected static String redirect(String url) {
         return "redirect:" + url;
     }
 }
