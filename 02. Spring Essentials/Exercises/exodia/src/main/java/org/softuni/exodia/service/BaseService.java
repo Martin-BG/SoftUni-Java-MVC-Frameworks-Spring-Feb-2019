@@ -82,8 +82,8 @@ abstract class BaseService<E extends Identifiable<I>, I, R extends JpaRepository
                 .map(e -> mapper.map(e, viewModelClass));
     }
 
-    private <B extends Bindable<E>> boolean validateModel(B bindingModel) {
-        Set<ConstraintViolation<B>> violations = validator.validate(bindingModel);
+    private <T> boolean validateModel(T model) {
+        Set<ConstraintViolation<T>> violations = validator.validate(model);
         if (!violations.isEmpty()) {
             String msg = "Failed validation on:\r\n\t" +
                     violations.stream()
