@@ -48,6 +48,35 @@ ___
 </body>
 </html>
 ```
+* Custom [@Layot](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/annotations/Layout.java) annotation and [Interceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/interceptors/ThymeleafLayoutInterceptor.java) for templating and fragments insert:
+```html
+<!--Sample layout (resources/templates/layouts/default.html):-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>...</head>
+<body>
+    <header>...</header>
+    <main th:insert="${view}"></main>
+    <footer>...</footer>
+</body>
+</html>
+
+<!--Sample view (resources/templates/views/hello.html):-->
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <h1>Hello World!</h1>
+</th:block>
+```
+Sample controller method:
+```java
+@Controller
+class HomeController {
+    @Layout
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+}
+```
 * Simple security by custom class/method [annotation](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/annotations/AuthenticatedUser.java) and [interceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/interceptors/AuthenticatedInterceptor.java)
 ```java
 @Controller
@@ -58,3 +87,30 @@ public class DocumentController extends BaseController {
 ```
 * Convert MD to PDF format with [Markdown2Pdf](https://mvnrepository.com/artifact/eu.de-swaef.pdf/Markdown2Pdf)
 * [PDF file](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/controllers/DocumentController.java) download
+* Implemented Builder Pattern for [AuthenticatedInterceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/interceptors/AuthenticatedInterceptor.java) and [ThymeleafLayoutInterceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/interceptors/ThymeleafLayoutInterceptor.java):
+
+```java
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    //...
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(
+                AuthenticatedInterceptor
+                        .builder()
+                        .withSessionAttributeName(SESSION_ATTRIBUTE_USERNAME)
+                        .withAuthenticatedRedirectUrl(URL_INDEX)
+                        .withGuestRedirectUrl(URL_LOGIN)
+                        .build());
+
+        registry.addInterceptor(
+                ThymeleafLayoutInterceptor
+                        .builder()
+                        .withDefaultLayout("/layouts/default")
+                        .withViewAttribute("view")
+                        .withViewPrefix("/views/")
+                        .build());
+    }
+}
+```
