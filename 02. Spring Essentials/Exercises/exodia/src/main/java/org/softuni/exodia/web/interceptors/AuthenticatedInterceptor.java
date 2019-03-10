@@ -59,7 +59,7 @@ public final class AuthenticatedInterceptor extends HandlerInterceptorAdapter {
             AuthenticatedUser authenticatedUser = getMethodOrTypeAnnotation((HandlerMethod) handler);
 
             if (authenticatedUser != null) {
-                boolean shouldBeAuthenticated = authenticatedUser.authenticated();
+                boolean shouldBeAuthenticated = authenticatedUser.value();
                 boolean isAuthenticated = isAuthenticated(request.getSession(), authenticatedUser.sessionAttribute());
 
                 if (shouldBeAuthenticated != isAuthenticated) {

@@ -27,7 +27,7 @@ public @interface AuthenticatedUser {
     String USE_DEFAULT_REDIRECT_URL = "";
     String USE_DEFAULT_SESSION_ATTRIBUTE_NAME = "";
 
-    boolean authenticated() default true;
+    boolean value() default true;
 
     String url() default USE_DEFAULT_REDIRECT_URL;
 

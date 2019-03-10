@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 
 @Layout
-@AuthenticatedUser(authenticated = false)
+@AuthenticatedUser(false)
 @Controller
 public class UserController extends BaseController {
 
