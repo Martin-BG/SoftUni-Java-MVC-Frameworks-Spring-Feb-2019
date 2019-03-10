@@ -62,6 +62,8 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
 
     @Override
     public <V extends Viewable<User>> Optional<V> findByUsername(String username, Class<V> viewModelClass) {
-        return Optional.empty();
+        return repository
+                .findUserByUsername(username)
+                .map(user -> mapper.map(user, viewModelClass));
     }
 }
