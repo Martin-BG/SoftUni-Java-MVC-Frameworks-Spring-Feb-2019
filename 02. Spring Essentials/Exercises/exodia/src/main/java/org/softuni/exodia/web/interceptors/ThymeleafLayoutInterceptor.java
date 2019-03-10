@@ -41,12 +41,16 @@ public final class ThymeleafLayoutInterceptor extends HandlerInterceptorAdapter 
         return viewName.startsWith("redirect:") || viewName.startsWith("forward:");
     }
 
-    private static Layout getMethodOrTypeAnnotation(HandlerMethod handlerMethod) {
-        Layout layout = handlerMethod.getMethodAnnotation(Layout.class);
-        if (layout == null) {
-            return handlerMethod.getBeanType().getAnnotation(Layout.class);
+    private static Layout getMethodOrTypeAnnotation(Object handler) {
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            Layout layout = handlerMethod.getMethodAnnotation(Layout.class);
+            if (layout == null) {
+                layout = handlerMethod.getBeanType().getAnnotation(Layout.class);
+            }
+            return layout;
         }
-        return layout;
+        return null;
     }
 
     public static Builder builder() {
@@ -67,7 +71,12 @@ public final class ThymeleafLayoutInterceptor extends HandlerInterceptorAdapter 
             return;
         }
 
-        String layoutName = getLayoutName(handler);
+        Layout layout = getMethodOrTypeAnnotation(handler);
+        if (layout == null) {
+            return;
+        }
+
+        String layoutName = getLayoutName(layout);
         if (Layout.NONE.equals(layoutName)) {
             return;
         }
@@ -84,13 +93,9 @@ public final class ThymeleafLayoutInterceptor extends HandlerInterceptorAdapter 
         return viewPrefix + viewName;
     }
 
-    private String getLayoutName(Object handler) {
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Layout layout = getMethodOrTypeAnnotation(handlerMethod);
-            if (layout != null) {
-                return layout.value();
-            }
+    private String getLayoutName(Layout layout) {
+        if (layout != null) {
+            return layout.value();
         }
         return defaultLayout;
     }
