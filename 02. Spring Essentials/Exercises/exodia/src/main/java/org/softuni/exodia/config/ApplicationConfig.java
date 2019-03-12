@@ -3,12 +3,23 @@ package org.softuni.exodia.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @Configuration
 public class ApplicationConfig {
+
+    private static final String SYSTEM_TIME_ZONE = "UTC";
+
+    /**
+     * Set system {@link TimeZone} to {@value #SYSTEM_TIME_ZONE} to match setting used for database connection
+     */
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone(SYSTEM_TIME_ZONE));
+    }
 
     /**
      * Configure ModelMapper to use field instead of property access for mapping between classes
@@ -28,10 +39,22 @@ public class ApplicationConfig {
     }
 
     /**
-     * Set system {@link TimeZone} to "UTC" to match setting used for database connection
+     * Enable runtime method arguments validation.
+     * {@link org.springframework.validation.annotation.Validated} annotation should be present on the class for validation to work.
+     * <p>
+     * Could be useful in repository methods to prevent request with invalid parameters
+     * (ex. empty or not properly username in findUserByUsername)
+     * <p><a href="https://www.baeldung.com/javax-validation-method-constraints">More information</a></p>
+     * <hr>
+     * <pre>{@code @Validated
+     * @Repository
+     * public interface UserRepository extends JpaRepository<User, UUID> {
+     *
+     *     Optional<User> findUserByUsername(@ValidUserUsername String username);
+     * }</pre>
      */
-    @PostConstruct
-    void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
     }
 }
