@@ -14,6 +14,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EqualFieldsValidator.class)
+@Documented
 public @interface EqualFields {
     String message() default "Field values do not match";
 
