@@ -3,6 +3,7 @@ package org.softuni.exodia.domain.models.binding.user;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.softuni.exodia.annotations.validation.EqualFields;
 import org.softuni.exodia.domain.api.Bindable;
 import org.softuni.exodia.domain.entities.User;
 
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualFields(message = "Passwords do not match", value = {"password", "confirmPassword"})
 public class UserRegisterBindingModel implements Bindable<User> {
 
     @NotBlank
