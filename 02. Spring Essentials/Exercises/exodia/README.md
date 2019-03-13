@@ -22,7 +22,7 @@ Configure IDE to recognize [Lombok](https://projectlombok.org/) - [instructions]
 ___
 #### Project configuration
 * [pom.xml](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/pom.xml)
-* [application.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/resources/application.properties) - customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/01.%20Spring%20Boot%20Introduction/Exercises/Real%20Estate%20Agency/src/main/java/org/softuni/realestate/config/MySQL8UnicodeDialect.java)**
+* [application.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/resources/application.properties) - customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/01.%20Spring%20Boot%20Introduction/Exercises/Real%20Estate%20Agency/src/main/java/org/softuni/realestate/config/MySQL8UnicodeDialect.java)**, **logging**
 
 ___
 ## Takeaways
@@ -111,6 +111,105 @@ public class WebConfig implements WebMvcConfigurer {
                         .withViewAttribute("view")
                         .withViewPrefix("/views/")
                         .build());
+    }
+}
+```
+* [Composite](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/annotations/validation/composite) annotations for entity/model validation
+```java
+@NotBlank
+@Size(min = 1, max = 255)
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+@Retention(RUNTIME)
+@Constraint(validatedBy = {})
+@Documented
+public @interface ValidDocumentTitle {
+
+    String message() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+
+@Entity
+@Table(name = "documents")
+public class Document extends BaseUuidEntity {
+
+    @ValidDocumentTitle
+    @Column(nullable = false)
+    private String title;
+    
+    //...
+}
+
+public class DocumentScheduleBindingModel implements Bindable<Document> {
+
+    @ValidDocumentTitle
+    private String title;
+
+    //...
+}
+```
+* Validate parameters on repository methods to filter-out invalid requests
+```java
+@Validated
+@Repository
+public interface UserRepository extends JpaRepository<User, UUID> {
+
+    Optional<User> findUserByUsername(@ValidUserUsername String username);
+
+    long countAllByUsernameEquals(@ValidUserUsername String username);
+
+    long countAllByEmailEquals(@ValidUserEmail String email);
+}
+
+@Configuration
+public class ApplicationConfig {
+    // This @Bean could be necessary depending on project setup
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
+    }
+}
+```
+* Use of transactions (read/write) for all public service methods to promote data integrity 
+and as optimization for methods that make multiple DB calls (ex. User register method):
+```java
+@Log
+@Service
+@Transactional // applied to all public methods in this class, by default "readOnly = false"
+public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {
+
+    @Override // Transactional, readOnly = false
+    public boolean register(UserRegisterBindingModel bindingModel) {
+        if (!validator.validate(bindingModel).isEmpty()) {
+            log.log(Level.WARNING, "[User Registration failed] Constraint violations detected");
+            return false;
+        }
+
+        if (repository.countAllByUsernameEquals(bindingModel.getUsername()) > 0) {
+            log.log(Level.WARNING, "[User Registration failed] Username already used: " + bindingModel.getUsername());
+            return false;
+        }
+
+        if (repository.countAllByEmailEquals(bindingModel.getEmail()) > 0) {
+            log.log(Level.WARNING, "[User Registration failed] Email already used: " + bindingModel.getEmail());
+            return false;
+        }
+
+        UserHashedPasswordBindingModel user = mapper.map(bindingModel, UserHashedPasswordBindingModel.class);
+        String encodedPassword = passwordHasher.encodedHash(bindingModel.getPassword().toCharArray());
+        user.setPassword(encodedPassword);
+
+        return create(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true) // readOnly = true : optimization hint for methods that do not modify DB
+    public <V extends Viewable<User>> Optional<V> findByUsername(String username, Class<V> viewModelClass) {
+        return repository
+                .findUserByUsername(username)
+                .map(user -> mapper.map(user, viewModelClass));
     }
 }
 ```
