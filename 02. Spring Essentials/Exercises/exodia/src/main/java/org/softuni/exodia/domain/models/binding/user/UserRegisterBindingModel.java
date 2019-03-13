@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.softuni.exodia.annotations.validation.EqualFields;
+import org.softuni.exodia.annotations.validation.composite.ValidUserEmail;
+import org.softuni.exodia.annotations.validation.composite.ValidUserPassword;
+import org.softuni.exodia.annotations.validation.composite.ValidUserUsername;
 import org.softuni.exodia.domain.api.Bindable;
 import org.softuni.exodia.domain.entities.User;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -18,20 +16,15 @@ import javax.validation.constraints.Size;
 @EqualFields(message = "Passwords do not match", value = {"password", "confirmPassword"})
 public class UserRegisterBindingModel implements Bindable<User> {
 
-    @NotBlank
-    @Size(min = 1, max = 32)
+    @ValidUserUsername
     private String username;
 
-    @NotNull
-    @Size(min = 1, max = 75)
+    @ValidUserPassword
     private String password;
 
-    @NotNull
-    @Size(min = 1, max = 32)
+    @ValidUserPassword
     private String confirmPassword;
 
-    @NotNull
-    @Email
-    @Size(min = 1, max = 64)
+    @ValidUserEmail
     private String email;
 }
