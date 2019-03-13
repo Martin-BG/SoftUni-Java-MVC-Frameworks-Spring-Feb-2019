@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.softuni.exodia.domain.api.Viewable;
 import org.softuni.exodia.domain.entities.User;
+import org.softuni.exodia.domain.models.binding.user.UserHashedPasswordBindingModel;
 import org.softuni.exodia.domain.models.binding.user.UserLoginBindingModel;
 import org.softuni.exodia.domain.models.binding.user.UserRegisterBindingModel;
 import org.softuni.exodia.domain.models.view.user.UserLoggedViewModel;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Validator;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Log
@@ -39,14 +41,26 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
 
     @Override
     public boolean register(UserRegisterBindingModel bindingModel) {
-        if (bindingModel == null || !bindingModel.getPassword().equals(bindingModel.getConfirmPassword())) {
+        if (!validator.validate(bindingModel).isEmpty()) {
+            log.log(Level.WARNING, "[User Registration failed] Constraint violations detected");
             return false;
         }
 
-        String encodedPassword = passwordHasher.encodedHash(bindingModel.getPassword().toCharArray());
-        bindingModel.setPassword(encodedPassword);
+        if (repository.countAllByUsernameEquals(bindingModel.getUsername()) > 0) {
+            log.log(Level.WARNING, "[User Registration failed] Username already used: " + bindingModel.getUsername());
+            return false;
+        }
 
-        return create(bindingModel);
+        if (repository.countAllByEmailEquals(bindingModel.getEmail()) > 0) {
+            log.log(Level.WARNING, "[User Registration failed] Email already used: " + bindingModel.getEmail());
+            return false;
+        }
+
+        UserHashedPasswordBindingModel user = mapper.map(bindingModel, UserHashedPasswordBindingModel.class);
+        String encodedPassword = passwordHasher.encodedHash(bindingModel.getPassword().toCharArray());
+        user.setPassword(encodedPassword);
+
+        return create(user);
     }
 
     @Override
