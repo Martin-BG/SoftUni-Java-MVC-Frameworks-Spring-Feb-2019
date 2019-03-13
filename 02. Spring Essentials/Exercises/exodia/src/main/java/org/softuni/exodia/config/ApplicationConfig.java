@@ -39,7 +39,7 @@ public class ApplicationConfig {
     }
 
     /**
-     * Enable runtime method arguments validation.
+     * Configuration of runtime method arguments validation and return values validation.
      * {@link org.springframework.validation.annotation.Validated} annotation should be present on the class for validation to work.
      * <p>
      * Could be useful in repository methods to prevent request with invalid parameters
