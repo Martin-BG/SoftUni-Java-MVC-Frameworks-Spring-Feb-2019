@@ -1,12 +1,12 @@
 package org.softuni.exodia.repository;
 
+import org.softuni.exodia.annotations.validation.composite.ValidUserEmail;
+import org.softuni.exodia.annotations.validation.composite.ValidUserUsername;
 import org.softuni.exodia.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,5 +14,9 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<User> findUserByUsername(@NotBlank @Size(min = 1, max = 32) String username);
+    Optional<User> findUserByUsername(@ValidUserUsername String username);
+
+    long countAllByUsernameEquals(@ValidUserUsername String username);
+
+    long countAllByEmailEquals(@ValidUserEmail String email);
 }
