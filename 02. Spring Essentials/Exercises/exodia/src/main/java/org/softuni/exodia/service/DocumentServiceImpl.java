@@ -8,6 +8,7 @@ import org.softuni.exodia.domain.models.view.document.DocumentTitleAndIdViewMode
 import org.softuni.exodia.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Log
 @Service
+@Transactional
 public class DocumentServiceImpl extends BaseService<Document, UUID, DocumentRepository> implements DocumentService {
 
     private static final int MAX_TITLE_LENGTH = 12;
@@ -53,6 +55,7 @@ public class DocumentServiceImpl extends BaseService<Document, UUID, DocumentRep
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<DocumentTitleAndIdViewModel> findAllShortView() {
         return repository
                 .findAllShortView()

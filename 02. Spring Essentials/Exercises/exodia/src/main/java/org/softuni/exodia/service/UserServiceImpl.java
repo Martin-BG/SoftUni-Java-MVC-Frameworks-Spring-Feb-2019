@@ -12,6 +12,7 @@ import org.softuni.exodia.repository.UserRepository;
 import org.softuni.exodia.util.PasswordHasher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import java.util.logging.Logger;
 
 @Log
 @Service
+@Transactional
 public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {
 
     private final PasswordHasher passwordHasher;
@@ -64,6 +66,7 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UserLoggedViewModel> login(UserLoginBindingModel bindingModel) {
         if (bindingModel == null || !validator.validate(bindingModel).isEmpty()) {
             return Optional.empty();
@@ -75,6 +78,7 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
     }
 
     @Override
+    @Transactional(readOnly = true)
     public <V extends Viewable<User>> Optional<V> findByUsername(String username, Class<V> viewModelClass) {
         return repository
                 .findUserByUsername(username)

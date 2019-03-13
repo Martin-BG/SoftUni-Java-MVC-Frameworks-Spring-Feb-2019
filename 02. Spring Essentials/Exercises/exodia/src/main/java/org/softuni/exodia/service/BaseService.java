@@ -5,6 +5,7 @@ import org.softuni.exodia.domain.api.Bindable;
 import org.softuni.exodia.domain.api.Identifiable;
 import org.softuni.exodia.domain.api.Viewable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * @param <I> ID class used by Entity
  * @param <R> Repository for Entity
  */
+@Transactional
 abstract class BaseService<E extends Identifiable<I>, I, R extends JpaRepository<E, I>> implements Service<E, I> {
 
     protected final R repository;
@@ -42,27 +44,29 @@ abstract class BaseService<E extends Identifiable<I>, I, R extends JpaRepository
     protected abstract Logger logger();
 
     @Override
-    public final <B extends Bindable<E>> boolean create(B bindingModel) {
+    public <B extends Bindable<E>> boolean create(B bindingModel) {
         return validateAndCreate(bindingModel)
                 .isPresent();
     }
 
     @Override
-    public final <B extends Bindable<E>, V extends Viewable<E>>
+    public <B extends Bindable<E>, V extends Viewable<E>>
     Optional<V> createAndGet(B bindingModel, Class<V> viewModelClass) {
         return validateAndCreate(bindingModel)
                 .map(e -> mapper.map(e, viewModelClass));
     }
 
     @Override
-    public final <V extends Viewable<E>> Optional<V> findById(I id, Class<V> viewModelClass) {
+    @Transactional(readOnly = true)
+    public <V extends Viewable<E>> Optional<V> findById(I id, Class<V> viewModelClass) {
         return repository
                 .findById(id)
                 .map(e -> mapper.map(e, viewModelClass));
     }
 
     @Override
-    public final <V extends Viewable<E>> List<V> findAll(Class<V> viewModelClass) {
+    @Transactional(readOnly = true)
+    public <V extends Viewable<E>> List<V> findAll(Class<V> viewModelClass) {
         return repository
                 .findAll()
                 .stream()
