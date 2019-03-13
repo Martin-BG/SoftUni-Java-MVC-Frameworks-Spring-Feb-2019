@@ -173,7 +173,7 @@ public class ApplicationConfig {
 }
 ```
 * Use of transactions (read/write) for all public service methods to promote data integrity 
-and as optimization for methods that make multiple DB calls (ex. User register method):
+and as optimization for methods that make multiple DB calls (ex. [User registration](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/service/UserServiceImpl.java)):
 ```java
 @Log
 @Service
