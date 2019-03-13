@@ -1,6 +1,7 @@
 package org.softuni.exodia.annotations;
 
 import org.softuni.exodia.web.interceptors.ThymeleafLayoutInterceptor;
+import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
@@ -46,5 +47,9 @@ import java.lang.annotation.*;
 public @interface Layout {
     String NONE = "none"; // no layout will be used
 
+    @AliasFor("layout")
     String value() default "";
+
+    @AliasFor("value")
+    String layout() default "";
 }
