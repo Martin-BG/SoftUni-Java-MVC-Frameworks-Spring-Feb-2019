@@ -1,6 +1,7 @@
 package org.softuni.exodia.annotations;
 
 import org.softuni.exodia.web.interceptors.AuthenticatedInterceptor;
+import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
@@ -25,7 +26,11 @@ public @interface AuthenticatedUser {
     String USE_DEFAULT_REDIRECT_URL = "";
     String USE_DEFAULT_SESSION_ATTRIBUTE_NAME = "";
 
+    @AliasFor("authenticated")
     boolean value() default true;
+
+    @AliasFor("value")
+    boolean authenticated() default true;
 
     String url() default USE_DEFAULT_REDIRECT_URL;
 
