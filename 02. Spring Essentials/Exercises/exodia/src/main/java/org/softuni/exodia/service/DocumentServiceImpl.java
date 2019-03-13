@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.softuni.exodia.domain.entities.Document;
 import org.softuni.exodia.domain.models.binding.document.DocumentScheduleBindingModel;
+import org.softuni.exodia.domain.models.view.document.DocumentDetailsViewModel;
 import org.softuni.exodia.domain.models.view.document.DocumentTitleAndIdViewModel;
 import org.softuni.exodia.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,8 @@ public class DocumentServiceImpl extends BaseService<Document, UUID, DocumentRep
     }
 
     @Override
-    public Optional<String> schedule(DocumentScheduleBindingModel bindingModel) {
-        return createAndGet(bindingModel, DocumentTitleAndIdViewModel.class)
-                .map(DocumentTitleAndIdViewModel::getId);
+    public Optional<DocumentDetailsViewModel> schedule(DocumentScheduleBindingModel bindingModel) {
+        return createAndGet(bindingModel, DocumentDetailsViewModel.class);
     }
 
     @Override
