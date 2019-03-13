@@ -3,6 +3,7 @@ package org.softuni.exodia.service;
 import org.softuni.exodia.domain.api.Bindable;
 import org.softuni.exodia.domain.api.Identifiable;
 import org.softuni.exodia.domain.api.Viewable;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.Optional;
  * @param <E> Entity class
  * @param <I> ID class
  */
+
+@Validated
 public interface Service<E extends Identifiable<I>, I> {
 
     <B extends Bindable<E>> boolean create(B bindingModel);
