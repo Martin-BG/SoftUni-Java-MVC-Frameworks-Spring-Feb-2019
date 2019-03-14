@@ -213,3 +213,81 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
     }
 }
 ```
+* Use @SessionAttributes for store and reuse of @ModelAttribute by [Controller](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/controllers/DocumentController.java), 
+avoiding unnecessary Service/Repository calls for getting the same data
+```java
+@Controller
+@SessionAttributes(DocumentController.DOCUMENT) // Define @ModelAttribute name that should be saved to session
+public class DocumentController extends BaseController {
+
+    public static final String DOCUMENT = "document";
+
+    @ModelAttribute(DOCUMENT) // Creates DocumentDetailsViewModel instance if not present in session
+    public DocumentDetailsViewModel documentDetailsViewModel() {
+        return new DocumentDetailsViewModel();
+    }
+
+    @PostMapping(WebConfig.URL_SCHEDULE)
+    public String schedulePost(@ModelAttribute DocumentScheduleBindingModel bindingModel,
+                               @ModelAttribute(name = DOCUMENT, binding = false) DocumentDetailsViewModel document,
+                               Model model) {
+        // ..
+        model.addAttribute(DOCUMENT, doc); // Create new document and store its view model
+    }
+
+    @GetMapping(WebConfig.URL_DETAILS + "/{id}")
+    public String details(@PathVariable String id,
+                          @ModelAttribute(name = DOCUMENT, binding = false) DocumentDetailsViewModel document,
+                          Model model) {
+        // Use saved session attribute or update it if another document is required (ID) 
+    }
+
+    @GetMapping(WebConfig.URL_PRINT + "/{id}")
+    public String print(@PathVariable String id,
+                        @ModelAttribute(name = DOCUMENT, binding = false) DocumentDetailsViewModel document,
+                        Model model) {
+        // Use saved session attribute or update it if another document is required (ID) 
+    }
+
+    @PostMapping(WebConfig.URL_PRINT + "/{id}")
+    public String printPost(@PathVariable String id, SessionStatus sessionStatus) {
+        // ..
+        sessionStatus.setComplete(); // Remove stored session attribute as it is no longer needed
+    }
+    //..
+}
+```
+* Use **caching** on selected [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/service/DocumentServiceImpl.java) methods (@EnableCaching + @CacheConfig + @Cacheable / @CacheEvict)
+```java
+@Configuration
+@EnableCaching // enable caching
+public class ApplicationConfig {
+    //..
+}
+
+@Service
+@Transactional
+@CacheConfig(cacheNames = "documents") // set default cache name
+public class DocumentServiceImpl extends BaseService<Document, UUID, DocumentRepository> implements DocumentService {
+
+    //...
+    @Override
+    @CacheEvict(allEntries = true) // clear cache
+    public Optional<DocumentDetailsViewModel> schedule(DocumentScheduleBindingModel bindingModel) {
+        //..
+    }
+
+    @Override
+    @CacheEvict(allEntries = true) // clear cache 
+    public boolean print(String id) {
+        //..
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(sync = true) // save result into cache, prevent simultaneous calls until cache is populated 
+    public List<DocumentTitleAndIdViewModel> findAllShortView() {
+        //..
+    }
+}
+```
