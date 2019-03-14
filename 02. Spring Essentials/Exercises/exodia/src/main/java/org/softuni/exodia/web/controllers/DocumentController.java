@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.logging.Level;
 
 @Log
@@ -81,7 +80,7 @@ public class DocumentController extends BaseController {
 
     @PostMapping(WebConfig.URL_PRINT + "/{id}")
     public String printPost(@PathVariable String id, SessionStatus sessionStatus) {
-        service.deleteById(UUID.fromString(id));
+        service.print(id);
 
         sessionStatus.setComplete();
 
