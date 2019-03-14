@@ -8,6 +8,9 @@ import org.softuni.exodia.domain.models.view.document.DocumentDetailsViewModel;
 import org.softuni.exodia.domain.models.view.document.DocumentTitleAndIdViewModel;
 import org.softuni.exodia.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 @Log
 @Service
 @Transactional
+@CacheConfig(cacheNames = "documents")
 public class DocumentServiceImpl extends BaseService<Document, UUID, DocumentRepository> implements DocumentService {
 
     private static final int MAX_TITLE_LENGTH = 12;
@@ -45,17 +49,20 @@ public class DocumentServiceImpl extends BaseService<Document, UUID, DocumentRep
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public Optional<DocumentDetailsViewModel> schedule(DocumentScheduleBindingModel bindingModel) {
         return createAndGet(bindingModel, DocumentDetailsViewModel.class);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean print(String id) {
         return deleteById(UUID.fromString(id));
     }
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(sync = true)
     public List<DocumentTitleAndIdViewModel> findAllShortView() {
         return repository
                 .findAllShortView()

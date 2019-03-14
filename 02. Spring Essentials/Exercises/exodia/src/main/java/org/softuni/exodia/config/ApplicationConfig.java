@@ -1,6 +1,7 @@
 package org.softuni.exodia.config;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
@@ -9,6 +10,7 @@ import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @Configuration
+@EnableCaching
 public class ApplicationConfig {
 
     private static final String SYSTEM_TIME_ZONE = "UTC";
