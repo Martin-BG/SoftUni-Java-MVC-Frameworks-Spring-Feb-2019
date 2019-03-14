@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class CarServiceImplTest {
+public class CarServiceTests {
 
     @Mock
     private CarRepository carRepository;
