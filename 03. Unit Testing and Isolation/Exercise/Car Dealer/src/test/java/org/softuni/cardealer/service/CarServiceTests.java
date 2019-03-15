@@ -82,14 +82,31 @@ public class CarServiceTests {
 
     @Test(expected = NullPointerException.class)
     public void editCar_invalidId_throwsNullPointerException() {
-        Mockito.when(repository.findById(any())).thenReturn(Optional.empty());
+        CarServiceModel model = mock(CarServiceModel.class);
+        Mockito.when(model.getId()).thenReturn("id");
+        Mockito.when(repository.findById("id")).thenReturn(Optional.empty());
 
-        service.editCar(new CarServiceModel());
+        service.editCar(model);
     }
 
     @Test(expected = NullPointerException.class)
     public void editCar_nullInput_throwsNullPointerException() {
         service.editCar(null);
+    }
+
+    @Test
+    public void deleteCar_validId_correctMethodsAndArgumentsUsed() {
+        Car car = mock(Car.class);
+        CarServiceModel model = mock(CarServiceModel.class);
+        Mockito.when(repository.findById("id")).thenReturn(Optional.of(car));
+        Mockito.when(modelMapper.map(car, CarServiceModel.class)).thenReturn(model);
+
+        CarServiceModel result = service.deleteCar("id");
+
+        Mockito.verify(repository).findById("id");
+        Mockito.verify(repository).delete(car);
+        Mockito.verify(modelMapper).map(car, CarServiceModel.class);
+        Assert.assertEquals(model, result);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -112,19 +129,19 @@ public class CarServiceTests {
     }
 
     @Test
-    public void deleteCar_validId_correctMethodsAndArgumentsUsed() {
+    public void findCarById_validId_correctMethodsAndArgumentsUsed() {
         Car car = mock(Car.class);
         CarServiceModel model = mock(CarServiceModel.class);
         Mockito.when(repository.findById("id")).thenReturn(Optional.of(car));
         Mockito.when(modelMapper.map(car, CarServiceModel.class)).thenReturn(model);
 
-        CarServiceModel result = service.deleteCar("id");
+        CarServiceModel result = service.findCarById("id");
 
         Mockito.verify(repository).findById("id");
-        Mockito.verify(repository).delete(car);
         Mockito.verify(modelMapper).map(car, CarServiceModel.class);
         Assert.assertEquals(model, result);
     }
+
 
     @Test(expected = IllegalArgumentException.class)
     public void findCarById_nullInput_throwsIllegalArgumentException() {
@@ -143,19 +160,5 @@ public class CarServiceTests {
                 .thenThrow(new IllegalArgumentException());
 
         service.findCarById("id");
-    }
-
-    @Test
-    public void findCarById_validId_correctMethodsAndArgumentsUsed() {
-        Car car = mock(Car.class);
-        CarServiceModel model = mock(CarServiceModel.class);
-        Mockito.when(repository.findById("id")).thenReturn(Optional.of(car));
-        Mockito.when(modelMapper.map(car, CarServiceModel.class)).thenReturn(model);
-
-        CarServiceModel result = service.findCarById("id");
-
-        Mockito.verify(repository).findById("id");
-        Mockito.verify(modelMapper).map(car, CarServiceModel.class);
-        Assert.assertEquals(model, result);
     }
 }
