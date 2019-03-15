@@ -1,6 +1,7 @@
 package org.softuni.cardealer.service;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,6 +35,12 @@ public class PartServiceTests {
     @InjectMocks
     private PartServiceImpl service;
 
+    @Before
+    public void initTests() {
+        Mockito.when(modelMapper.map(eq(null), any()))
+                .thenThrow(new IllegalArgumentException());
+    }
+
     @Test
     public void savePart_validInputData_correctMethodsAndArgumentsUsed() {
         Part part = mock(Part.class);
@@ -52,9 +59,6 @@ public class PartServiceTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void savePart_nullInput_throwsIllegalArgumentException() {
-        Mockito.when(modelMapper.map(eq(null), any()))
-                .thenThrow(new IllegalArgumentException());
-
         service.savePart(null);
     }
 
@@ -151,9 +155,6 @@ public class PartServiceTests {
     public void findPartById_invalidId_throwsIllegalArgumentException() {
         Mockito.when(repository.findById("id"))
                 .thenReturn(Optional.empty());
-
-        Mockito.when(modelMapper.map(null, PartServiceModel.class))
-                .thenThrow(new IllegalArgumentException());
 
         service.findPartById("id");
     }

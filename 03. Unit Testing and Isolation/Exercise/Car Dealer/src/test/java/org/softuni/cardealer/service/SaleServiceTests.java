@@ -1,6 +1,7 @@
 package org.softuni.cardealer.service;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -37,6 +38,12 @@ public class SaleServiceTests {
     @InjectMocks
     private SaleServiceImpl service;
 
+    @Before
+    public void initTests() {
+        Mockito.when(modelMapper.map(eq(null), any()))
+                .thenThrow(new IllegalArgumentException());
+    }
+
     @Test
     public void saleCar_validInputData_correctMethodsAndArgumentsUsed() {
         CarSale carSale = mock(CarSale.class);
@@ -55,9 +62,6 @@ public class SaleServiceTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void saleCar_nullInput_throwsIllegalArgumentException() {
-        Mockito.when(modelMapper.map(eq(null), any()))
-                .thenThrow(new IllegalArgumentException());
-
         service.saleCar(null);
     }
 
@@ -79,9 +83,6 @@ public class SaleServiceTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void salePart_nullInput_throwsIllegalArgumentException() {
-        Mockito.when(modelMapper.map(eq(null), any()))
-                .thenThrow(new IllegalArgumentException());
-
         service.saleCar(null);
     }
 }

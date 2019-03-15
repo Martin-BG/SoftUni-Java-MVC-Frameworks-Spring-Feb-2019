@@ -1,6 +1,7 @@
 package org.softuni.cardealer.service;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -32,6 +34,13 @@ public class CustomerServiceTests {
 
     @InjectMocks
     private CustomerServiceImpl service;
+
+
+    @Before
+    public void initTests() {
+        Mockito.when(modelMapper.map(eq(null), any()))
+                .thenThrow(new IllegalArgumentException());
+    }
 
     @Test
     public void saveCustomer_validInputData_correctMethodsAndArgumentsUsed() {
@@ -51,9 +60,6 @@ public class CustomerServiceTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void saveCustomer_nullInput_throwsIllegalArgumentException() {
-        Mockito.when(modelMapper.map(null, Customer.class))
-                .thenThrow(new IllegalArgumentException());
-
         service.saveCustomer(null);
     }
 
@@ -156,9 +162,6 @@ public class CustomerServiceTests {
     public void findCustomerById_invalidId_throwsIllegalArgumentException() {
         Mockito.when(repository.findById("id"))
                 .thenReturn(Optional.empty());
-
-        Mockito.when(modelMapper.map(null, CustomerServiceModel.class))
-                .thenThrow(new IllegalArgumentException());
 
         service.findCustomerById("id");
     }
