@@ -1,26 +1,28 @@
 package org.softuni.residentevil.domain.entities;
 
+import lombok.NoArgsConstructor;
+import org.softuni.residentevil.annotations.composite.ValidCapitalLatitude;
+import org.softuni.residentevil.annotations.composite.ValidCapitalLongitude;
+import org.softuni.residentevil.annotations.composite.ValidCapitalName;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "capitals")
 public class Capital extends BaseLongEntity {
 
-    @NotEmpty
-    @Size(min = 1, max = 32)
+    @ValidCapitalName
     @Column(nullable = false, length = 32)
     private String name;
 
-    @NotNull
+    @ValidCapitalLongitude
     @Column(nullable = false)
     private Double longitude;
 
-    @NotNull
+    @ValidCapitalLatitude
     @Column(nullable = false)
     private Double latitude;
 }
