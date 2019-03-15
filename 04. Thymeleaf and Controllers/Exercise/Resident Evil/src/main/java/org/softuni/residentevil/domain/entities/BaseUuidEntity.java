@@ -35,7 +35,7 @@ abstract class BaseUuidEntity extends BaseEntity<UUID> {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
+    @Column(unique = true, nullable = false, insertable = false, updatable = false, columnDefinition = "BINARY(16)")
     @Access(AccessType.PROPERTY)
     private UUID id;
 }
