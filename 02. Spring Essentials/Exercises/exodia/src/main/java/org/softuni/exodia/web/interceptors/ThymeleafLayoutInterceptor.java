@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Modifies view by including it Thymeleaf template {@link Layout} annotation.
+ * Modifies view according to {@link Layout} annotation by rendering it into a layout template.
  * <ul>Default values (can be changed during interceptor's instance build):
  * <li>Layout file: {@value #DEFAULT_LAYOUT}</li>
  * <li>View attribute name in layout file, where the view content
