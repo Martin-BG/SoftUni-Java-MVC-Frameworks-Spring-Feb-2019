@@ -35,8 +35,8 @@ public class CustomerServiceTests {
 
     @Test
     public void saveCustomer_validInputData_correctMethodsAndArgumentsUsed() {
-        CustomerServiceModel model = mock(CustomerServiceModel.class);
         Customer customer = mock(Customer.class);
+        CustomerServiceModel model = mock(CustomerServiceModel.class);
         Mockito.when(modelMapper.map(model, Customer.class)).thenReturn(customer);
         Mockito.when(repository.saveAndFlush(customer)).thenReturn(customer);
         Mockito.when(modelMapper.map(customer, CustomerServiceModel.class)).thenReturn(model);

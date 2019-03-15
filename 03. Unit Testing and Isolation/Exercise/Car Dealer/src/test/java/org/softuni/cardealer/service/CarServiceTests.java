@@ -35,8 +35,8 @@ public class CarServiceTests {
 
     @Test
     public void saveCar_validInputData_correctMethodsAndArgumentsUsed() {
-        CarServiceModel model = mock(CarServiceModel.class);
         Car car = mock(Car.class);
+        CarServiceModel model = mock(CarServiceModel.class);
         Mockito.when(modelMapper.map(model, Car.class)).thenReturn(car);
         Mockito.when(repository.saveAndFlush(car)).thenReturn(car);
         Mockito.when(modelMapper.map(car, CarServiceModel.class)).thenReturn(model);

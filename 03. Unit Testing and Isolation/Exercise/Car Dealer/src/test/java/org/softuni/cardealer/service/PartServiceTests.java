@@ -36,8 +36,8 @@ public class PartServiceTests {
 
     @Test
     public void savePart_validInputData_correctMethodsAndArgumentsUsed() {
-        PartServiceModel model = mock(PartServiceModel.class);
         Part part = mock(Part.class);
+        PartServiceModel model = mock(PartServiceModel.class);
         Mockito.when(modelMapper.map(model, Part.class)).thenReturn(part);
         Mockito.when(repository.saveAndFlush(part)).thenReturn(part);
         Mockito.when(modelMapper.map(part, PartServiceModel.class)).thenReturn(model);
