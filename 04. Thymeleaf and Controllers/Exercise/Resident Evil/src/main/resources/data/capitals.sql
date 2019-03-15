@@ -1,4 +1,4 @@
-INSERT INTO capitals (id, name, longitude, latitude)
+INSERT INTO capitals (id, normalizedName, longitude, latitude)
 VALUES (1, 'Kabul', 34.53, 69.17),
        (2, 'Tirana', 41.33, 19.82),
        (3, 'Algiers', 36.75, 3.04),
