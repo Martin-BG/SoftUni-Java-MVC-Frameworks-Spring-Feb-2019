@@ -1,9 +1,9 @@
 package org.softuni.residentevil.domain.entities;
 
 import lombok.NoArgsConstructor;
-import org.softuni.residentevil.annotations.composite.ValidCapitalLatitude;
-import org.softuni.residentevil.annotations.composite.ValidCapitalLongitude;
-import org.softuni.residentevil.annotations.composite.ValidCapitalName;
+import org.softuni.residentevil.annotations.composite.capital.ValidCapitalLatitude;
+import org.softuni.residentevil.annotations.composite.capital.ValidCapitalLongitude;
+import org.softuni.residentevil.annotations.composite.capital.ValidCapitalName;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
