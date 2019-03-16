@@ -2,3 +2,12 @@
     background-color: #900C45;
     color: white;
 }
+
+.re-error {
+    color: #900C45;
+}
+
+.re-error-border {
+    border-color: #900C45;
+}
+
