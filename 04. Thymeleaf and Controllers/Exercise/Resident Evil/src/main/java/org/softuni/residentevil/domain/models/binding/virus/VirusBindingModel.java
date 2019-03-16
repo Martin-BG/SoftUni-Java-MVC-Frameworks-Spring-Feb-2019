@@ -9,8 +9,10 @@ import org.softuni.residentevil.domain.entities.Virus;
 import org.softuni.residentevil.domain.enums.Creator;
 import org.softuni.residentevil.domain.enums.Magnitude;
 import org.softuni.residentevil.domain.enums.Mutation;
+import org.softuni.residentevil.domain.models.binding.capital.CapitalBindingModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +59,5 @@ public class VirusBindingModel implements Bindable<Virus> {
     private LocalDate releasedOn;
 
     @ValidVirusCapitals
-    private List<Long> capIds = new ArrayList<>();
+    private List<@Valid CapitalBindingModel> capitals = new ArrayList<>();
 }
