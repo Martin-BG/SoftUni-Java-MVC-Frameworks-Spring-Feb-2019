@@ -1,0 +1,37 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <table class="table mt-3 mb-5 center-block w-75 mx-auto">
+        <h2 class="header mt-3 mb-4 center-block w-75 mx-auto" th:text="#{viruses.all.title}"/>
+        <thead>
+        <tr>
+            <th scope="col" th:text="#{viruses.all.table-header.id}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.name}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.magnitude}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.released-on}"/>
+            <th scope="col"/>
+            <th scope="col"/>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="virus : ${viruses}" th:object="${virus}">
+            <tr>
+                <td scope="row" th:text="*{id}"/>
+                <td th:text="*{name}"/>
+                <td th:text="*{magnitude.label}"/>
+                <td th:text="${#temporals.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
+                <td>
+                    <form method="get" th:action="@{/viruses/edit/{id}(id=*{id})}">
+                        <button class="btn btn-light btn-sm border-dark" th:text="#{viruses.all.table-button.edit}"
+                                type="submit"/>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/viruses/delete/{id}(id=*{id})}" th:method="get">
+                        <button class="btn btn-light btn-sm border-dark" th:text="#{viruses.all.table-button.delete}"
+                                type="submit"/>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</th:block>
