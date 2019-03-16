@@ -8,12 +8,9 @@ import org.softuni.residentevil.service.VirusService;
 import org.softuni.residentevil.web.controllers.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,10 +18,11 @@ import java.util.List;
 @Layout
 @Controller
 @RequestMapping("/viruses/add")
+@SessionAttributes({AddVirusController.VIRUS, AddVirusController.CAPITALS})
 public class AddVirusController extends BaseController {
 
-    private static final String VIRUS = "virus";
-    private static final String CAPITALS = "capitals";
+    public static final String VIRUS = "virus";
+    public static final String CAPITALS = "allCapitals";
 
     private final VirusService virusService;
     private final CapitalService capitalService;
@@ -53,14 +51,12 @@ public class AddVirusController extends BaseController {
 
     @PostMapping
     public String post(@Valid @ModelAttribute(VIRUS) VirusBindingModel virus,
-                       Errors errors,
-                       Model model) {
-        if (errors.hasErrors()) {
-            model.addAttribute(VIRUS, virus);
+                       Errors errors, SessionStatus sessionStatus) {
+        if (errors.hasErrors() || !virusService.create(virus)) {
             return "virus/add";
         }
 
-        virusService.create(virus);
+        sessionStatus.setComplete();
 
         return redirect("/viruses");
     }
