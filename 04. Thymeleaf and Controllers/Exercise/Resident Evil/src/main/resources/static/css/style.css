@@ -11,3 +11,6 @@
     border-color: #900C45;
 }
 
+div.form-group label {
+    margin-top: 0.7rem;
+}
