@@ -16,13 +16,14 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class VirusBindingModel implements Bindable<Virus> {
 
-    private String id;
+    private UUID id;
 
     @ValidVirusName
     private String name;
