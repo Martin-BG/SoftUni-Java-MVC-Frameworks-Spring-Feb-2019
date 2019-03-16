@@ -2,6 +2,7 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.lang.annotation.Documented;
@@ -17,13 +18,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @NotNull
 @Past
+@ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusReleasedOn {
 
-    String message() default "";
+    String message() default "Release date should be in the past";
 
     Class<?>[] groups() default {};
 

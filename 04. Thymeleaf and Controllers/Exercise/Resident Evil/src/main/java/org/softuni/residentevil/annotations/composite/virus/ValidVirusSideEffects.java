@@ -2,6 +2,7 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -15,13 +16,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 
 @Size(max = 50)
+@ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusSideEffects {
 
-    String message() default "";
+    String message() default "Virus side effects text length should be no more than 50 symbols";
 
     Class<?>[] groups() default {};
 

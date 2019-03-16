@@ -2,6 +2,7 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,13 +20,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @NotNull
 @Min(0)
 @Max(100)
+@ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusTurnoverRate {
 
-    String message() default "";
+    String message() default "Turnover rate should be between 0 and 100";
 
     Class<?>[] groups() default {};
 
