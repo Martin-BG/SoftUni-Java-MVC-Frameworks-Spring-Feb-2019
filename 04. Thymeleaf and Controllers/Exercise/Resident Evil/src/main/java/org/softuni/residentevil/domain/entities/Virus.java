@@ -65,6 +65,7 @@ public class Virus extends BaseUuidEntity {
     @Column(nullable = false)
     private LocalDate releasedOn;
 
+    @ValidVirusCapitals
     @ManyToMany
     @JoinTable(
             name = "viruses_capitals",
