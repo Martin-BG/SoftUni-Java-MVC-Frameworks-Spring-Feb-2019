@@ -11,6 +11,8 @@ public class StringToCapitalBindingModelConverter implements Converter<String, C
 
     @Override
     public CapitalBindingModel convert(@NotNull String id) {
-        return new CapitalBindingModel(Long.parseLong(id));
+        CapitalBindingModel capitalBindingModel = new CapitalBindingModel();
+        capitalBindingModel.setId(Long.parseLong(id));
+        return capitalBindingModel;
     }
 }
