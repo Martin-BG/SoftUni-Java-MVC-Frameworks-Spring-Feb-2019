@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 @Log
-class BaseController {
+public class BaseController {
 
     protected BaseController() {
     }
