@@ -1,5 +1,6 @@
 package org.softuni.residentevil.config;
 
+import org.softuni.residentevil.web.converters.CreatorToStringConverter;
 import org.softuni.residentevil.web.converters.StringToCreatorConverter;
 import org.softuni.residentevil.web.interceptors.ThymeleafLayoutInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -24,5 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToCreatorConverter());
+        registry.addConverter(new CreatorToStringConverter());
     }
 }
