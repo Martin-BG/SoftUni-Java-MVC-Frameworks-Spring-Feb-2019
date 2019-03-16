@@ -102,15 +102,15 @@
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('capIds')}" th:text="#{viruses.add.capitals}"></label>
+            <label th:for="${#ids.next('capitals')}" th:text="#{viruses.add.capitals}"></label>
             <select class="form-control" multiple
-                    th:classappend="${#fields.hasErrors('capIds')}? re-error-border"
-                    th:field="*{capIds}">
+                    th:classappend="${#fields.hasErrors('capitals')}? re-error-border"
+                    th:field="*{capitals}">
                 <option th:each="capital : ${capitals}"
                         th:text="${capital.name}"
                         th:value="${capital.id}"/>
             </select>
-            <small class="re-error" th:errors="*{capIds}" th:if="${#fields.hasErrors('capIds')}"/>
+            <small class="re-error" th:errors="*{capitals}" th:if="${#fields.hasErrors('capitals')}"/>
         </div>
 
         <div class="form-actions mx-auto text-center">
