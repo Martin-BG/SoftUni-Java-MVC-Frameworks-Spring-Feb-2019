@@ -106,7 +106,7 @@
             <select class="form-control" multiple
                     th:classappend="${#fields.hasErrors('capitals')}? re-error-border"
                     th:field="*{capitals}">
-                <option th:each="capital : ${capitals}"
+                <option th:each="capital : ${allCapitals}"
                         th:text="${capital.name}"
                         th:value="${capital.id}"/>
             </select>
