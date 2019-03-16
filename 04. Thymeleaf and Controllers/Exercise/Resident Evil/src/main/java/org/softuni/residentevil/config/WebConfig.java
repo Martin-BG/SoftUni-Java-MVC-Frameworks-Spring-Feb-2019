@@ -3,6 +3,7 @@ package org.softuni.residentevil.config;
 import org.softuni.residentevil.web.converters.CreatorToStringConverter;
 import org.softuni.residentevil.web.converters.StringToCapitalBindingModelConverter;
 import org.softuni.residentevil.web.converters.StringToCreatorConverter;
+import org.softuni.residentevil.web.converters.StringToUuidConverter;
 import org.softuni.residentevil.web.interceptors.ThymeleafLayoutInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -28,5 +29,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new StringToCreatorConverter());
         registry.addConverter(new CreatorToStringConverter());
         registry.addConverter(new StringToCapitalBindingModelConverter());
+        registry.addConverter(new StringToUuidConverter());
     }
 }
