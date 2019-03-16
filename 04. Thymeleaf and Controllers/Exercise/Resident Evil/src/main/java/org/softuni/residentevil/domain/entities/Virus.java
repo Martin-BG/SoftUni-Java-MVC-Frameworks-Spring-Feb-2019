@@ -10,8 +10,8 @@ import org.softuni.residentevil.domain.enums.Mutation;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
@@ -65,11 +65,19 @@ public class Virus extends BaseUuidEntity {
     @Column(nullable = false)
     private LocalDate releasedOn;
 
+    /**
+     * For ManyToMany relations recommended collection is Set instead of List
+     * because with List on each add or remove all elements are removed and then added back.
+     *
+     * @see <a href="https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/">
+     * The best way to use the @ManyToMany annotation with JPA and Hibernate</a> from Vlad Mihalcea<br>
+     * @see <a href="https://bianjp.com/posts/2017/10/31/jpa-many-to-many-update-efficiency">JPA many-to-many update efficiency</a>
+     */
     @ValidVirusCapitals
     @ManyToMany
     @JoinTable(
             name = "viruses_capitals",
             joinColumns = {@JoinColumn(name = "virus_id")},
             inverseJoinColumns = {@JoinColumn(name = "capital_id")})
-    private List<Capital> capitals = new ArrayList<>();
+    private Set<Capital> capitals = new HashSet<>();
 }
