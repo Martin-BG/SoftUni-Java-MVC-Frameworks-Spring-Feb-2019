@@ -1,0 +1,6 @@
+<th:block xmlns:th="http://www.thymeleaf.org"
+          th:replace="~{fragments/virus-add-edit-form :: virusAddEditForm(
+     action= @{/viruses/edit/{id} (id=${virus.id})},
+     title = #{viruses.edit.title},
+     readonly = 'readonly'
+     )}"/>
