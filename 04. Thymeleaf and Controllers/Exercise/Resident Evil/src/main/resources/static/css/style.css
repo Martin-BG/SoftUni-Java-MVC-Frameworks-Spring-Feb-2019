@@ -14,3 +14,7 @@
 div.form-group label {
     margin-top: 0.7rem;
 }
+
+.noresize {
+    resize: none;
+}
