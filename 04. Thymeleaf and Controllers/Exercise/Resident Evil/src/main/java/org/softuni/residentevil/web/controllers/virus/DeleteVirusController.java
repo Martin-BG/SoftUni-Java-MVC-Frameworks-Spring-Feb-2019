@@ -5,9 +5,9 @@ import org.softuni.residentevil.service.VirusService;
 import org.softuni.residentevil.web.controllers.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -23,8 +23,8 @@ public class DeleteVirusController extends BaseController {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public String get(@PathVariable UUID id) {
+    @DeleteMapping
+    public String get(@RequestParam UUID id) {
         service.deleteById(id);
         return redirect("/viruses");
     }
