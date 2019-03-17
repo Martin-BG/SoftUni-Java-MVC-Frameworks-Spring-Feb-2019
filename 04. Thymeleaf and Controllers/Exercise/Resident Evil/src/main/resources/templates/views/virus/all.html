@@ -19,15 +19,15 @@
                 <td th:text="*{magnitude.label}"/>
                 <td th:text="${#temporals.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
                 <td>
-                    <form method="get" th:action="@{/viruses/edit/{id}(id=*{id})}">
-                        <button class="btn btn-light btn-sm border-dark" th:text="#{viruses.all.table-button.edit}"
-                                type="submit"/>
-                    </form>
+                    <a class="btn btn-light btn-sm border-dark"
+                       th:href="@{/viruses/edit/{id}(id=*{id})}"
+                       th:text="#{viruses.all.table-button.edit}"/>
                 </td>
                 <td>
                     <form th:action="@{/viruses/delete}" th:method="delete">
                         <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark" th:text="#{viruses.all.table-button.delete}"
+                        <button class="btn btn-light btn-sm border-dark"
+                                th:text="#{viruses.all.table-button.delete}"
                                 type="submit"/>
                     </form>
                 </td>
