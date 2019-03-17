@@ -18,3 +18,7 @@ div.form-group label {
 .no-resize {
     resize: none;
 }
+
+.disabled {
+    color: gray;
+}
