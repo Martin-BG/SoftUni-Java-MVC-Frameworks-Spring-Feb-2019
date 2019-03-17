@@ -1,5 +1,6 @@
 package org.softuni.residentevil.domain.models.view.virus;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.softuni.residentevil.domain.api.Viewable;
@@ -7,12 +8,14 @@ import org.softuni.residentevil.domain.entities.Virus;
 import org.softuni.residentevil.domain.enums.Magnitude;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public final class VirusSimpleViewModel implements Viewable<Virus> {
 
-    private String id;
+    private UUID id;
 
     private String name;
 
