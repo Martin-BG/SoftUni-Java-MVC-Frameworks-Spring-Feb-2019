@@ -43,13 +43,13 @@ abstract class BaseService<E extends Identifiable<I>, I, R extends JpaRepository
 
     @Override
     public <B extends Bindable<E>> void create(@NotNull @Valid B bindingModel) {
-        repository.save(mapper.map(bindingModel, entityClass));
+        createAndGet(bindingModel);
     }
 
     @Override
     public <B extends Bindable<E>, V extends Viewable<E>>
     V createAndGet(@NotNull @Valid B bindingModel, @NotNull Class<V> viewModelClass) {
-        E entity = repository.save(mapper.map(bindingModel, entityClass));
+        E entity = createAndGet(bindingModel);
         return mapper.map(entity, viewModelClass);
     }
 
@@ -83,7 +83,11 @@ abstract class BaseService<E extends Identifiable<I>, I, R extends JpaRepository
                 .map(e -> mapper.map(e, viewModelClass));
     }
 
-    private Optional<E> deleteByIdAndGet(@NotNull I id) {
+    private <B extends Bindable<E>> E createAndGet(B bindingModel) {
+        return repository.save(mapper.map(bindingModel, entityClass));
+    }
+
+    private Optional<E> deleteByIdAndGet(I id) {
         return repository
                 .findById(id)
                 .map(e -> {
