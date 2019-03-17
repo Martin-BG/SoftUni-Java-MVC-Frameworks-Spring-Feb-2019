@@ -2,5 +2,5 @@
           th:replace="~{fragments/virus-add-edit-form :: virusAddEditForm(
      action= @{/viruses/add},
      title = #{viruses.add.title},
-     readonly = ''
+     method= 'post'
      )}"/>
