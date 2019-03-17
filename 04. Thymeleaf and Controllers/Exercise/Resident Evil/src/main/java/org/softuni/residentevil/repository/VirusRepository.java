@@ -18,6 +18,6 @@ public interface VirusRepository extends JpaRepository<Virus, UUID> {
             "NEW org.softuni.residentevil.domain.models.view.virus.VirusSimpleViewModel(" +
             "v.id, v.name, v.magnitude, v.releasedOn) " +
             "FROM Virus AS v " +
-            "ORDER BY v.name ASC")
+            "ORDER BY v.releasedOn ASC")
     List<VirusSimpleViewModel> findAllSimpleView();
 }
