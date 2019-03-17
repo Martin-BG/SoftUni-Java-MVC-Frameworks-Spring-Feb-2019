@@ -3,7 +3,7 @@
         <h2 class="header mt-3 mb-4 center-block w-75 mx-auto" th:text="#{viruses.all.title}"/>
         <thead>
         <tr>
-            <th scope="col" th:text="#{viruses.all.table-header.id}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.index}"/>
             <th scope="col" th:text="#{viruses.all.table-header.name}"/>
             <th scope="col" th:text="#{viruses.all.table-header.magnitude}"/>
             <th scope="col" th:text="#{viruses.all.table-header.released-on}"/>
@@ -12,9 +12,9 @@
         </tr>
         </thead>
         <tbody>
-        <th:block th:each="virus : ${viruses}" th:object="${virus}">
+        <th:block th:each="virus, iStat : ${viruses}" th:object="${virus}">
             <tr>
-                <td scope="row" th:text="*{id}"/>
+                <td scope="row" th:text="${iStat.index + 1}"/>
                 <td th:text="*{name}"/>
                 <td th:text="*{magnitude.label}"/>
                 <td th:text="${#temporals.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
