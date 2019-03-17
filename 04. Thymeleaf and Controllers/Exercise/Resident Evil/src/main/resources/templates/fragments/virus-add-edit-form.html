@@ -1,7 +1,7 @@
-<th:block th:fragment="virusAddEditForm (action, title, readonly)"
+<th:block th:fragment="virusAddEditForm (action, title, method)"
           xmlns:th="http://www.thymeleaf.org">
     <form class="mt-5 center-block w-75 mx-auto"
-          method="POST"
+          th:method="${method}"
           th:action="${action}"
           th:object="${virus}">
 
@@ -17,10 +17,9 @@
 
         <div class="form-group">
             <label th:for="${#ids.next('description')}" th:text="#{viruses.add.description}"/>
-            <textarea class="form-control noresize" rows="2"
+            <textarea class="form-control no-resize" rows="2"
                       th:classappend="${#fields.hasErrors('description')}? re-error-border"
-                      th:field="*{description}"
-                      type="text"/>
+                      th:field="*{description}"/>
             <small class="re-error" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"/>
         </div>
 
@@ -53,8 +52,7 @@
         <th:block th:each="mutation : ${T(org.softuni.residentevil.domain.enums.Mutation).values()}">
             <div class="radio">
                 <input th:field="*{mutation}" th:value="${mutation}" type="radio"/>
-                <label class="purple"
-                       th:classappend="${#fields.hasErrors('mutation')}? re-error"
+                <label th:classappend="${#fields.hasErrors('mutation')}? re-error"
                        th:for="${#ids.prev('mutation')}" th:text="${mutation}"/>
             </div>
         </th:block>
@@ -88,7 +86,7 @@
                     th:field="*{magnitude}">
                 <option th:each="magnitude : ${T(org.softuni.residentevil.domain.enums.Magnitude).values()}"
                         th:text="${magnitude.label}"
-                        th:value="${magnitude}"></option>
+                        th:value="${magnitude}"/>
             </select>
             <small class="re-error" th:errors="*{magnitude}" th:if="${#fields.hasErrors('magnitude')}"/>
         </div>
@@ -96,8 +94,9 @@
         <div class="form-group">
             <label th:for="${#ids.next('releasedOn')}" th:text="#{viruses.add.released-on}"/>
             <input class="form-control" th:classappend="${#fields.hasErrors('releasedOn')}? re-error-border"
+                   th:readonly="${!method.equals('post')}"
                    th:field="*{releasedOn}"
-                   th:readonly="${!readonly.isEmpty()}" type="date">
+                   type="date">
             <small class="re-error" th:errors="*{releasedOn}" th:if="${#fields.hasErrors('releasedOn')}"/>
         </div>
 
