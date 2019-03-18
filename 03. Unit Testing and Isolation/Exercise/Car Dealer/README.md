@@ -1,7 +1,7 @@
 # Service Layer Unit Tests (Car Dealer)
 [Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/03.%20Unit%20Testing%20and%20Isolation%20-%20Exercise.pdf) is to write unit tests for CRUD-like [services](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/main/java/org/softuni/cardealer/service).
 
-There is effectively to no [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/main/java/org/softuni/cardealer/service/CarServiceImpl.java) logic in the given skeleton, so tests are based on 100% [mocking](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/test/java/org/softuni/cardealer/service/CarServiceTests.java) of service dependencies and evaluation of method calls, argument and return values.
+There is effectively no [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/main/java/org/softuni/cardealer/service/CarServiceImpl.java) logic in the given skeleton, so tests are based on 100% [mocking](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/test/java/org/softuni/cardealer/service/CarServiceTests.java) of service dependencies and evaluation of method calls, argument and return values.
 ___
 ## Setup
 Tested on Ubuntu 18.0.4
