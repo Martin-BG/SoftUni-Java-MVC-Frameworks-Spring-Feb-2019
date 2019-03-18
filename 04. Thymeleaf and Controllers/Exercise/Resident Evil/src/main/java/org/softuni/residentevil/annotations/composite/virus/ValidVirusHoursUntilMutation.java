@@ -1,6 +1,7 @@
 package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
+import javax.validation.OverridesAttribute;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Max;
@@ -27,10 +28,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface ValidVirusHoursUntilMutation {
 
-    int MIN = 1;
-    int MAX = 12;
+    long MIN = 1L;
+    long MAX = 12L;
 
-    String message() default "Hours until mutation should be between 1 and 12";
+    @OverridesAttribute(constraint = Min.class, name = "value") long min() default MIN;
+
+    @OverridesAttribute(constraint = Max.class, name = "value") long max() default MAX;
+
+    String message() default "{virus.hours-until-mutation.range}";
 
     Class<?>[] groups() default {};
 
