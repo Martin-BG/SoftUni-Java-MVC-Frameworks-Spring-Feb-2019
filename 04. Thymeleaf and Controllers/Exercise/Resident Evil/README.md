@@ -506,3 +506,4 @@ public class BaseController {
     }
 }
 ```
+* Use **Javadoc** whenever it is appropriate to (config files, protected methods, base classes, interfaces etc.)
