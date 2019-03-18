@@ -1,5 +1,7 @@
 package org.softuni.residentevil.config;
 
+import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
+import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.TimeZone;
 
 @Configuration
@@ -58,5 +62,23 @@ public class ApplicationConfig {
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor() {
         return new MethodValidationPostProcessor();
+    }
+
+    /**
+     * Configure Validator to use validation messages from custom file
+     */
+    @Bean
+    public Validator validator() {
+        final String LANGUAGES_VALIDATION_MESSAGES = "languages/validation";
+
+        return Validation.byDefaultProvider()
+                .configure()
+                .messageInterpolator(
+                        new ResourceBundleMessageInterpolator(
+                                new PlatformResourceBundleLocator(LANGUAGES_VALIDATION_MESSAGES)
+                        )
+                )
+                .buildValidatorFactory()
+                .getValidator();
     }
 }
