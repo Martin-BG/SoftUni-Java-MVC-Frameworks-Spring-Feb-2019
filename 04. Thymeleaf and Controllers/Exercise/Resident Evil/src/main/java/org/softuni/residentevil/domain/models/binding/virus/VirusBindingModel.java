@@ -56,7 +56,7 @@ public class VirusBindingModel implements Bindable<Virus> {
     private Magnitude magnitude;
 
     @ValidVirusReleasedOn
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate releasedOn;
 
     @ValidVirusCapitals
