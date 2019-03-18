@@ -35,37 +35,83 @@ ___
   * Custom [@Layout](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/annotations/Layout.java) annotation and [Interceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/interceptors/ThymeleafLayoutInterceptor.java) for templating and fragments insert:
   * Implemented Builder Pattern for [ThymeleafLayoutInterceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/interceptors/ThymeleafLayoutInterceptor.java):
   * [Composite](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/annotations/composite) annotations for entity/model validation
+  ```java
+    @NotBlank(message = "{virus.name.blank}")
+    @Size(message = "{virus.name.length}", min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
+    @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+    @Retention(RUNTIME)
+    @Constraint(validatedBy = {})
+    @Documented
+    public @interface ValidVirusName {
+    
+        int MIN_LENGTH = 3;
+        int MAX_LENGTH = 10;
+    
+        String message() default "";
+    
+        Class<?>[] groups() default {};
+    
+        Class<? extends Payload>[] payload() default {};
+    }
+  
+    @NotNull
+    @Min(ValidVirusTurnoverRate.MIN)
+    @Max(ValidVirusTurnoverRate.MAX)
+    @ReportAsSingleViolation
+    @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+    @Retention(RUNTIME)
+    @Constraint(validatedBy = {})
+    @Documented
+    public @interface ValidVirusTurnoverRate {
+    
+      long MIN = 0L;
+      long MAX = 100L;
+    
+      @OverridesAttribute(constraint = Min.class, name = "value") long min() default MIN;
+    
+      @OverridesAttribute(constraint = Max.class, name = "value") long max() default MAX;
+    
+      String message() default "{virus.turnover-rate.range}";
+    
+      Class<?>[] groups() default {};
+    
+      Class<? extends Payload>[] payload() default {};
+    }
+
+  ```
   * Validate parameters on repository methods to filter-out invalid requests
   * Use of transactions (read/write) for all public service methods to promote data integrity 
-and as optimization for methods that make multiple DB calls
-  * Use @SessionAttributes for store and reuse of @ModelAttribute by [Controller](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/02.%20Spring%20Essentials/Exercises/exodia/src/main/java/org/softuni/exodia/web/controllers/DocumentController.java), 
-avoiding unnecessary Service/Repository calls for getting the same data
+  and as optimization for methods that make multiple DB calls
+  * Use [@SessionAttributes](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/virus/BaseVirusController.java) 
+  for store and reuse of [@ModelAttribute](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/virus/AddVirusController.java) 
+  by [Controller](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers), 
+  avoiding unnecessary Service/Repository calls for getting the same data
   * Use **caching** on selected [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/service/CapitalServiceImpl.java) methods (@EnableCaching + @CacheConfig + @Cacheable / @CacheEvict)
-```java
-@Log
-@Service
-@Validated
-@Transactional
-@CacheConfig(cacheNames = "capitals")
-public class CapitalServiceImpl extends BaseService<Capital, Long, CapitalRepository> implements CapitalService {
-
-    protected CapitalServiceImpl(CapitalRepository repository, ModelMapper mapper) {
-        super(repository, mapper);
-    }
-
-    @Override
-    protected Logger logger() {
-        return log;
-    }
-
-    @Override
-    @Cacheable(sync = true)
-    @Transactional(readOnly = true)
-    public List<CapitalSimpleViewModel> getCapitals() {
-        return repository.findAllSimpleView();
-    }
-}
-```
+  ```java
+  @Log
+  @Service
+  @Validated
+  @Transactional
+  @CacheConfig(cacheNames = "capitals")
+  public class CapitalServiceImpl extends BaseService<Capital, Long, CapitalRepository> implements CapitalService {
+  
+      protected CapitalServiceImpl(CapitalRepository repository, ModelMapper mapper) {
+          super(repository, mapper);
+      }
+  
+      @Override
+      protected Logger logger() {
+          return log;
+      }
+  
+      @Override
+      @Cacheable(sync = true)
+      @Transactional(readOnly = true)
+      public List<CapitalSimpleViewModel> getCapitals() {
+          return repository.findAllSimpleView();
+      }
+  }
+  ```
 * Custom ENUM mapping in entities by [converters](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/converters). <br>
 Ex: Magnitude.LOW will be stored as "Low" in DB:
 ```java
@@ -330,3 +376,133 @@ nav-bar.title=Resident Evil
           return redirect("/viruses");
       }
       ```
+* Define validation constraints as constants into [composite validation annotations](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/annotations/composite) 
+and use these for setting up entities columns, ensuring integrity between actual validation and DB constraints.
+```java
+@NotBlank(message = "{virus.name.blank}")
+@Size(message = "{virus.name.length}", min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+@Retention(RUNTIME)
+@Constraint(validatedBy = {})
+@Documented
+public @interface ValidVirusName {
+
+    int MIN_LENGTH = 3;
+    int MAX_LENGTH = 10;
+
+    String message() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+
+@Entity
+@Table(name = "viruses")
+public class Virus extends BaseUuidEntity {
+
+    @ValidVirusName
+    @Column(unique = true, nullable = false, length = ValidVirusName.MAX_LENGTH)
+    private String name;
+    
+    @ValidVirusDescription
+    @Column(nullable = false, columnDefinition = "TEXT", length = ValidVirusDescription.MAX_LENGTH)
+    private String description;
+    
+    @ValidVirusSideEffects
+    @Column(length = ValidVirusSideEffects.MAX_LENGTH)
+    private String sideEffects;
+    
+    @ValidVirusCreator
+    @Convert(converter = CreatorConverter.class)
+    @Column(nullable = false, length = ValidVirusCreator.MAX_LENGTH)
+    private Creator creator;
+    
+    // ...
+}
+```
+* Use validation messages from external [validation.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/languages/validation.properties) file:
+```java
+@Configuration
+@EnableCaching
+public class ApplicationConfig {
+    //...
+    
+    /**
+     * Configure Validator to use validation messages from custom file
+     */
+    @Bean
+    public Validator validator() {
+        final String LANGUAGES_VALIDATION_MESSAGES = "languages/validation";
+
+        return Validation.byDefaultProvider()
+                .configure()
+                .messageInterpolator(
+                        new ResourceBundleMessageInterpolator(
+                                new PlatformResourceBundleLocator(LANGUAGES_VALIDATION_MESSAGES)
+                        )
+                )
+                .buildValidatorFactory()
+                .getValidator();
+    }
+}
+
+@NotBlank(message = "{virus.name.blank}")
+@Size(message = "{virus.name.length}", min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+@Retention(RUNTIME)
+@Constraint(validatedBy = {})
+@Documented
+public @interface ValidVirusName {
+
+    int MIN_LENGTH = 3;
+    int MAX_LENGTH = 10;
+
+    String message() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}
+```
+```properties
+#languages/validation.properties
+virus.name.blank=Virus name is required and cannot be blank string (empty characters on both sides ignored)
+virus.name.length=Virus name length should be between {min} and {max} symbols
+```
+* Trim string values from input forms with **@InitBinder** and **StringTrimmerEditor**.
+Further [customize](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java) 
+this functionality to prevent trimming of certain fields like **"password"** 
+or treating empty texts as null, by protected methods allowing redefinition of the rules by child classes.
+```java
+public class BaseController {
+    //... javadoc omitted too
+
+    private static void preventTextModificationForFields(WebDataBinder binder, List<String> doNotTrimFieldsList) {
+        PropertyEditorSupport noTrimPropertyEditor = new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                super.setValue(text);
+            }
+        };
+
+        doNotTrimFieldsList.forEach(field ->
+                binder.registerCustomEditor(String.class, field, noTrimPropertyEditor));
+    }
+
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(getEmptyStringsAsNull()));
+
+        preventTextModificationForFields(binder, getUnmodifiedTextFieldsList());
+    }
+
+    protected List<String> getUnmodifiedTextFieldsList() {
+        return List.of();
+    }
+
+    protected boolean getEmptyStringsAsNull() {
+        return false;
+    }
+}
+```
