@@ -18,14 +18,17 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 
 @NotNull
-@Min(0)
-@Max(100)
+@Min(ValidVirusTurnoverRate.MIN)
+@Max(ValidVirusTurnoverRate.MAX)
 @ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusTurnoverRate {
+
+    int MIN = 0;
+    int MAX = 100;
 
     String message() default "Turnover rate should be between 0 and 100";
 

@@ -27,6 +27,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface ValidVirusMutation {
 
+    int MAX_LENGTH = 12;
+
     String message() default "Mutation cannot be null";
 
     Class<?>[] groups() default {};

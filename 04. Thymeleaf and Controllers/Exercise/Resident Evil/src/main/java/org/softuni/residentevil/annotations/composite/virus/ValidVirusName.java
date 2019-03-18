@@ -17,13 +17,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 
 @NotBlank
-@Size(min = 3, max = 10)
+@Size(min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
 @ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusName {
+
+    int MIN_LENGTH = 3;
+    int MAX_LENGTH = 10;
 
     String message() default "Virus name length should be between 3 and 10 symbols";
 

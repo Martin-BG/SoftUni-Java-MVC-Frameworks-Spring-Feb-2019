@@ -18,13 +18,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 
 @NotBlank
-@Size(min = 5, max = 100)
+@Size(min = ValidVirusDescription.MIN_LENGTH, max = ValidVirusDescription.MAX_LENGTH)
 @ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusDescription {
+
+    int MIN_LENGTH = 5;
+    int MAX_LENGTH = 100;
 
     String message() default "Virus description length should be between 5 and 100 symbols";
 

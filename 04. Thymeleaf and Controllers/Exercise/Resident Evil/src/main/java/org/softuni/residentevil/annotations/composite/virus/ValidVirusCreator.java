@@ -27,6 +27,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface ValidVirusCreator {
 
+    int MAX_LENGTH = 4;
+
     String message() default "Creator should be either \"Corp\" or \"corp\"";
 
     Class<?>[] groups() default {};

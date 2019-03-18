@@ -18,14 +18,17 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 
 @NotNull
-@Min(1)
-@Max(12)
+@Min(ValidVirusHoursUntilMutation.MIN)
+@Max(ValidVirusHoursUntilMutation.MAX)
 @ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusHoursUntilMutation {
+
+    int MIN = 1;
+    int MAX = 12;
 
     String message() default "Hours until mutation should be between 1 and 12";
 

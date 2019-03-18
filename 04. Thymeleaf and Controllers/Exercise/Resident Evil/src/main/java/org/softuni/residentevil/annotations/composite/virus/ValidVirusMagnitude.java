@@ -28,6 +28,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface ValidVirusMagnitude {
 
+    int MAX_LENGTH = 6;
+
     String message() default "Magnitude cannot be null";
 
     Class<?>[] groups() default {};
