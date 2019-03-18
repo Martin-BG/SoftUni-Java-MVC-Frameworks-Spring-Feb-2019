@@ -2,7 +2,6 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -19,8 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </ul>
  */
 
-@NotNull
-@ReportAsSingleViolation
+@NotNull(message = "{virus.creator.text}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
@@ -29,7 +27,7 @@ public @interface ValidVirusCreator {
 
     int MAX_LENGTH = 4;
 
-    String message() default "Creator should be either \"Corp\" or \"corp\"";
+    String message() default "";
 
     Class<?>[] groups() default {};
 
