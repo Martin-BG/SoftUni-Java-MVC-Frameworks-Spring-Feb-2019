@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Capital extends BaseLongEntity {
 
     @ValidCapitalName
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = ValidCapitalName.MAX_LENGTH)
     private String name;
 
     @ValidCapitalLongitude

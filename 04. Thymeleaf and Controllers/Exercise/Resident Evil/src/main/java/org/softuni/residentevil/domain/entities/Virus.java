@@ -19,20 +19,20 @@ import java.util.Set;
 public class Virus extends BaseUuidEntity {
 
     @ValidVirusName
-    @Column(unique = true, nullable = false, length = 10)
+    @Column(unique = true, nullable = false, length = ValidVirusName.MAX_LENGTH)
     private String name;
 
     @ValidVirusDescription
-    @Column(nullable = false, columnDefinition = "TEXT", length = 100)
+    @Column(nullable = false, columnDefinition = "TEXT", length = ValidVirusDescription.MAX_LENGTH)
     private String description;
 
     @ValidVirusSideEffects
-    @Column(length = 50)
+    @Column(length = ValidVirusSideEffects.MAX_LENGTH)
     private String sideEffects;
 
     @ValidVirusCreator
     @Convert(converter = CreatorConverter.class)
-    @Column(nullable = false, length = 4)
+    @Column(nullable = false, length = ValidVirusCreator.MAX_LENGTH)
     private Creator creator;
 
     @ValidVirusIsDeadly
@@ -45,7 +45,7 @@ public class Virus extends BaseUuidEntity {
 
     @ValidVirusMutation
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 12)
+    @Column(nullable = false, length = ValidVirusMutation.MAX_LENGTH)
     private Mutation mutation;
 
     @ValidVirusTurnoverRate
@@ -58,7 +58,7 @@ public class Virus extends BaseUuidEntity {
 
     @ValidVirusMagnitude
     @Convert(converter = MagnitudeConverter.class)
-    @Column(nullable = false, length = 6)
+    @Column(nullable = false, length = ValidVirusMagnitude.MAX_LENGTH)
     private Magnitude magnitude;
 
     @ValidVirusReleasedOn
