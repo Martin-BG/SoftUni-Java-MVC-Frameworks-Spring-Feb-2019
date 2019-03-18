@@ -2,7 +2,6 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Documented;
@@ -16,9 +15,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Name – Cannot be empty, should be between 3 and 10 symbols.
  */
 
-@NotBlank
-@Size(min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
-@ReportAsSingleViolation
+@NotBlank(message = "{virus.name.blank}")
+@Size(message = "{virus.name.length}", min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
@@ -28,7 +26,7 @@ public @interface ValidVirusName {
     int MIN_LENGTH = 3;
     int MAX_LENGTH = 10;
 
-    String message() default "Virus name length should be between 3 and 10 symbols";
+    String message() default "";
 
     Class<?>[] groups() default {};
 
