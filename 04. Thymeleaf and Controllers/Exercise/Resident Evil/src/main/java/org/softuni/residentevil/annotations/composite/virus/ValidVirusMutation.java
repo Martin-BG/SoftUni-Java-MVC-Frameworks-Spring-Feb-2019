@@ -2,7 +2,6 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -19,8 +18,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <li>GIANT_SPIDER</li>
  * </ul>
  */
-@NotNull
-@ReportAsSingleViolation
+
+@NotNull(message = "{virus.mutation.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
@@ -29,7 +28,7 @@ public @interface ValidVirusMutation {
 
     int MAX_LENGTH = 12;
 
-    String message() default "Mutation cannot be null";
+    String message() default "";
 
     Class<?>[] groups() default {};
 

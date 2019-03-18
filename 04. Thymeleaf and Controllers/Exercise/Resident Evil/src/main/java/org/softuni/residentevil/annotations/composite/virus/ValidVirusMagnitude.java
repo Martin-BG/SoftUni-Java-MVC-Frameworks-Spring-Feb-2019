@@ -2,7 +2,6 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -20,8 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </ul>
  */
 
-@NotNull
-@ReportAsSingleViolation
+@NotNull(message = "{virus.magnitude.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
@@ -30,7 +28,7 @@ public @interface ValidVirusMagnitude {
 
     int MAX_LENGTH = 6;
 
-    String message() default "Magnitude cannot be null";
+    String message() default "";
 
     Class<?>[] groups() default {};
 

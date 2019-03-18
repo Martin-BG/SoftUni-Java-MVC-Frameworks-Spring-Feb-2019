@@ -2,7 +2,6 @@ package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -11,15 +10,18 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@NotNull
-@ReportAsSingleViolation
+/**
+ * isCurable - cannot be null
+ */
+
+@NotNull(message = "{virus.curable.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
 public @interface ValidVirusIsCurable {
 
-    String message() default "Curable property cannot be null";
+    String message() default "";
 
     Class<?>[] groups() default {};
 
