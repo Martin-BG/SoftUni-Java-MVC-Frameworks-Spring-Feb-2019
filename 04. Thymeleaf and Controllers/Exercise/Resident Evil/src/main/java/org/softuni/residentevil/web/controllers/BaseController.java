@@ -52,15 +52,37 @@ public class BaseController {
     /**
      * Define modification rules for input fields<br>
      * Settings are inherited by extending classes
+     * <ul>Rules applied:
+     * <li>Trim all form input field texts (remove blank characters from both start and end of the text)</li>
+     * <li>Empty texts are NOT treat as null or as "", depending on {@link #getEmptyStringsAsNull} method</li>
+     * <li>Prevent above mentioned rules for any fields returned by {@link #getUnmodifiedTextFieldsList} method</li>
+     * </ul>
      *
      * @param binder {@link WebDataBinder}
      */
     @InitBinder
     private void initBinder(WebDataBinder binder) {
-        // Trim form input texts, empty strings are NOT treated as null
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(false));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(getEmptyStringsAsNull()));
 
-        List<String> doNotTrimFieldsList = List.of(); // field names, ex. "password"
-        preventTextModificationForFields(binder, doNotTrimFieldsList);
+        preventTextModificationForFields(binder, getUnmodifiedTextFieldsList());
+    }
+
+    /**
+     * List of text field names that should be read without any modification by this controller's methods
+     *
+     * @return List of strings (ex. List.of("password", "confirmPassword")
+     */
+    protected List<String> getUnmodifiedTextFieldsList() {
+        return List.of();
+    }
+
+    /**
+     * Defines rules for handling of empty texts ("") in form input fields.
+     *
+     * @return true: convert empty strings to null<br>
+     * false: keep empty strings unmodified
+     */
+    protected boolean getEmptyStringsAsNull() {
+        return false;
     }
 }
