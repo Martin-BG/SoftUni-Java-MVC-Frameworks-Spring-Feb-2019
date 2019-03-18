@@ -22,3 +22,7 @@ div.form-group label {
 .disabled {
     color: gray;
 }
+
+.radio label {
+    margin-bottom: 0;
+}
