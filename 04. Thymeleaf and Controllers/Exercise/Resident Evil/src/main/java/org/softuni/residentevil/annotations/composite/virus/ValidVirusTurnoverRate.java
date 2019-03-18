@@ -1,6 +1,7 @@
 package org.softuni.residentevil.annotations.composite.virus;
 
 import javax.validation.Constraint;
+import javax.validation.OverridesAttribute;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Max;
@@ -27,10 +28,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface ValidVirusTurnoverRate {
 
-    int MIN = 0;
-    int MAX = 100;
+    long MIN = 0L;
+    long MAX = 100L;
 
-    String message() default "Turnover rate should be between 0 and 100";
+    @OverridesAttribute(constraint = Min.class, name = "value") long min() default MIN;
+
+    @OverridesAttribute(constraint = Max.class, name = "value") long max() default MAX;
+
+    String message() default "{virus.turnover-rate.range}";
 
     Class<?>[] groups() default {};
 
