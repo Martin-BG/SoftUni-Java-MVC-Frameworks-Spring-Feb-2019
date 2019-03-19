@@ -1,7 +1,7 @@
-<th:block th:replace="~{fragments/virus-form :: virusForm(
+<th:block xmlns:th="http://www.thymeleaf.org"
+          th:replace="~{fragments/virus-form :: virusForm(
      action= @{/viruses/delete},
      title = #{viruses.delete.title},
      method= 'delete',
      buttonText = #{viruses.delete.button}
-     )}"
-          xmlns:th="http://www.thymeleaf.org"/>
+     )}"/>
