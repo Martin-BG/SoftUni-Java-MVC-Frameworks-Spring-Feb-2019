@@ -171,7 +171,7 @@ ___
         }
     
         @Override
-        @CacheEvict(allEntries = true)
+        @CacheEvict(cacheNames = ALL_VIRUSES, allEntries = true)
         public void createVirus(@NotNull VirusBindingModel virus) {
             create(virus);
         }
