@@ -3,7 +3,7 @@
     <form class="mt-5 center-block w-75 mx-auto"
           th:method="${method}"
           th:action="${action}"
-          th:object="${virus}">
+          th:object="${__${T(org.softuni.residentevil.web.controllers.virus.BaseVirusController).VIRUS}__}">
 
         <input hidden name="id" th:value="*{id}">
 
@@ -118,7 +118,7 @@
                     th:classappend="${#fields.hasErrors('capitals')}? re-error-border"
                     th:readonly="${method.equals('delete')}"
                     th:field="*{capitals}">
-                <option th:each="capital : ${allCapitals}"
+                <option th:each="capital : ${__${T(org.softuni.residentevil.web.controllers.virus.BaseVirusController).CAPITALS}__}"
                         th:text="${capital.name}"
                         th:value="${capital.id}"/>
             </select>

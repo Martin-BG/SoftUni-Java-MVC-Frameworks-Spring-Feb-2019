@@ -12,7 +12,9 @@
         </tr>
         </thead>
         <tbody>
-        <th:block th:each="virus, iStat : ${viruses}" th:object="${virus}">
+        <th:block
+                th:each="virus, iStat : ${__${T(org.softuni.residentevil.web.controllers.virus.BaseVirusController).VIRUSES}__}"
+                th:object="${virus}">
             <tr>
                 <td class="font-weight-bold" scope="row" th:text="${iStat.index + 1}"/>
                 <td th:text="*{name}"/>
