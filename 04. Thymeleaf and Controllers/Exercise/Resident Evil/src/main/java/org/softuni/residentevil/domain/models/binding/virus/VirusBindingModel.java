@@ -13,6 +13,7 @@ import org.softuni.residentevil.domain.validation.annotations.composite.virus.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VirusBindingModel implements Bindable<Virus> {
+public class VirusBindingModel implements Bindable<Virus>, Serializable {
 
     private static final long serialVersionUID = 1L;
 

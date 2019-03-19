@@ -9,6 +9,7 @@ import org.softuni.residentevil.domain.enums.Mutation;
 import org.softuni.residentevil.domain.validation.annotations.composite.virus.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "viruses")
-public class Virus extends BaseUuidEntity {
+public class Virus extends BaseUuidEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

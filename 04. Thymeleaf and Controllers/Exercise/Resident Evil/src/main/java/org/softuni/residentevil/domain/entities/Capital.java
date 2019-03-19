@@ -8,11 +8,12 @@ import org.softuni.residentevil.domain.validation.annotations.composite.capital.
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @Entity
 @Table(name = "capitals")
-public class Capital extends BaseLongEntity {
+public class Capital extends BaseLongEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
