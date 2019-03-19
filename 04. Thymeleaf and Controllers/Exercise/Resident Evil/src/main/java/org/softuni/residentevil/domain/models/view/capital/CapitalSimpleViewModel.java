@@ -11,6 +11,8 @@ import org.softuni.residentevil.domain.entities.Capital;
 @AllArgsConstructor
 public class CapitalSimpleViewModel implements Viewable<Capital> {
 
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
     private String name;

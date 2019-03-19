@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CapitalBindingModel implements Bindable<Capital> {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull
     Long id;
 }

@@ -23,6 +23,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class VirusBindingModel implements Bindable<Virus> {
 
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
 
     @ValidVirusName
