@@ -1,5 +1,9 @@
 # Project: Resident Evil
-[Simple](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/04.%20Thymeleaf%20and%20Controllers%20-%20Exercises.pdf) 3-page Spring Boot application, input forms, reuse of fragments in Thymeleaf
+[Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/04.%20Thymeleaf%20and%20Controllers%20-%20Exercises.pdf) 
+is to create a 5-page Spring Boot application with input forms, using Thymeleaf.
+
+Project structure is similar to the one used in [EXODIA](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/02.%20Spring%20Essentials/Exercises/exodia), 
+but greatly extended and improved by applying best practices and new techniques.
 
 My [solution](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks---Spring/tree/master/03.%20Java%20MVC%20Frameworks%20-%20Thymeleaf%20Engine/Resident%20Evil) from 2018 on the same task
 
