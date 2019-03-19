@@ -48,7 +48,7 @@ public class AddVirusController extends BaseVirusController {
             if (errors.hasErrors()) {
                 return "virus/add";
             }
-            virusService.create(virus);
+            virusService.createVirus(virus);
         }
 
         sessionStatus.setComplete();

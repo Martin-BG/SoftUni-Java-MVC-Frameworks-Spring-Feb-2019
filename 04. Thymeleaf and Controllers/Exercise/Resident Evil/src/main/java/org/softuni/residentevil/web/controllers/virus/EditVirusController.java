@@ -51,7 +51,7 @@ public class EditVirusController extends BaseVirusController {
             return "virus/edit";
         }
 
-        virusService.create(virus);
+        virusService.updateVirus(virus);
 
         sessionStatus.setComplete();
 
