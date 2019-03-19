@@ -8,6 +8,8 @@ import org.softuni.residentevil.domain.models.view.virus.VirusSimpleViewModel;
 import org.softuni.residentevil.repository.VirusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -35,19 +37,28 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
     }
 
     @Override
+    @Cacheable(sync = true)
     public List<VirusSimpleViewModel> getViruses() {
         return repository.findAllSimpleView();
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void createVirus(@NotNull VirusBindingModel virus) {
         create(virus);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public void updateVirus(@NotNull VirusBindingModel virus) {
         if (repository.getOne(virus.getId()) != null) {
             create(virus);
         }
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public void deleteVirus(@NotNull UUID id) {
+        deleteById(id);
     }
 }

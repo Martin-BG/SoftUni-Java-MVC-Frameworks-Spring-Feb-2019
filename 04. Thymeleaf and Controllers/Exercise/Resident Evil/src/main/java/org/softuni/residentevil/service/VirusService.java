@@ -15,4 +15,6 @@ public interface VirusService extends Service<Virus, UUID> {
     void createVirus(@NotNull VirusBindingModel virus);
 
     void updateVirus(@NotNull VirusBindingModel virus);
+
+    void deleteVirus(@NotNull UUID id);
 }

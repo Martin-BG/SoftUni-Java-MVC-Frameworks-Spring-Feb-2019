@@ -46,7 +46,7 @@ public class DeleteVirusController extends BaseVirusController {
                          SessionStatus sessionStatus) {
         sessionStatus.setComplete();
 
-        virusService.deleteById(id);
+        virusService.deleteVirus(id);
 
         return redirect("/viruses");
     }
