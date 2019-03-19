@@ -1,6 +1,5 @@
 package org.softuni.residentevil.web.controllers.virus;
 
-import org.softuni.residentevil.domain.models.binding.virus.VirusBindingModel;
 import org.softuni.residentevil.domain.models.view.capital.CapitalSimpleViewModel;
 import org.softuni.residentevil.service.CapitalService;
 import org.softuni.residentevil.service.VirusService;
@@ -33,7 +32,7 @@ public class DeleteVirusController extends BaseVirusController {
     @PostMapping
     public String post(@RequestParam UUID id, Model model) {
         return virusService
-                .findById(id, VirusBindingModel.class)
+                .readVirus(id)
                 .map(virus -> {
                     model.addAttribute(VIRUS, virus);
                     return "virus/delete";

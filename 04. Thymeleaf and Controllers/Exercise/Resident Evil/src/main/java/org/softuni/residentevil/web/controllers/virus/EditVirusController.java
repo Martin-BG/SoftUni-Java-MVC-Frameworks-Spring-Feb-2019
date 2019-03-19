@@ -35,7 +35,7 @@ public class EditVirusController extends BaseVirusController {
     @PostMapping
     public String post(@RequestParam UUID id, Model model) {
         return virusService
-                .findById(id, VirusBindingModel.class)
+                .readVirus(id)
                 .map(virus -> {
                     model.addAttribute(VIRUS, virus);
                     return "virus/edit";

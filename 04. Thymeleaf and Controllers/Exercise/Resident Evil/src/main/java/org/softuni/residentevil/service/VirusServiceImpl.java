@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -23,8 +25,11 @@ import java.util.logging.Logger;
 @Service
 @Validated
 @Transactional
-@CacheConfig(cacheNames = "viruses")
+@CacheConfig(cacheNames = {VirusServiceImpl.ALL_VIRUSES, VirusServiceImpl.VIRUSES})
 public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> implements VirusService {
+
+    public static final String ALL_VIRUSES = "allVirusesCache";
+    public static final String VIRUSES = "virusesCache";
 
     @Autowired
     public VirusServiceImpl(VirusRepository repository, ModelMapper mapper) {
@@ -37,7 +42,7 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
     }
 
     @Override
-    @Cacheable(sync = true)
+    @Cacheable(cacheNames = ALL_VIRUSES, sync = true)
     public List<VirusSimpleViewModel> getViruses() {
         return repository.findAllSimpleView();
     }
@@ -49,7 +54,15 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
     }
 
     @Override
-    @CacheEvict(allEntries = true)
+    @Cacheable(cacheNames = VIRUSES, key = "#id")
+    public Optional<VirusBindingModel> readVirus(@NotNull UUID id) {
+        return findById(id, VirusBindingModel.class);
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = ALL_VIRUSES, allEntries = true),
+            @CacheEvict(cacheNames = VIRUSES, key = "#virus.id")})
     public void updateVirus(@NotNull VirusBindingModel virus) {
         if (repository.getOne(virus.getId()) != null) {
             create(virus);
@@ -57,7 +70,9 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
     }
 
     @Override
-    @CacheEvict(allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(cacheNames = ALL_VIRUSES, allEntries = true),
+            @CacheEvict(cacheNames = VIRUSES, key = "#id")})
     public void deleteVirus(@NotNull UUID id) {
         deleteById(id);
     }
