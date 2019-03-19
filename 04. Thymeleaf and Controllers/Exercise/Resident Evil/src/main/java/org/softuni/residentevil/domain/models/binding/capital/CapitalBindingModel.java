@@ -19,5 +19,5 @@ public class CapitalBindingModel implements Bindable<Capital>, Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotNull
-    Long id;
+    private Long id;
 }
