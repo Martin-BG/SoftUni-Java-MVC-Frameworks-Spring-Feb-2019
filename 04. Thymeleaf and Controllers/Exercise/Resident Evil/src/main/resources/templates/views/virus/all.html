@@ -1,8 +1,8 @@
 <th:block xmlns:th="http://www.thymeleaf.org">
-    <table class="table mt-3 mb-5 center-block w-75 mx-auto">
-        <h2 class="header mt-3 mb-4 center-block w-75 mx-auto" th:text="#{viruses.all.title}"/>
+    <table class="table mt-3 mb-5 w-75 mx-auto">
+        <h2 class="header mt-3 mb-4 w-75 mx-auto" th:text="#{viruses.all.title}"/>
         <thead>
-        <tr>
+        <tr class="font-weight-bold">
             <th scope="col" th:text="#{viruses.all.table-header.index}"/>
             <th scope="col" th:text="#{viruses.all.table-header.name}"/>
             <th scope="col" th:text="#{viruses.all.table-header.magnitude}"/>
@@ -14,22 +14,22 @@
         <tbody>
         <th:block th:each="virus, iStat : ${viruses}" th:object="${virus}">
             <tr>
-                <td scope="row" th:text="${iStat.index + 1}"/>
+                <td class="font-weight-bold" scope="row" th:text="${iStat.index + 1}"/>
                 <td th:text="*{name}"/>
                 <td th:text="*{magnitude.label}"/>
                 <td th:text="${#dates.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
                 <td>
-                    <form th:action="@{/viruses/edit}" th:method="post">
+                    <form class="d-inline mr-3" th:action="@{/viruses/edit}" th:method="post">
                         <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark w-5rem"
+                        <button class="btn btn-light btn-sm border-dark table-button"
                                 th:text="#{viruses.all.table-button.edit}"
                                 type="submit"/>
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/viruses/delete}" th:method="post">
+                    <form class="d-inline" th:action="@{/viruses/delete}" th:method="post">
                         <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark w-5rem"
+                        <button class="btn btn-light btn-sm border-dark table-button"
                                 th:text="#{viruses.all.table-button.delete}"
                                 type="submit"/>
                     </form>
