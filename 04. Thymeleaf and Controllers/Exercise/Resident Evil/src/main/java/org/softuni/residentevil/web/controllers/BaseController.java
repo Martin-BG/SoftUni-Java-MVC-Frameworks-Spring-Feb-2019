@@ -54,7 +54,7 @@ public class BaseController {
      * Settings are inherited by extending classes
      * <ul>Rules applied:
      * <li>Trim all form input field texts (remove blank characters from both start and end of the text)</li>
-     * <li>Empty texts are NOT treat as null or as "", depending on {@link #getEmptyStringsAsNull} method</li>
+     * <li>Empty texts are NOT treat as null or as "", depending on {@link #isEmptyInputStringsNull} method</li>
      * <li>Prevent above mentioned rules for any fields returned by {@link #getUnmodifiedTextFieldsList} method</li>
      * </ul>
      *
@@ -62,7 +62,7 @@ public class BaseController {
      */
     @InitBinder
     private void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(getEmptyStringsAsNull()));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(isEmptyInputStringsNull()));
 
         preventTextModificationForFields(binder, getUnmodifiedTextFieldsList());
     }
@@ -82,7 +82,7 @@ public class BaseController {
      * @return true: convert empty strings to null<br>
      * false: keep empty strings unmodified
      */
-    protected boolean getEmptyStringsAsNull() {
+    protected boolean isEmptyInputStringsNull() {
         return false;
     }
 }
