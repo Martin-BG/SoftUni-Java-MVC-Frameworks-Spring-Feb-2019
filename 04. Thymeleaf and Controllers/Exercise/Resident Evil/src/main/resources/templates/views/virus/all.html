@@ -21,7 +21,7 @@
                 <td>
                     <form th:action="@{/viruses/edit}" th:method="post">
                         <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark"
+                        <button class="btn btn-light btn-sm border-dark w-5rem"
                                 th:text="#{viruses.all.table-button.edit}"
                                 type="submit"/>
                     </form>
@@ -29,7 +29,7 @@
                 <td>
                     <form th:action="@{/viruses/delete}" th:method="post">
                         <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark"
+                        <button class="btn btn-light btn-sm border-dark w-5rem"
                                 th:text="#{viruses.all.table-button.delete}"
                                 type="submit"/>
                     </form>

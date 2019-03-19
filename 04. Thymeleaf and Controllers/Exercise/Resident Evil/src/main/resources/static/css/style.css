@@ -26,3 +26,7 @@ div.form-group label {
 .radio label {
     margin-bottom: 0;
 }
+
+.w-5rem {
+    width: 5rem;
+}
