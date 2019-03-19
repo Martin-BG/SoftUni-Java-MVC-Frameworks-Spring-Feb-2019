@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Layout
 @Controller
-@RequestMapping("/viruses/edit/{id}")
+@RequestMapping("/viruses/edit")
 public class EditVirusController extends BaseVirusController {
 
     @Autowired
@@ -32,8 +32,8 @@ public class EditVirusController extends BaseVirusController {
         return capitalService.getCapitals();
     }
 
-    @GetMapping
-    public String get(@PathVariable UUID id, Model model) {
+    @PostMapping
+    public String post(@RequestParam UUID id, Model model) {
         return virusService
                 .findById(id, VirusBindingModel.class)
                 .map(virus -> {
@@ -44,16 +44,14 @@ public class EditVirusController extends BaseVirusController {
     }
 
     @PutMapping
-    public String put(@PathVariable UUID id,
-                      @Valid @ModelAttribute(VIRUS) VirusBindingModel virus,
+    public String put(@Valid @ModelAttribute(VIRUS) VirusBindingModel virus,
                       Errors errors,
                       SessionStatus sessionStatus) {
-        if (id.equals(virus.getId())) {
-            if (errors.hasErrors()) {
-                return "virus/edit";
-            }
-            virusService.create(virus);
+        if (errors.hasErrors()) {
+            return "virus/edit";
         }
+
+        virusService.create(virus);
 
         sessionStatus.setComplete();
 
