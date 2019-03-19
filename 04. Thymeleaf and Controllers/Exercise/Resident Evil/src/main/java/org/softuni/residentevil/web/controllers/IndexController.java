@@ -1,6 +1,6 @@
 package org.softuni.residentevil.web.controllers;
 
-import org.softuni.residentevil.annotations.Layout;
+import org.softuni.residentevil.web.annotations.Layout;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 

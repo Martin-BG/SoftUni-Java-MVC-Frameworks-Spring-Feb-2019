@@ -1,4 +1,4 @@
-package org.softuni.residentevil.annotations.composite.virus;
+package org.softuni.residentevil.domain.validation.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.OverridesAttribute;
@@ -15,27 +15,27 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Turnover Rate – Number, between 0 and 100.
+ * Hours Until Turn (to a mutation) – Number, between 1 and 12.
  */
 
 @NotNull
-@Min(ValidVirusTurnoverRate.MIN)
-@Max(ValidVirusTurnoverRate.MAX)
+@Min(ValidVirusHoursUntilMutation.MIN)
+@Max(ValidVirusHoursUntilMutation.MAX)
 @ReportAsSingleViolation
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidVirusTurnoverRate {
+public @interface ValidVirusHoursUntilMutation {
 
-    long MIN = 0L;
-    long MAX = 100L;
+    long MIN = 1L;
+    long MAX = 12L;
 
     @OverridesAttribute(constraint = Min.class, name = "value") long min() default MIN;
 
     @OverridesAttribute(constraint = Max.class, name = "value") long max() default MAX;
 
-    String message() default "{virus.turnover-rate.range}";
+    String message() default "{virus.hours-until-mutation.range}";
 
     Class<?>[] groups() default {};
 

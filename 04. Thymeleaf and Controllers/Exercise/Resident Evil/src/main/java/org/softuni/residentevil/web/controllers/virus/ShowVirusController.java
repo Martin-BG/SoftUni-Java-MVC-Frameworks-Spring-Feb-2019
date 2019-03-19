@@ -1,7 +1,7 @@
 package org.softuni.residentevil.web.controllers.virus;
 
-import org.softuni.residentevil.annotations.Layout;
 import org.softuni.residentevil.service.VirusService;
+import org.softuni.residentevil.web.annotations.Layout;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

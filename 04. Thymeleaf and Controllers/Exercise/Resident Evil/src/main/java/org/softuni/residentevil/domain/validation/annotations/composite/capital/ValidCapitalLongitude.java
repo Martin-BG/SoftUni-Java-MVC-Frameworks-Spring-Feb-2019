@@ -1,4 +1,4 @@
-package org.softuni.residentevil.annotations.composite.virus;
+package org.softuni.residentevil.domain.validation.annotations.composite.capital;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -10,22 +10,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Creator
- * <ul>Should be one of these:
- * <li>Corp</li>
- * <li>corp</li>
- * </ul>
- */
-
-@NotNull(message = "{virus.creator.text}")
+@NotNull(message = "{capital.longitude.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidVirusCreator {
-
-    int MAX_LENGTH = 4;
+public @interface ValidCapitalLongitude {
 
     String message() default "";
 

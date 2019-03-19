@@ -1,9 +1,8 @@
-package org.softuni.residentevil.annotations.composite.virus;
+package org.softuni.residentevil.domain.validation.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -12,21 +11,21 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Description – Cannot be empty, should be between 5 and 100 symbols.<br>
- * Represented as Text in the database
+ * Creator
+ * <ul>Should be one of these:
+ * <li>Corp</li>
+ * <li>corp</li>
+ * </ul>
  */
 
-@NotBlank(message = "{virus.description.blank}")
-@Size(message = "{virus.description.length}",
-        min = ValidVirusDescription.MIN_LENGTH, max = ValidVirusDescription.MAX_LENGTH)
+@NotNull(message = "{virus.creator.text}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidVirusDescription {
+public @interface ValidVirusCreator {
 
-    int MIN_LENGTH = 5;
-    int MAX_LENGTH = 100;
+    int MAX_LENGTH = 4;
 
     String message() default "";
 

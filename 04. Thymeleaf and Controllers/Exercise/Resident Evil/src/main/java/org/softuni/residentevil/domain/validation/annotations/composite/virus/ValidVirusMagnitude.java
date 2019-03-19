@@ -1,9 +1,8 @@
-package org.softuni.residentevil.annotations.composite.virus;
+package org.softuni.residentevil.domain.validation.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -12,19 +11,22 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Name – Cannot be empty, should be between 3 and 10 symbols.
+ * Magnitude – Cannot be null.
+ * <ul>Should hold one of the following values:
+ * <li>Low</li>
+ * <li>Medium</li>
+ * <li>High</li>
+ * </ul>
  */
 
-@NotBlank(message = "{virus.name.blank}")
-@Size(message = "{virus.name.length}", min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
+@NotNull(message = "{virus.magnitude.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidVirusName {
+public @interface ValidVirusMagnitude {
 
-    int MIN_LENGTH = 3;
-    int MAX_LENGTH = 10;
+    int MAX_LENGTH = 6;
 
     String message() default "";
 

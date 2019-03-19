@@ -1,6 +1,6 @@
 package org.softuni.residentevil.web.interceptors;
 
-import org.softuni.residentevil.annotations.Layout;
+import org.softuni.residentevil.web.annotations.Layout;
 import org.springframework.util.Assert;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;

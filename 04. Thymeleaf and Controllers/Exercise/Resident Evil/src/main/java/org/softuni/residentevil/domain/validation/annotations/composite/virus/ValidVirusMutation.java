@@ -1,9 +1,8 @@
-package org.softuni.residentevil.annotations.composite.capital;
+package org.softuni.residentevil.domain.validation.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -11,16 +10,23 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@NotBlank(message = "{capital.name.blank}")
-@Size(message = "{capital.name.length}", min = ValidCapitalName.MIN_LENGTH, max = ValidCapitalName.MAX_LENGTH)
+/**
+ * Mutation – Cannot be null.
+ * <ul> Should hold one of the following values:
+ * <li>ZOMBIE</li>
+ * <li>T_078_TYRANT</li>
+ * <li>GIANT_SPIDER</li>
+ * </ul>
+ */
+
+@NotNull(message = "{virus.mutation.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidCapitalName {
+public @interface ValidVirusMutation {
 
-    int MIN_LENGTH = 1;
-    int MAX_LENGTH = 32;
+    int MAX_LENGTH = 12;
 
     String message() default "";
 

@@ -1,4 +1,4 @@
-package org.softuni.residentevil.annotations.composite.virus;
+package org.softuni.residentevil.domain.validation.annotations.composite.virus;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,22 +11,15 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Mutation – Cannot be null.
- * <ul> Should hold one of the following values:
- * <li>ZOMBIE</li>
- * <li>T_078_TYRANT</li>
- * <li>GIANT_SPIDER</li>
- * </ul>
+ * isCurable - cannot be null
  */
 
-@NotNull(message = "{virus.mutation.null}")
+@NotNull(message = "{virus.curable.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidVirusMutation {
-
-    int MAX_LENGTH = 12;
+public @interface ValidVirusIsCurable {
 
     String message() default "";
 

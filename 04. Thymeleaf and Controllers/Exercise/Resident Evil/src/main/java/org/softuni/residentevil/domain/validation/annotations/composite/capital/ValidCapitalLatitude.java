@@ -1,4 +1,4 @@
-package org.softuni.residentevil.annotations.composite.virus;
+package org.softuni.residentevil.domain.validation.annotations.composite.capital;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -10,16 +10,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * isCurable - cannot be null
- */
-
-@NotNull(message = "{virus.curable.null}")
+@NotNull(message = "{capital.latitude.null}")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidVirusIsCurable {
+public @interface ValidCapitalLatitude {
 
     String message() default "";
 

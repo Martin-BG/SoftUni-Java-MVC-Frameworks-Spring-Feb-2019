@@ -1,4 +1,4 @@
-package org.softuni.residentevil.annotations;
+package org.softuni.residentevil.web.annotations;
 
 import org.softuni.residentevil.web.interceptors.ThymeleafLayoutInterceptor;
 import org.springframework.core.annotation.AliasFor;

@@ -1,12 +1,12 @@
 package org.softuni.residentevil.domain.entities;
 
 import lombok.NoArgsConstructor;
-import org.softuni.residentevil.annotations.composite.virus.*;
 import org.softuni.residentevil.domain.converters.CreatorConverter;
 import org.softuni.residentevil.domain.converters.MagnitudeConverter;
 import org.softuni.residentevil.domain.enums.Creator;
 import org.softuni.residentevil.domain.enums.Magnitude;
 import org.softuni.residentevil.domain.enums.Mutation;
+import org.softuni.residentevil.domain.validation.annotations.composite.virus.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
