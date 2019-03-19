@@ -497,7 +497,7 @@ nav-bar.title=Resident Evil
                   type="submit"/>
       </form>
   
-      Actually it is a POST request, as HTTP forms natively support onlys GET and POST methods.
+      Actually it is a POST request, as HTML forms natively support only GET and POST methods.
       Thymeleaf and Spring offer a workaround for that, so the request is processed as DELETE one in controller:
       
       <form th:action="@{/viruses/delete}" th:method="delete">
