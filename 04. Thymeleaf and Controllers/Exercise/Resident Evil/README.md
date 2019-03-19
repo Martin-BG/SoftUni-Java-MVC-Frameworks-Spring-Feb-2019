@@ -27,14 +27,70 @@ ___
 ## Takeaways
 * Project structure is based on [EXODIA](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/02.%20Spring%20Essentials/Exercises/exodia) project:
   * [Customized MySQL dialect](https://stackoverflow.com/a/54993738/7598851) - changed default charset and collation 
+  ```java
+    public class MySQL8UnicodeDialect extends MySQL8Dialect {
+    
+        @Override
+        public String getTableTypeString() {
+            return " ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+        }
+    }
+  ```
   * Entities and view models without setters (getters are optional too) - better encapsulation and less boilerplate code
   * [Customized](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/config/ApplicationConfig.java) ModelMapper to support field mapping
+  ```java
+    @Configuration
+    @EnableCaching
+    public class ApplicationConfig {
+        //..
+        @Bean
+        ModelMapper createModelMapper() {
+            ModelMapper modelMapper = new ModelMapper();
+    
+            modelMapper.getConfiguration()
+                    .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+                    .setFieldMatchingEnabled(true);
+    
+            return modelMapper;
+        }
+    }
+  ```
   * [Optimized](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/entities/BaseUuidEntity.java) UUID primary keys representation in database - use BINARY(16) type instead of VARCHAR(36)
+  ```java
+    @Setter(AccessLevel.PRIVATE)
+    @Getter
+    @MappedSuperclass
+    abstract class BaseUuidEntity extends BaseEntity<UUID> {
+    
+        @Id
+        @GeneratedValue(generator = "uuid2")
+        @GenericGenerator(name = "uuid2", strategy = "uuid2")
+        @Column(unique = true, nullable = false, insertable = false, updatable = false, columnDefinition = "BINARY(16)")
+        @Access(AccessType.PROPERTY)
+        private UUID id;
+    }
+  ```
   * Exported common repository work logic to [BaseService](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/service/BaseService.java) class, using of generics for type-safety
   * Thymeleaf [templating](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/templates) and fragments
-  * Custom [@Layout](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/annotations/Layout.java) annotation and [Interceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/interceptors/ThymeleafLayoutInterceptor.java) for templating and fragments insert:
-  * Implemented Builder Pattern for [ThymeleafLayoutInterceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/interceptors/ThymeleafLayoutInterceptor.java):
-  * [Composite](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/annotations/composite) annotations for entity/model validation
+  * Custom [@Layout](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/annotations/Layout.java) annotation and [Interceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/interceptors/ThymeleafLayoutInterceptor.java) for templating and fragments insert
+  * Implemented Builder Pattern for [ThymeleafLayoutInterceptor](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/interceptors/ThymeleafLayoutInterceptor.java)
+  ```java
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+        //...
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            registry.addInterceptor(
+                    ThymeleafLayoutInterceptor
+                            .builder()
+                            .withDefaultLayout("/layouts/default")
+                            .withViewAttribute("view")
+                            .withViewPrefix("/views/")
+                            .build());
+        }
+    }
+  ```
+  * [Composite](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/validation/annotations/composite) annotations for entity/model validation
   ```java
     @NotBlank(message = "{virus.name.blank}")
     @Size(message = "{virus.name.length}", min = ValidVirusName.MIN_LENGTH, max = ValidVirusName.MAX_LENGTH)
@@ -86,32 +142,95 @@ ___
   for store and reuse of [@ModelAttribute](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/virus/AddVirusController.java) 
   by [Controller](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers), 
   avoiding unnecessary Service/Repository calls for getting the same data
-  * Use **caching** on selected [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/service/CapitalServiceImpl.java) methods (@EnableCaching + @CacheConfig + @Cacheable / @CacheEvict)
+  * Use **caching** on selected [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/service/VirusServiceImpl.java) methods (@EnableCaching + @CacheConfig + @Cacheable / @CacheEvict)
   ```java
-  @Log
-  @Service
-  @Validated
-  @Transactional
-  @CacheConfig(cacheNames = "capitals")
-  public class CapitalServiceImpl extends BaseService<Capital, Long, CapitalRepository> implements CapitalService {
-  
-      protected CapitalServiceImpl(CapitalRepository repository, ModelMapper mapper) {
-          super(repository, mapper);
-      }
-  
-      @Override
-      protected Logger logger() {
-          return log;
-      }
-  
-      @Override
-      @Cacheable(sync = true)
-      @Transactional(readOnly = true)
-      public List<CapitalSimpleViewModel> getCapitals() {
-          return repository.findAllSimpleView();
-      }
-  }
+    @Log
+    @Service
+    @Validated
+    @Transactional
+    @CacheConfig(cacheNames = {VirusServiceImpl.ALL_VIRUSES, VirusServiceImpl.VIRUSES})
+    public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> implements VirusService {
+    
+        public static final String ALL_VIRUSES = "allVirusesCache";
+        public static final String VIRUSES = "virusesCache";
+    
+        @Autowired
+        public VirusServiceImpl(VirusRepository repository, ModelMapper mapper) {
+            super(repository, mapper);
+        }
+    
+        @Override
+        protected Logger logger() {
+            return log;
+        }
+    
+        @Override
+        @Cacheable(cacheNames = ALL_VIRUSES, sync = true)
+        public List<VirusSimpleViewModel> getViruses() {
+            return repository.findAllSimpleView();
+        }
+    
+        @Override
+        @CacheEvict(allEntries = true)
+        public void createVirus(@NotNull VirusBindingModel virus) {
+            create(virus);
+        }
+    
+        @Override
+        @Cacheable(cacheNames = VIRUSES, key = "#id")
+        public Optional<VirusBindingModel> readVirus(@NotNull UUID id) {
+            return findById(id, VirusBindingModel.class);
+        }
+    
+        @Override
+        @Caching(evict = {
+                @CacheEvict(cacheNames = ALL_VIRUSES, allEntries = true),
+                @CacheEvict(cacheNames = VIRUSES, key = "#virus.id")})
+        public void updateVirus(@NotNull VirusBindingModel virus) {
+            if (repository.getOne(virus.getId()) != null) {
+                create(virus);
+            }
+        }
+    
+        @Override
+        @Caching(evict = {
+                @CacheEvict(cacheNames = ALL_VIRUSES, allEntries = true),
+                @CacheEvict(cacheNames = VIRUSES, key = "#id")})
+        public void deleteVirus(@NotNull UUID id) {
+            deleteById(id);
+        }
+    }
   ```
+* Base Entity class equals and hashCode methods implemented as recommended by The Expert :)
+```java
+/**
+ * Base Entity class
+ * Defines equals() and hashCode() methods according to best practices by Vlad Mihalcea
+ *
+ * @see <a href="https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/">
+ * The best way to implement equals, hashCode, and toString with JPA and Hibernate</a>
+ */
+abstract class BaseEntity<I> implements Identifiable<I> {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        return getId() != null && getId().equals(((Identifiable) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+}
+```
 * Custom ENUM mapping in entities by [converters](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/converters). <br>
 Ex: Magnitude.LOW will be stored as "Low" in DB:
 ```java
@@ -166,7 +285,7 @@ public class Virus extends BaseUuidEntity {
 public class VirusBindingModel implements Bindable<Virus> {
     // ...
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate releasedOn;
+    private Date releasedOn;
 }
 ```
 * Custom HQL queries with direct mapping to view models to avoid unnecessary data pooling, especially for related entities:
@@ -183,9 +302,12 @@ public interface VirusRepository extends JpaRepository<Virus, UUID> {
 }
 
 @Getter
+@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
-public final class VirusSimpleViewModel implements Viewable<Virus> {
+public final class VirusSimpleViewModel implements Viewable<Virus>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private UUID id;
 
@@ -193,7 +315,7 @@ public final class VirusSimpleViewModel implements Viewable<Virus> {
 
     private Magnitude magnitude;
 
-    private LocalDate releasedOn;
+    private Date releasedOn;
 }
 ```
 * Simplified [controllers](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers) 
@@ -289,40 +411,64 @@ nav-bar.title=Resident Evil
 </th:block>
 ```
 * **Thymeleaf** specific:
+  * Access to constants:
+    ```html
+        action= @{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ADD}__}
+    ```
   * Reuse of Thymeleaf fragments with params:
     ```html
     <!--add.html-->
     <th:block xmlns:th="http://www.thymeleaf.org"
-              th:replace="~{fragments/virus-add-edit-form :: virusAddEditForm(
-         action= @{/viruses/add},
+              th:replace="~{fragments/virus-form :: virusForm(
+         action= @{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ADD}__},
          title = #{viruses.add.title},
-         method= 'post'
+         method= 'post',
+         buttonText = #{viruses.add.button}
          )}"/>
          
     <!--edit.html-->
     <th:block xmlns:th="http://www.thymeleaf.org"
-              th:replace="~{fragments/virus-add-edit-form :: virusAddEditForm(
-         action= @{/viruses/edit/{id} (id=${virus.id})},
+              th:replace="~{fragments/virus-form :: virusForm(
+         action= @{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__},
          title = #{viruses.edit.title},
-         method= 'put'
+         method= 'put',
+         buttonText = #{viruses.edit.button}
          )}"/>
     
-    <!--fragments/virus-add-edit-form.html-->
-    <th:block th:fragment="virusAddEditForm (action, title, method)"
+    <!--delete.html-->
+    <th:block xmlns:th="http://www.thymeleaf.org"
+              th:replace="~{fragments/virus-form :: virusForm(
+         action= @{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}__},
+         title = #{viruses.delete.title},
+         method= 'delete',
+         buttonText = #{viruses.delete.button}
+         )}"/>
+     
+    <!--fragments/virus-form.html-->
+    <th:block th:fragment="virusForm (action, title, method, buttonText)"
               xmlns:th="http://www.thymeleaf.org">
         <form class="mt-5 center-block w-75 mx-auto"
               th:method="${method}"
               th:action="${action}"
-              th:object="${virus}">
+              th:object="${__${T(org.softuni.residentevil.web.controllers.virus.BaseVirusController).VIRUS}__}">
+    
+            <input hidden name="id" th:value="*{id}">
     
             <h2 class="header mt-4 mb-4" th:text="${title}"/>
             <!--...-->
+            <div class="form-actions mx-auto text-center">
+                <button class="btn re-color my-button" th:text="${buttonText}" type="submit"/>
+            </div>
         </form>
     </th:block>
     ```
-  * Custom date format in Thymeleaf:
+  * Custom **LocalDate** format in Thymeleaf:
     ```html
     <td th:text="${#temporals.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
+    ```
+  * Custom **Date** format in Thymeleaf:
+    ```html
+    <td th:text="${#dates.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
     ```
   * Indexing in collection:
     ```html
@@ -371,7 +517,7 @@ nav-bar.title=Resident Evil
       In turn the request is treated as DELETE one at the backend:
       
       @DeleteMapping
-      public String get(@RequestParam UUID id) {
+      public String delete(@RequestParam UUID id) {
           service.deleteById(id);
           return redirect("/viruses");
       }
@@ -507,3 +653,8 @@ public class BaseController {
 }
 ```
 * Use **Javadoc** whenever it is appropriate to (config files, protected methods, base classes, interfaces etc.)
+
+___
+#### Notes to myself
+* Implement Serializable interface by all entities and models as these could be cached or saved in Session
+* **LocalDate** is not Serializable friendly and requires extra setup, depending on needs. **Date** can be used instead
