@@ -21,7 +21,9 @@
                 <td th:text="*{magnitude.label}"/>
                 <td th:text="${#dates.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
                 <td>
-                    <form class="d-inline mr-3" th:action="@{/viruses/edit}" th:method="post">
+                    <form class="d-inline mr-3"
+                          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__}"
+                          th:method="post">
                         <input hidden name="id" th:value="*{id}">
                         <button class="btn btn-light btn-sm border-dark table-button"
                                 th:text="#{viruses.all.table-button.edit}"
@@ -29,7 +31,9 @@
                     </form>
                 </td>
                 <td>
-                    <form class="d-inline" th:action="@{/viruses/delete}" th:method="post">
+                    <form class="d-inline"
+                          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}__}"
+                          th:method="post">
                         <input hidden name="id" th:value="*{id}">
                         <button class="btn btn-light btn-sm border-dark table-button"
                                 th:text="#{viruses.all.table-button.delete}"

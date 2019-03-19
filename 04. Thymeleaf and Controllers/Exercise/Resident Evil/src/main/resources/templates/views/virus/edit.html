@@ -1,6 +1,6 @@
 <th:block xmlns:th="http://www.thymeleaf.org"
           th:replace="~{fragments/virus-form :: virusForm(
-     action= @{/viruses/edit},
+     action= @{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__},
      title = #{viruses.edit.title},
      method= 'put',
      buttonText = #{viruses.edit.button}
