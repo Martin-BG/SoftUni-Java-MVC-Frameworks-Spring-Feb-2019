@@ -1,5 +1,6 @@
 package org.softuni.residentevil.domain.models.binding.virus;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = {"name"})
 @NoArgsConstructor
 public class VirusBindingModel implements Bindable<Virus>, Serializable {
 
