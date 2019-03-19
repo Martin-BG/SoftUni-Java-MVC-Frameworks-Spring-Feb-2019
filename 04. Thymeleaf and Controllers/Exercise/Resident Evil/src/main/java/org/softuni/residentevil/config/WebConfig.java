@@ -13,6 +13,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    public static final String URL_INDEX = "/";
+    public static final String URL_VIRUS_ALL = "/viruses";
+    public static final String URL_VIRUS_ADD = "/viruses/add";
+    public static final String URL_VIRUS_DELETE = "/viruses/delete";
+    public static final String URL_VIRUS_EDIT = "/viruses/edit";
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(

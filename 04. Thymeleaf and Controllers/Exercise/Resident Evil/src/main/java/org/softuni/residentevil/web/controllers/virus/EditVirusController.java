@@ -1,5 +1,6 @@
 package org.softuni.residentevil.web.controllers.virus;
 
+import org.softuni.residentevil.config.WebConfig;
 import org.softuni.residentevil.domain.models.binding.virus.VirusBindingModel;
 import org.softuni.residentevil.domain.models.view.capital.CapitalSimpleViewModel;
 import org.softuni.residentevil.service.CapitalService;
@@ -18,8 +19,10 @@ import java.util.UUID;
 
 @Layout
 @Controller
-@RequestMapping("/viruses/edit")
+@RequestMapping(WebConfig.URL_VIRUS_EDIT)
 public class EditVirusController extends BaseVirusController {
+
+    private static final String VIEW_VIRUS_EDIT = "virus/edit";
 
     @Autowired
     public EditVirusController(VirusService virusService,
@@ -38,7 +41,7 @@ public class EditVirusController extends BaseVirusController {
                 .readVirus(id)
                 .map(virus -> {
                     model.addAttribute(VIRUS, virus);
-                    return "virus/edit";
+                    return VIEW_VIRUS_EDIT;
                 })
                 .orElseThrow();
     }
@@ -48,13 +51,13 @@ public class EditVirusController extends BaseVirusController {
                       Errors errors,
                       SessionStatus sessionStatus) {
         if (errors.hasErrors()) {
-            return "virus/edit";
+            return VIEW_VIRUS_EDIT;
         }
 
         virusService.updateVirus(virus);
 
         sessionStatus.setComplete();
 
-        return redirect("/viruses");
+        return redirect(WebConfig.URL_VIRUS_ALL);
     }
 }

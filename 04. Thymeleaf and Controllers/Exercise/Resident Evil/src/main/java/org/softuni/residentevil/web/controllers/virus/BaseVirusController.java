@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 class BaseVirusController extends BaseController {
 
     public static final String VIRUS = "virus";
+    public static final String VIRUSES = "viruses";
     public static final String CAPITALS = "allCapitals";
 
     protected final VirusService virusService;
