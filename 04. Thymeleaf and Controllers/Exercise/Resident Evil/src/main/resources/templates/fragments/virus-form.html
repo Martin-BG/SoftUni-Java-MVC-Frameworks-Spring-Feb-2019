@@ -1,88 +1,100 @@
-<th:block th:fragment="virusAddEditForm (action, title, method)"
+<th:block th:fragment="virusForm (action, title, method, buttonText)"
           xmlns:th="http://www.thymeleaf.org">
     <form class="mt-5 center-block w-75 mx-auto"
           th:method="${method}"
           th:action="${action}"
           th:object="${virus}">
 
+        <input hidden name="id" th:value="*{id}">
+
         <h2 class="header mt-4 mb-4" th:text="${title}"/>
 
         <div class="form-group">
-            <label th:for="${#ids.next('name')}" th:text="#{viruses.add.name}"></label>
+            <label th:for="${#ids.next('name')}" th:text="#{viruses.form.name}"></label>
             <input class="form-control" th:classappend="${#fields.hasErrors('name')}? re-error-border"
+                   th:readonly="${method.equals('delete')}"
                    th:field="*{name}"
                    type="text"/>
             <small class="re-error" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"/>
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('description')}" th:text="#{viruses.add.description}"/>
+            <label th:for="${#ids.next('description')}" th:text="#{viruses.form.description}"/>
             <textarea class="form-control no-resize" rows="2"
                       th:classappend="${#fields.hasErrors('description')}? re-error-border"
+                      th:readonly="${method.equals('delete')}"
                       th:field="*{description}"/>
             <small class="re-error" th:errors="*{description}" th:if="${#fields.hasErrors('description')}"/>
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('sideEffects')}" th:text="#{viruses.add.side-effect}"/>
+            <label th:for="${#ids.next('sideEffects')}" th:text="#{viruses.form.side-effect}"/>
             <input class="form-control" th:classappend="${#fields.hasErrors('sideEffects')}? re-error-border"
+                   th:readonly="${method.equals('delete')}"
                    th:field="*{sideEffects}"
                    type="text"/>
             <small class="re-error" th:errors="*{sideEffects}" th:if="${#fields.hasErrors('sideEffects')}"/>
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('creator')}" th:text="#{viruses.add.creator}"/>
+            <label th:for="${#ids.next('creator')}" th:text="#{viruses.form.creator}"/>
             <input class="form-control" th:classappend="${#fields.hasErrors('creator')}? re-error-border"
+                   th:readonly="${method.equals('delete')}"
                    th:field="*{creator}"
                    type="text"/>
             <small class="re-error" th:errors="*{creator}" th:if="${#fields.hasErrors('creator')}"/>
         </div>
 
         <div class="checkbox">
-            <input th:field="*{isDeadly}" type="checkbox"/>
-            <label th:for="${#ids.prev('isDeadly')}" th:text="#{viruses.add.deadly}"/>
+            <input th:disabled="${method.equals('delete')}" th:field="*{isDeadly}" type="checkbox"/>
+            <label th:for="${#ids.prev('isDeadly')}" th:text="#{viruses.form.deadly}"/>
         </div>
 
         <div class="checkbox mb-2">
-            <input th:field="*{isCurable}" type="checkbox"/>
-            <label th:for="${#ids.prev('isCurable')}" th:text="#{viruses.add.curable}"/>
+            <input th:disabled="${method.equals('delete')}" th:field="*{isCurable}" type="checkbox"/>
+            <label th:for="${#ids.prev('isCurable')}" th:text="#{viruses.form.curable}"/>
         </div>
 
         <th:block th:each="mutation : ${T(org.softuni.residentevil.domain.enums.Mutation).values()}">
             <div class="radio">
-                <input th:field="*{mutation}" th:value="${mutation}" type="radio"/>
+                <input th:disabled="${method.equals('delete')}"
+                       th:field="*{mutation}"
+                       th:value="${mutation}"
+                       type="radio"/>
                 <label th:classappend="${#fields.hasErrors('mutation')}? re-error"
                        th:for="${#ids.prev('mutation')}" th:text="${mutation}"/>
             </div>
         </th:block>
         <div class="radio disabled">
-            <input disabled th:field="*{mutation}" th:value="#{viruses.add.mutation-save-humanity}" type="radio"/>
-            <label th:for="${#ids.prev('mutation')}" th:text="#{viruses.add.mutation-save-humanity}"/>
+            <input disabled th:field="*{mutation}" th:value="#{viruses.form.mutation-save-humanity}" type="radio"/>
+            <label th:for="${#ids.prev('mutation')}" th:text="#{viruses.form.mutation-save-humanity}"/>
         </div>
         <small class="re-error" th:errors="*{mutation}" th:if="${#fields.hasErrors('mutation')}"/>
 
         <div class="form-group">
-            <label th:for="${#ids.next('turnoverRate')}" th:text="#{viruses.add.turnover-rate}"></label>
+            <label th:for="${#ids.next('turnoverRate')}" th:text="#{viruses.form.turnover-rate}"></label>
             <input class="form-control" th:classappend="${#fields.hasErrors('turnoverRate')}? re-error-border"
                    th:field="*{turnoverRate}"
+                   th:readonly="${method.equals('delete')}"
                    type="number"/>
             <small class="re-error" th:errors="*{turnoverRate}" th:if="${#fields.hasErrors('turnoverRate')}"/>
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('hoursUntilMutation')}" th:text="#{viruses.add.hours-until-turn}"></label>
+            <label th:for="${#ids.next('hoursUntilMutation')}" th:text="#{viruses.form.hours-until-turn}"></label>
             <input class="form-control" th:classappend="${#fields.hasErrors('hoursUntilMutation')}? re-error-border"
                    th:field="*{hoursUntilMutation}"
+                   th:readonly="${method.equals('delete')}"
                    type="number"/>
             <small class="re-error" th:errors="*{hoursUntilMutation}"
                    th:if="${#fields.hasErrors('hoursUntilMutation')}"/>
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('magnitude')}" th:text="#{viruses.add.magnitude}"/>
+            <label th:for="${#ids.next('magnitude')}" th:text="#{viruses.form.magnitude}"/>
             <select class="form-control"
                     th:classappend="${#fields.hasErrors('magnitude')}? re-error-border"
+                    th:readonly="${method.equals('delete')}"
                     th:field="*{magnitude}">
                 <option th:each="magnitude : ${T(org.softuni.residentevil.domain.enums.Magnitude).values()}"
                         th:text="${magnitude.label}"
@@ -92,7 +104,7 @@
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('releasedOn')}" th:text="#{viruses.add.released-on}"/>
+            <label th:for="${#ids.next('releasedOn')}" th:text="#{viruses.form.released-on}"/>
             <input class="form-control" th:classappend="${#fields.hasErrors('releasedOn')}? re-error-border"
                    th:readonly="${!method.equals('post')}"
                    th:field="*{releasedOn}"
@@ -101,9 +113,10 @@
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('capitals')}" th:text="#{viruses.add.capitals}"></label>
+            <label th:for="${#ids.next('capitals')}" th:text="#{viruses.form.capitals}"></label>
             <select class="form-control" multiple
                     th:classappend="${#fields.hasErrors('capitals')}? re-error-border"
+                    th:readonly="${method.equals('delete')}"
                     th:field="*{capitals}">
                 <option th:each="capital : ${allCapitals}"
                         th:text="${capital.name}"
@@ -113,7 +126,7 @@
         </div>
 
         <div class="form-actions mx-auto text-center">
-            <button class="btn re-color my-button" th:text="#{viruses.add.submit}" type="submit"/>
+            <button class="btn re-color my-button" th:text="${buttonText}" type="submit"/>
         </div>
     </form>
 </th:block>

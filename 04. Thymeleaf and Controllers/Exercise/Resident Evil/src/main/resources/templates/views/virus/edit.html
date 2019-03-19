@@ -1,6 +1,7 @@
 <th:block xmlns:th="http://www.thymeleaf.org"
-          th:replace="~{fragments/virus-add-edit-form :: virusAddEditForm(
+          th:replace="~{fragments/virus-form :: virusForm(
      action= @{/viruses/edit/{id} (id=${virus.id})},
      title = #{viruses.edit.title},
-     method= 'put'
+     method= 'put',
+     buttonText = #{viruses.edit.button}
      )}"/>
