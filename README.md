@@ -28,3 +28,31 @@ ___
 ### [Service Layer **Unit Tests** (Car Dealer)](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer)
 [Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/03.%20Unit%20Testing%20and%20Isolation%20-%20Exercise.pdf) is to write unit tests for CRUD-like [services](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/main/java/org/softuni/cardealer/service) with effectively no [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/main/java/org/softuni/cardealer/service/CarServiceImpl.java) logic in the given skeleton, so tests are based on 100% [mocking](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/03.%20Unit%20Testing%20and%20Isolation/Exercise/Car%20Dealer/src/test/java/org/softuni/cardealer/service/CarServiceTests.java) of service dependencies and evaluation of method calls, argument and return values.
 * Mocking
+___
+### [**Project: Resident Evil**, Part I](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil)
+
+[Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/04.%20Thymeleaf%20and%20Controllers%20-%20Exercises.pdf) 
+is to create a 5-page Spring Boot application with input forms, using Thymeleaf.
+
+Project structure is similar to the one used in [EXODIA](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/02.%20Spring%20Essentials/Exercises/exodia), 
+but greatly extended and improved by applying best practices and new techniques:
+* Base Entity class equals and hashCode methods implemented as recommended by [Vlad Mihalcea](https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate)
+* Custom ENUM mapping in entities by [converters](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/converters)
+* Custom HQL queries with direct mapping to view models to avoid unnecessary data pooling
+* Simplified [controllers](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers) 
+by moving of common logic to parent classes and using of Spring's goodies like @SessionAttributes
+* Use of [converters](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/converters) 
+for mapping of custom types between Spring controllers and Thymeleaf
+* Use text messages from external [messages.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/languages/messages.properties) file
+* Use validation messages from external [validation.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/languages/validation.properties) file
+* Define validation constraints as constants into [composite validation annotations](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/validation/annotations/composite) 
+and use these for setting up entities columns, ensuring integrity between actual validation and DB constraints.
+* Trim string values from input forms with **@InitBinder** and **StringTrimmerEditor**.
+Further [customize](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java) 
+this functionality to prevent trimming of certain fields like **"password"** 
+or treating empty texts as null, by protected methods allowing redefinition of the rules by child classes.
+* Use **Javadoc** whenever it is appropriate to ([config files](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/config/ApplicationConfig.java), 
+[protected methods](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java), 
+[base classes](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java), 
+[interfaces](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/api/Bindable.java) 
+etc.)
