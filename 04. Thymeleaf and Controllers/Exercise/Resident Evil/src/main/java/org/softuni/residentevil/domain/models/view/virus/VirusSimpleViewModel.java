@@ -8,7 +8,7 @@ import org.softuni.residentevil.domain.entities.Virus;
 import org.softuni.residentevil.domain.enums.Magnitude;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -24,5 +24,5 @@ public final class VirusSimpleViewModel implements Viewable<Virus>, Serializable
 
     private Magnitude magnitude;
 
-    private LocalDate releasedOn;
+    private Date releasedOn;
 }

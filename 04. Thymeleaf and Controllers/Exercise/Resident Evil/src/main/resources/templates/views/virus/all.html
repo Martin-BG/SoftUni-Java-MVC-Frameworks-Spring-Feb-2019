@@ -17,7 +17,7 @@
                 <td scope="row" th:text="${iStat.index + 1}"/>
                 <td th:text="*{name}"/>
                 <td th:text="*{magnitude.label}"/>
-                <td th:text="${#temporals.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
+                <td th:text="${#dates.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
                 <td>
                     <form th:action="@{/viruses/edit}" th:method="post">
                         <input hidden name="id" th:value="*{id}">

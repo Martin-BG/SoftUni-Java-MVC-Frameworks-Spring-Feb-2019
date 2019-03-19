@@ -10,7 +10,7 @@ import org.softuni.residentevil.domain.validation.annotations.composite.virus.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,9 +64,12 @@ public class Virus extends BaseUuidEntity implements Serializable {
     @Column(nullable = false, length = ValidVirusMagnitude.MAX_LENGTH)
     private Magnitude magnitude;
 
+    /**
+     * LocalDate is not serialization friendly (needs extra setups depending on usage), so Date is used instead
+     */
     @ValidVirusReleasedOn
     @Column(nullable = false)
-    private LocalDate releasedOn;
+    private Date releasedOn;
 
     /**
      * For ManyToMany relations recommended collection is Set instead of List

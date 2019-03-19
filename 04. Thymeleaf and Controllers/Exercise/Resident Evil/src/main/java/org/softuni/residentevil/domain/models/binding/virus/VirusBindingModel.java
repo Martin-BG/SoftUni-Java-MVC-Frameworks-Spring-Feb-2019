@@ -14,8 +14,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,7 +60,7 @@ public class VirusBindingModel implements Bindable<Virus>, Serializable {
 
     @ValidVirusReleasedOn
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate releasedOn;
+    private Date releasedOn;
 
     @ValidVirusCapitals
     private List<@Valid CapitalBindingModel> capitals = new ArrayList<>();
