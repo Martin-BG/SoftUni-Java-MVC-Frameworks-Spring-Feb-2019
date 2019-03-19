@@ -367,7 +367,7 @@ public class EditVirusController extends BaseVirusController {
 }
 ```
 * Use of [converters](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/converters) 
-for mapping of custom types in controllers and in Thymeleaf:
+for mapping of custom types between Spring controllers and Thymeleaf:
 ```java
 @Validated
 public class StringToUuidConverter implements Converter<String, UUID> {
@@ -522,7 +522,7 @@ nav-bar.title=Resident Evil
           return redirect("/viruses");
       }
       ```
-* Define validation constraints as constants into [composite validation annotations](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/annotations/composite) 
+* Define validation constraints as constants into [composite validation annotations](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/validation/annotations/composite) 
 and use these for setting up entities columns, ensuring integrity between actual validation and DB constraints.
 ```java
 @NotBlank(message = "{virus.name.blank}")
@@ -638,7 +638,7 @@ public class BaseController {
 
     @InitBinder
     private void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(getEmptyStringsAsNull()));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(isEmptyInputStringsNull()));
 
         preventTextModificationForFields(binder, getUnmodifiedTextFieldsList());
     }
@@ -647,14 +647,19 @@ public class BaseController {
         return List.of();
     }
 
-    protected boolean getEmptyStringsAsNull() {
+    protected boolean isEmptyInputStringsNull() {
         return false;
     }
 }
 ```
-* Use **Javadoc** whenever it is appropriate to (config files, protected methods, base classes, interfaces etc.)
+* Use **Javadoc** whenever it is appropriate to (
+[config files](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/config/ApplicationConfig.java), 
+[protected methods](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java), 
+[base classes](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java), 
+[interfaces](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/api/Bindable.java) 
+etc.)
 
 ___
 #### Notes to myself
-* Implement Serializable interface by all entities and models as these could be cached or saved in Session
-* **LocalDate** is not Serializable friendly and requires extra setup, depending on needs. **Date** can be used instead
+* Implement **Serializable** interface by all entities and models as these could be cached or saved in Session
+* **LocalDate** is not **Serializable** friendly and requires extra setup, depending on needs. **Date** can be used instead
