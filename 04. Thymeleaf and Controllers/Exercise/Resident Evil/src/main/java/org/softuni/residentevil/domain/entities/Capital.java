@@ -14,6 +14,8 @@ import javax.persistence.Table;
 @Table(name = "capitals")
 public class Capital extends BaseLongEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @ValidCapitalName
     @Column(nullable = false, length = ValidCapitalName.MAX_LENGTH)
     private String name;

@@ -18,6 +18,8 @@ import java.util.Set;
 @Table(name = "viruses")
 public class Virus extends BaseUuidEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @ValidVirusName
     @Column(unique = true, nullable = false, length = ValidVirusName.MAX_LENGTH)
     private String name;
