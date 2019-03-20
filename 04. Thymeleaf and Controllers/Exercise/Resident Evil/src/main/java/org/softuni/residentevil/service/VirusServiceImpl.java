@@ -42,6 +42,7 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
     }
 
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(cacheNames = ALL_VIRUSES, sync = true)
     public List<VirusSimpleViewModel> getViruses() {
         return repository.findAllSimpleView();
@@ -54,6 +55,7 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
     }
 
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(cacheNames = VIRUSES, key = "#id")
     public Optional<VirusBindingModel> readVirus(@NotNull UUID id) {
         return findById(id, VirusBindingModel.class);
