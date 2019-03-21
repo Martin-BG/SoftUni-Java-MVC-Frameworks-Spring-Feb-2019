@@ -666,3 +666,4 @@ ___
 #### Notes to myself
 * Implement **Serializable** interface by all entities and models as these could be cached or saved in Session
 * **LocalDate** is not **Serializable** friendly and requires extra setup, depending on needs. **Date** can be used instead
+* [@EnableTransactionManagement](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html) is not required to be explicitly used as it is implicitly [enabled](https://stackoverflow.com/questions/40724100/enabletransactionmanagement-in-spring-boot) by Spring Boot + Spring JPA
