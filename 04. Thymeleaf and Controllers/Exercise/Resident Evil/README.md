@@ -667,3 +667,6 @@ ___
 * Implement **Serializable** interface by all entities and models as these could be cached or saved in Session
 * **LocalDate** is not **Serializable** friendly and requires extra setup, depending on needs. **Date** can be used instead
 * [@EnableTransactionManagement](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html) is not required to be explicitly used as it is implicitly [enabled](https://stackoverflow.com/questions/40724100/enabletransactionmanagement-in-spring-boot) by Spring Boot + Spring JPA
+* For ManyToMany relations recommended collection is Set instead of a List because with List on each add or remove all elements are removed and then added back:
+  * [The best way to use the @ManyToMany annotation with JPA and Hibernate](https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate) by Vlad Mihalcea
+  * [JPA many-to-many update efficiency](https://bianjp.com/posts/2017/10/31/jpa-many-to-many-update-efficiency)
