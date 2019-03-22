@@ -4,10 +4,10 @@ import lombok.extern.java.Log;
 import org.modelmapper.ModelMapper;
 import org.softuni.residentevil.domain.entities.Virus;
 import org.softuni.residentevil.domain.models.binding.virus.VirusBindingModel;
+import org.softuni.residentevil.domain.models.projections.virus.VirusReleasedOnProjection;
 import org.softuni.residentevil.domain.models.view.virus.VirusSimpleViewModel;
 import org.softuni.residentevil.repository.VirusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -25,11 +25,10 @@ import java.util.logging.Logger;
 @Service
 @Validated
 @Transactional
-@CacheConfig(cacheNames = {VirusServiceImpl.ALL_VIRUSES, VirusServiceImpl.VIRUSES})
 public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> implements VirusService {
 
-    public static final String ALL_VIRUSES = "allVirusesCache";
-    public static final String VIRUSES = "virusesCache";
+    private static final String ALL_VIRUSES = "allVirusesCache";
+    private static final String VIRUSES = "virusesCache";
 
     @Autowired
     public VirusServiceImpl(VirusRepository repository, ModelMapper mapper) {
@@ -66,9 +65,16 @@ public class VirusServiceImpl extends BaseService<Virus, UUID, VirusRepository> 
             @CacheEvict(cacheNames = ALL_VIRUSES, allEntries = true),
             @CacheEvict(cacheNames = VIRUSES, key = "#virus.id")})
     public void updateVirus(@NotNull VirusBindingModel virus) {
-        if (repository.getOne(virus.getId()) != null) {
-            create(virus);
-        }
+        // Ensure virus with that ID exists and releasedOn date is not modified
+        repository
+                .findProjectedById(virus.getId(), VirusReleasedOnProjection.class)
+                .map(view -> {
+                    virus.setReleasedOn(view.getReleasedOn());
+                    return view;
+                })
+                .orElseThrow();
+
+        create(virus);
     }
 
     @Override
