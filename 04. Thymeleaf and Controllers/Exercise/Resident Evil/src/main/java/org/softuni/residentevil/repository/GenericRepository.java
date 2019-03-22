@@ -22,6 +22,7 @@ import java.util.Optional;
  * @param <I> ID type used by the Entity
  * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#projections">Spring Data docs</a>
  */
+
 @Validated
 @NoRepositoryBean
 public interface GenericRepository<E, I> extends JpaRepository<E, I> {
