@@ -69,13 +69,13 @@ public class ApplicationConfig {
      */
     @Bean
     public Validator validator() {
-        final String LANGUAGES_VALIDATION_MESSAGES = "languages/validation";
+        final String VALIDATION_MESSAGES_PROPERTIES = "languages/validation";
 
         return Validation.byDefaultProvider()
                 .configure()
                 .messageInterpolator(
                         new ResourceBundleMessageInterpolator(
-                                new PlatformResourceBundleLocator(LANGUAGES_VALIDATION_MESSAGES)
+                                new PlatformResourceBundleLocator(VALIDATION_MESSAGES_PROPERTIES)
                         )
                 )
                 .buildValidatorFactory()
