@@ -85,5 +85,5 @@ public class Virus extends BaseUuidEntity implements Serializable {
             name = "viruses_capitals",
             joinColumns = {@JoinColumn(name = "virus_id")},
             inverseJoinColumns = {@JoinColumn(name = "capital_id")})
-    private Set<Capital> capitals = new HashSet<>();
+    private Set<CapitalId> capitals = new HashSet<>();
 }
