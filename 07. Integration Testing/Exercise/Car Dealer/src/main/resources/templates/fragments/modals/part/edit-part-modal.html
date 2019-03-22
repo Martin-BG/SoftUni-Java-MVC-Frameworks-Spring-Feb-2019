@@ -1,0 +1,38 @@
+<th:block th:fragment="edit-part-modal">
+    <div class="modal fade" th:id="|edit-part-modal-*{id}|" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="|*{name} - Edit|"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:id="|edit-part-form-*{id}|" class="form" th:action="@{'/parts/edit/' + *{id}}" th:method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="edit-part-name" class="font-weight-bold">Name</label>
+                            <input type="text" class="form-control text-center" id="edit-part-name" th:value="*{name}" name="name"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-part-price" class="font-weight-bold" >Price</label>
+                            <input class="form-control text-center" type="number" step="any" id="edit-part-price" th:value="*{#numbers.formatDecimal(price, 0, 2)}" name="price" />
+                        </div>
+                        <div class="form-group">
+                            <label for="add-part-supplier" class="font-weight-bold" >Supplier</label>
+                            <select class="custom-select" id="add-part-supplier" name="supplier">
+                                <option selected disabled th:text="*{supplier.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success" data-dismiss="modal"
+                                th:onclick="javascript:$('#edit-part-form-' + [[*{id}]]).submit()">Save Changes
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</th:block>

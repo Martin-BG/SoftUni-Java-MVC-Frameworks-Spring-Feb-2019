@@ -1,0 +1,52 @@
+<th:block th:fragment="add-car-modal">
+    <div class="modal fade" id="add-car-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Car</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="add-car-form" class="form" th:action="@{/cars/add}" th:method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add-car-make" class="font-weight-bold">Make</label>
+                            <input type="text" class="form-control text-center" id="add-car-make" name="make"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-car-model" class="font-weight-bold">Model</label>
+                            <input type="text" class="form-control text-center" id="add-car-model" name="model"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-car-travelled-distance" class="font-weight-bold" >Travelled Distance</label>
+                            <input class="form-control" type="number" name="travelledDistance" id="add-car-travelled-distance"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="add-car-parts">Parts</label>
+                            <select id="add-car-parts" name="parts" multiple>
+                                <option disabled>--- Select Parts ---</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success" data-dismiss="modal"
+                                onclick="$('#add-car-form').submit()">Add Car</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#add-car-modal-button').click(() => {
+            fetch('/parts/fetch')
+                .then((response) => response.json())
+                .then((json) => {
+                    json.forEach((x) => $('#add-car-parts').append(`<option value="${x.id}">${x.name}</option>`));
+                    $('#add-car-parts').selectpicker();
+                })
+                .catch((err) => console.log(err));
+        });
+    </script>
+</th:block>

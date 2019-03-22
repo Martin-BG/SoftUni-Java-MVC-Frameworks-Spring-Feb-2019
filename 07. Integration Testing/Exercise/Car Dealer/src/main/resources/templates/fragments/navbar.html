@@ -1,0 +1,10 @@
+<th:block th:fragment="navbar">
+    <header>
+        <th:block sec:authorize="isAnonymous()">
+            <th:block th:replace="fragments/guest-navbar"></th:block>
+        </th:block>
+        <th:block sec:authorize="isAuthenticated()">
+            <th:block th:replace="fragments/user-navbar"></th:block>
+        </th:block>
+    </header>
+</th:block>

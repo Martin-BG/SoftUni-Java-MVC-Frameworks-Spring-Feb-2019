@@ -1,0 +1,38 @@
+<th:block th:fragment="delete-part-modal">
+    <div class="modal fade" th:id="|delete-part-modal-*{id}|" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="|*{name} - Delete|"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:id="|delete-part-form-*{id}|" class="form" th:action="@{'/parts/delete/' + *{id}}" th:method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="delete-part-name" class="font-weight-bold">Name</label>
+                            <input type="text" class="form-control text-center" id="delete-part-name" th:value="*{name}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label for="delete-part-price" class="font-weight-bold" >Price</label>
+                            <input class="form-control text-center" type="number" step="any" id="delete-part-price" th:value="*{#numbers.formatDecimal(price, 0, 2)}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-part-supplier" class="font-weight-bold" >Supplier</label>
+                            <select class="custom-select" id="add-part-supplier" name="supplier">
+                                <option selected disabled th:text="*{supplier.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="submit" class="btn btn-danger" data-dismiss="modal"
+                                th:onclick="javascript:$('#delete-part-form-' + [[*{id}]]).submit()">Delete
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</th:block>

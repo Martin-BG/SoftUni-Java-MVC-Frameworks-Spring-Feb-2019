@@ -1,0 +1,44 @@
+<th:block th:fragment="details-car-modal">
+    <div class="modal fade" th:id="|details-car-modal-*{id}|">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="|*{make} *{model} - Details|"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:id="|details-car-form-*{id}|" class="form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="details-car-make" class="font-weight-bold">Make</label>
+                            <input type="text" class="form-control text-center" id="details-car-make" name="make" th:value="*{make}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label for="details-car-model" class="font-weight-bold">Model</label>
+                            <input type="text" class="form-control text-center" id="details-car-model" name="model" th:value="*{model}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label for="details-car-travelled-distance" class="font-weight-bold" >Travelled Distance</label>
+                            <input class="form-control" type="number" name="travelledDistance" id="details-car-travelled-distance" th:value="*{travelledDistance}" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="details-car-parts">Parts</label>
+                            <select id="details-car-parts" class="selectpicker" name="parts" multiple>
+                                <option disabled selected th:each="part : *{parts}" th:text="${part.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-info" data-dismiss="modal" data-toggle="modal"
+                                th:data-target="|#edit-car-modal-*{id}|">Edit
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal"
+                                th:data-target="|#delete-car-modal-*{id}|">Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</th:block>

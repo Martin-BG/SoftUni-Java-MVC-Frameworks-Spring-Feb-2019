@@ -1,0 +1,41 @@
+<th:block th:fragment="add-customer-modal">
+    <div class="modal fade" id="add-customer-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="add-customer-form" class="form" th:action="@{/customers/add}" th:method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add-customer-name" class="font-weight-bold">Name</label>
+                            <input type="text" class="form-control text-center" id="add-customer-name" name="name"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-customer-birth-date" class="font-weight-bold">Birth Date</label>
+                            <input class="form-control" type="date" name="birthDate" id="add-customer-birth-date"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success" data-dismiss="modal"
+                                onclick="$('#add-customer-form').submit()">Add customer</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#add-customer-modal-button').click(() => {
+            fetch('/suppliers/fetch')
+                .then((response) => response.json())
+                .then((json) => {
+                    json.forEach((x) => $('#add-customer-supplier').append(`<option value="${x.name}">${x.name}</option>`));
+                })
+                .catch((err) => console.log(err));
+        });
+    </script>
+</th:block>

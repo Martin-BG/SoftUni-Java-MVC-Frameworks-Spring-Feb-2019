@@ -1,0 +1,81 @@
+<th:block th:fragment="user-navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded font-weight-bold">
+        <a class="navbar-brand" href="#">Car Dealer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <div class="dropdown show">
+                        <a class="nav-link active dropdown-toggle" href="#" role="button" id="customersDropdown"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Customers
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="partsDropdown">
+                            <a id="add-customer-modal-button" class="dropdown-item" href="#" data-toggle="modal" data-target="#add-customer-modal">Add
+                                Customer</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/customers/all">All Customers</a>
+                        </div>
+                        <th:block th:replace="fragments/modals/customer/add-customer-modal"></th:block>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <div class="dropdown show">
+                        <a class="nav-link active dropdown-toggle" href="#" role="button" id="carsDropdown"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Cars
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="carsDropdown">
+                            <a id="add-car-modal-button" class="dropdown-item" href="#" data-toggle="modal" data-target="#add-car-modal">Add
+                                Car</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/cars/all">All Cars</a>
+                        </div>
+                        <th:block th:replace="fragments/modals/car/add-car-modal"></th:block>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <div class="dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" role="button" id="suppliersDropdown"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Suppliers
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="partsDropdown">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-supplier-modal">Add
+                                Supplier</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/suppliers/all">All Suppliers</a>
+                        </div>
+                        <th:block th:replace="fragments/modals/supplier/add-supplier-modal"></th:block>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <div class="dropdown show">
+                        <a class="nav-link active dropdown-toggle" href="#" role="button" id="partsDropdown"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Parts
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="partsDropdown">
+                            <a id="add-part-modal-button" class="dropdown-item" href="#" data-toggle="modal" data-target="#add-part-modal">Add
+                                Part</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/parts/all">All Parts</a>
+                        </div>
+                    </div>
+                    <th:block th:replace="fragments/modals/part/add-part-modal"></th:block>
+                </li>
+                <li class="nav-item active">
+                    <form th:action="@{/logout?login}" th:method="post">
+                        <button class="logout-button nav-link">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>

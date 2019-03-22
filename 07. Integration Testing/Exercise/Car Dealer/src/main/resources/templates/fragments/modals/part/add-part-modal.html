@@ -1,0 +1,47 @@
+<th:block th:fragment="add-part-modal">
+    <div class="modal fade" id="add-part-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Part</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="add-part-form" class="form" th:action="@{/parts/add}" th:method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add-part-name" class="font-weight-bold">Name</label>
+                            <input type="text" class="form-control text-center" id="add-part-name" name="name"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-part-price" class="font-weight-bold" >Price</label>
+                            <input class="form-control text-center" type="number" step="any" name="price" id="add-part-price"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-part-supplier" class="font-weight-bold" >Supplier</label>
+                            <select class="custom-select" id="add-part-supplier" name="supplier">
+                                <option selected disabled>--- Select Supplier ---</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success" data-dismiss="modal"
+                                onclick="$('#add-part-form').submit()">Add Part</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#add-part-modal-button').click(() => {
+            fetch('/suppliers/fetch')
+                .then((response) => response.json())
+                .then((json) => {
+                    json.forEach((x) => $('#add-part-supplier').append(`<option value="${x.name}">${x.name}</option>`));
+                })
+                .catch((err) => console.log(err));
+        });
+    </script>
+</th:block>
