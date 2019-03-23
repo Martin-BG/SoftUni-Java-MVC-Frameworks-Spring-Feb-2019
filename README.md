@@ -2,7 +2,7 @@
 [**Java MVC Frameworks - Spring** course at SoftUni - February 2019](https://softuni.bg/trainings/2295/java-mvc-frameworks-spring-february-2019)
 
 ## Projects
-
+___
 ### [**Real Estate Agency**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/01.%20Spring%20Boot%20Introduction/Exercises/Real%20Estate%20Agency)
 
 [Simple](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/01.%20Spring%20Boot%20Introduction/01.%20Spring%20Boot%20Introduction%20-%20Exercises.pdf) Spring Boot application using Spring Data.
@@ -56,3 +56,6 @@ or treating empty texts as null, by protected methods allowing redefinition of t
 [base classes](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java), 
 [interfaces](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/api/Bindable.java) 
 etc.)
+* Responce compression and static resources caching [enabled](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/application.properties)
+* [Generic repository](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/repository/GenericRepository.java) - 
+provides generic methods for work with [projections](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#projections)
