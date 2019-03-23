@@ -25,8 +25,27 @@ Configure IDE to recognize [Lombok](https://projectlombok.org/) - [instructions]
 ___
 #### Project configuration
 * [pom.xml](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/pom.xml)
-* [application.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/application.properties) - customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/config/MySQL8UnicodeDialect.java)**, **logging**, messages settings
+* [application.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/application.properties) - 
+customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/config/MySQL8UnicodeDialect.java)**, 
+**logging**, messages settings, **compression**, static resources [**caching**](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#headers-cache-control) 
+[**[1]**](https://stackoverflow.com/a/35640540/7598851)
+[**[2]**](https://www.baeldung.com/cachable-static-assets-with-spring-mvc)
+    ```properties
+    #Enable response compression
+    server.compression.enabled=true
+    server.compression.mime-types=text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml,image/x-icon
+    server.compression.min-response-size=512B
 
+    #Caching and versioning of static resources
+    spring.resources.static-locations=classpath:/static/
+    spring.resources.cache.period=365d
+    spring.resources.cache.cachecontrol.max-age=365d
+    spring.resources.chain.html-application-cache=true
+    spring.resources.chain.enabled=true
+    spring.resources.chain.strategy.content.enabled=true
+    spring.resources.chain.strategy.content.paths=/**
+    spring.resources.chain.compressed=true
+    ```
 ___
 ## Takeaways
 * Project structure is based on [EXODIA](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/02.%20Spring%20Essentials/Exercises/exodia) project:
@@ -146,7 +165,8 @@ ___
   for store and reuse of [@ModelAttribute](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/virus/AddVirusController.java) 
   by [Controller](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers), 
   avoiding unnecessary Service/Repository calls for getting the same data
-  * Use **caching** on selected [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/service/VirusServiceImpl.java) methods (@EnableCaching + @CacheConfig + @Cacheable / @CacheEvict)
+  * Use **caching** on selected [service](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/service/VirusServiceImpl.java) 
+  methods (@EnableCaching + @CacheConfig + @Cacheable / @CacheEvict)
   ```java
     @Log
     @Service
@@ -661,7 +681,50 @@ public class BaseController {
 [base classes](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java), 
 [interfaces](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/domain/api/Bindable.java) 
 etc.)
+* [Generic repository](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/repository/GenericRepository.java) - 
+provides generic methods for work with [projections](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#projections):
+```java
+@Validated
+@NoRepositoryBean
+public interface GenericRepository<E, I> extends JpaRepository<E, I> {
 
+    <T extends Viewable<E>> Optional<T> findProjectedById(@NotNull I id, @NotNull Class<T> projection);
+
+    <T extends Viewable<E>> List<T> findAllProjectedBy(@NotNull Class<T> projection);
+
+    <T extends Viewable<E>> List<T> findAllProjectedBy(@NotNull Class<T> projection, @NotNull Sort sort);
+}
+
+@Validated
+@Repository
+public interface CapitalRepository extends GenericRepository<Capital, Long> {
+    // ..
+}
+
+public interface CapitalSimpleViewProjection extends Viewable<Capital> {
+
+    Long getId();
+
+    String getName();
+}
+
+@Log
+@Service
+@Validated
+@Transactional
+@CacheConfig(cacheNames = "capitals")
+public class CapitalServiceImpl extends BaseService<Capital, Long, CapitalRepository> implements CapitalService {
+
+    // ...
+
+    @Override
+    @Cacheable(sync = true)
+    @Transactional(readOnly = true)
+    public List<CapitalSimpleViewProjection> getCapitals() {
+        return repository.findAllProjectedBy(CapitalSimpleViewProjection.class, Sort.by(Sort.Direction.ASC, "name"));
+    }
+}
+``` 
 ___
 #### Notes to myself
 * Implement **Serializable** interface by all entities and models as these could be cached or saved in Session
@@ -670,3 +733,76 @@ ___
 * For ManyToMany relations recommended collection is Set instead of a List because with List on each add or remove all elements are removed and then added back:
   * [The best way to use the @ManyToMany annotation with JPA and Hibernate](https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate) by Vlad Mihalcea
   * [JPA many-to-many update efficiency](https://bianjp.com/posts/2017/10/31/jpa-many-to-many-update-efficiency)
+* Projections (proxy objects by nature) are not serializable and cannot be stored in HTTP/Spring sessions or Redis cache.
+* Disable Tomcat session save/restore on application restart:
+  ```java
+    @Configuration
+    public class ApplicationConfig {
+        // ...
+        /**
+         * Disable HTTP Session data save and restore by Tomcat on application restart.
+         *
+         * @see <a href="https://stackoverflow.com/questions/27130157/how-to-disable-tomcat-session-persistence-in-spring-boot-via-manager-pathname/51042982#51042982">Stack Overflow</a>
+         */
+        @Bean
+        public TomcatServletWebServerFactory servletContainer() {
+            TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+    
+            tomcat.addContextCustomizers((TomcatContextCustomizer) context -> {
+                if (context.getManager() instanceof StandardManager) {
+                    ((StandardManager) context.getManager()).setPathname("");
+                }
+            });
+    
+            return tomcat;
+        }
+    }
+  ```
+* Enable/Disable session data save/restore on application restart (disabled by default, **Dev Tools** enables it):
+  ```properties
+    #application.properties
+    server.servlet.session.persistent=true
+  ```
+* Enable Hibernate performance meter - application.properties
+  ```properties
+    # Hibernate performance meter - use only for testing!!!
+    spring.jpa.properties.hibernate.generate_statistics=true
+    logging.level.org.hibernate.stat=DEBUG
+  ```
+  ```log
+    2019-03-23 01:25:31.491  INFO 6744 --- [nio-8000-exec-4] i.StatisticalLoggingSessionEventListener : Session Metrics {
+        56666 nanoseconds spent acquiring 1 JDBC connections;
+        0 nanoseconds spent releasing 0 JDBC connections;
+        100749 nanoseconds spent preparing 1 JDBC statements;
+        685245 nanoseconds spent executing 1 JDBC statements;
+        0 nanoseconds spent executing 0 JDBC batches;
+        0 nanoseconds spent performing 0 L2C puts;
+        0 nanoseconds spent performing 0 L2C hits;
+        0 nanoseconds spent performing 0 L2C misses;
+        0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+        11334 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+    }
+  ```
+* Enable JDBC (MySQL) stored [Spring Session](https://docs.spring.io/spring-session/docs/current/reference/html5/), 
+[more](https://pupli.net/2017/03/06/how-to-configure-spring-session-with-jdbc-for-mysql/):
+  ```xml
+  <!--pom.xml-->
+    <dependency>
+        <groupId>org.springframework.session</groupId>
+        <artifactId>spring-session-jdbc</artifactId>
+    </dependency>
+  ```
+  ```properties
+    #application.properties
+
+    #Spring Session
+    spring.session.store-type=jdbc
+    spring.session.jdbc.initialize-schema=always
+    spring.session.jdbc.schema=classpath:org/springframework/session/jdbc/schema-mysql.sql
+    spring.session.jdbc.table-name=SPRING_SESSION
+    #Check and delete expired sessions every 5 minutes
+    spring.session.jdbc.cleanup-cron=0 0/5 * * * *
+    #Session duration - 1 hour
+    spring.session.timeout=60m
+  ```
+* [Cache with Redis](https://www.kevinhooke.com/2018/04/22/caching-spring-boot-restcontroller-responses-with-spring-cache-and-redis/)
