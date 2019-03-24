@@ -20,6 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_VIRUS_EDIT = "/viruses/edit";
     public static final String URL_ALL = "/all";
 
+    public static final String REST_API_CAPITAL = "/api/capital";
+    public static final String REST_API_VIRUS = "/api/virus";
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(
