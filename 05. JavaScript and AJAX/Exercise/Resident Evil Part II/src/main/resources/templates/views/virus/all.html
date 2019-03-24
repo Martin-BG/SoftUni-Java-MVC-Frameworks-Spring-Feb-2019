@@ -1,6 +1,8 @@
 <th:block xmlns:th="http://www.thymeleaf.org">
-    <table class="table mt-5 mb-5 w-75 mx-auto">
-        <h2 class="header mt-5 mb-4 w-75 mx-auto" th:text="#{viruses.all.title}"/>
+    <div class="header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
+        <h2 th:text="#{viruses.all.title}"/>
+    </div>
+    <table class="table mt-4 mb-5 w-75 mx-auto">
         <thead>
         <tr class="font-weight-bold">
             <th scope="col" th:text="#{viruses.all.table-header.index}"/>
