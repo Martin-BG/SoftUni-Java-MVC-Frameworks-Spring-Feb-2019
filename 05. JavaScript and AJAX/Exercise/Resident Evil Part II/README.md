@@ -27,7 +27,42 @@ customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MV
 [**[2]**](https://www.baeldung.com/cachable-static-assets-with-spring-mvc)
 ___
 ## Takeaways
-* Everything from [Project: Resident Evil Part I](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil)
- 
-___
-#### Notes to myself
+* Everything from [Project: **Resident Evil Part I**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil)
+* [Enum to JSON](https://www.baeldung.com/jackson-serialize-enums) format - 
+put @JsonValue on getter which return value should be used in enum -> JSON convert.
+```java
+public enum Magnitude {
+
+    LOW("Low"),
+    MEDIUM("Medium"),
+    HIGH("High");
+    // ...
+    @JsonValue
+    public String getLabel() {
+        return label;
+    }
+}
+```
+* Date/Time to JSON format (any of these could be used) 
+[**[1]**](https://stackoverflow.com/questions/29027475/date-format-in-the-json-output-using-spring-boot):
+  * **@JsonFormat(pattern="....")** on getter/field:
+    ```java
+    public final class VirusSimpleViewModel implements Viewable<Virus>, Serializable {
+        //...
+        @JsonFormat(pattern="dd-MMM-yyyy")
+        private Date releasedOn;
+    }
+    ```
+  * [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
+    ```properties
+    spring.jackson.date-format=dd-MMM-yyyy
+    ```
+* Use application.properties values in Thymeleaf:
+```properties
+#Date format
+resident.evil.date.format=dd-MMM-yyyy
+spring.jackson.date-format=${resident.evil.date.format}
+```
+```html
+<td th:text="${#dates.format(virus.getReleasedOn(), @environment.getProperty('resident.evil.date.format'))}"/>
+```
