@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:object="${whiskey}" th:action="@{/whiskey}" th:method="post">
+    <div th:text="${whiskey.getName()}"></div>
+    <input type="text" th:field="*{name}"/>
+    <ul>
+        <li th:each="error: ${#fields.errors('name')}">
+            <span th:text="${error}"></span>
+        </li>
+    </ul>
+    <button>Submit</button>
+</form>
+</body>
+</html>

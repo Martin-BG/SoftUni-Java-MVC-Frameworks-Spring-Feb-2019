@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Dates</h1>
+
+
+    <div th:text="${#aggregates.sum(numbers)}"> </div>
+    <div th:text="${#aggregates.avg(numbers)}"> </div>
+
+    <ul>
+        <li th:each="number: ${#numbers.sequence(1, 10)}">
+            <span th:text="${number}"></span>
+        </li>
+    </ul>
+
+    <div th:text="${#numbers.formatDecimal(3.14159, 1, 0)}"></div>
+    <div th:text="${#numbers.formatDecimal(3, 1, 0)}"></div>
+    <div th:text="${#numbers.formatCurrency(3.14)}"></div>
+    <div th:text="${#dates.format(date, 'yyyy')}"></div>
+    <div th:text="${#dates.format(date, 'dd/MM/yyyy')}"></div>
+    <div th:text="${#dates.format(date, 'hh:mm:ss dd/MM/yyyy')}"></div>
+    <div th:text="${#dates.format(date, 'HH:mm:ss dd/MM/yyyy')}"></div>
+    <div th:text="${#dates.dayOfWeek(date)}"></div>
+    <div th:text="${#dates.dayOfWeekNameShort(date)}"></div>
+    <div th:text="${#dates.dayOfWeekName(date)}"></div>
+
+    <div th:text="${#dates.listDayOfWeekName(dates)}"></div>
+    <div th:text="${#strings.listJoin(#dates.listFormat(dates, 'dd/MM/yyyy'), ', ')}"></div>
+    <div th:text="${#strings.toUpperCase(#strings.substring('pesHO', 0, 1)) + #strings.toLowerCase(#strings.substring('pesHO', 1))}"></div>
+    <div th:text="${#strings.capitalize('pesHO')}"></div>
+    <div th:text="${#strings.capitalize('PESHO')}"></div>
+
+    <script th:inline="javascript">
+        const username = [[${username}]];
+        setTimeout(() => {
+        console.log(username);
+        }, 2000);
+    </script>
+</body>
+</html>

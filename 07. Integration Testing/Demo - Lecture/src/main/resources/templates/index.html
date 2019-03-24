@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Hello from view</h1>
+<script>
+    const timer = seconds => {
+        document.body.innerHTML = new Date();
+
+        setTimeout(() => {
+            timer();
+        }, seconds * 1000)
+    };
+
+    timer();
+
+    const http = (function () {
+        // const send = (url, method, body) =>
+        //     new Promise((resolve, reject) => {
+        //         $.ajax({
+        //             url,
+        //             method,
+        //             body,
+        //             success(data) {
+        //                 resolve(data);
+        //             },
+        //             error(err) {
+        //                 reject(err);
+        //             },
+        //         })
+        //     });
+        const send = (url, method, body) =>
+            fetch(url, {method, body })
+                .then(response => response.json());
+
+        const post = (url, body) => send(url, 'POST', body);
+        const get = (url) => send(url, 'GET', null);
+        return {
+            send,
+            post,
+            get
+        };
+    }());
+
+    http.get("/cars")
+        .then(cars => {
+            console.log(cars);
+        });
+</script>
+</body>
+</html>
