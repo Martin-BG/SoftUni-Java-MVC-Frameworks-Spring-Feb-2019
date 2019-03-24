@@ -59,3 +59,11 @@ etc.)
 * Responce compression and static resources caching [enabled](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/resources/application.properties)
 * [Generic repository](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil/src/main/java/org/softuni/residentevil/repository/GenericRepository.java) - 
 provides generic methods for work with [projections](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#projections)
+___
+### [**Project: Resident Evil**, Part II](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/05.%20JavaScript%20and%20AJAX/Exercise/Resident%20Evil%20Part%20II)
+
+[Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/05.%20JavaScript%20and%20AJAX/05.%20JavaScript%20and%20AJAX%20-%20Exercise.pdf) 
+is to extend [**Project: Resident Evil - Part I**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil)
+by adding asynchronous requests with JavaScript and AJAX.
+
+Build over a copy of [Project: Resident Evil Part I](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil)
