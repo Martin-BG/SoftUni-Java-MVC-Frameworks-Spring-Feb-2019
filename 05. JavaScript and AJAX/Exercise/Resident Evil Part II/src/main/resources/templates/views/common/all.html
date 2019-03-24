@@ -1,0 +1,19 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <table class="table mt-5 mb-5 w-75 mx-auto">
+        <div class="header header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
+            <h2 th:text="#{all.title}"/>
+            <div class="my-auto">
+                <div class="radio d-inline mx-5">
+                    <input id="virusesRadio" name="selection" type="radio">
+                    <label for="virusesRadio" th:text="#{all.radio.label.viruses}"/>
+                </div>
+                <div class="radio d-inline mx-5">
+                    <input id="capitalsRadio" name="selection" type="radio">
+                    <label for="capitalsRadio" th:text="#{all.radio.label.capital}"/>
+                </div>
+            </div>
+        </div>
+        <hr class="w-75 mx-auto"/>
+        <h2 class="mt-3 w-75 mx-auto text-center" th:text="#{all.text}"/>
+    </table>
+</th:block>
