@@ -36,14 +36,14 @@ public class CapitalServiceImpl extends BaseService<Capital, Long, CapitalReposi
     }
 
     @Override
-    @Cacheable(sync = true)
+    @Cacheable(sync = true, key = "#root.method")
     @Transactional(readOnly = true)
     public List<CapitalSimpleViewModel> getCapitals() {
         return repository.findAllSimpleView();
     }
 
     @Override
-    @Cacheable(sync = true)
+    @Cacheable(sync = true, key = "#root.method")
     @Transactional(readOnly = true)
     public List<CapitalAllProjection> getCapitalsDetailed() {
         return repository.findAllProjectedBy(CapitalAllProjection.class, SORT_ASC_BY_NAME);
