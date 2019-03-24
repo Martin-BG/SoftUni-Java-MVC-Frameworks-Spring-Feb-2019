@@ -18,6 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_VIRUS_ADD = "/viruses/add";
     public static final String URL_VIRUS_DELETE = "/viruses/delete";
     public static final String URL_VIRUS_EDIT = "/viruses/edit";
+    public static final String URL_ALL = "/all";
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
