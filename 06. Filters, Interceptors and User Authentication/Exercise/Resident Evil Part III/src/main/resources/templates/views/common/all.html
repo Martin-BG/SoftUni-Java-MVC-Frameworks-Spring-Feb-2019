@@ -1,0 +1,143 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <div class="header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
+        <h2 id="title" th:text="#{all.title}"/>
+        <div class="my-auto">
+            <div class="radio d-inline mx-5">
+                <input id="virusesRadio" name="selection" type="radio">
+                <label for="virusesRadio" th:text="#{all.radio.label.viruses}"/>
+            </div>
+            <div class="radio d-inline mx-5">
+                <input id="capitalsRadio" name="selection" type="radio">
+                <label for="capitalsRadio" th:text="#{all.radio.label.capital}"/>
+            </div>
+        </div>
+    </div>
+    <div class="w-75 mt-3 mb-5 mx-auto" id="content">
+        <hr/>
+        <h2 class="text-center" th:text="#{all.text}"/>
+    </div>
+    <div class="w-75 mt-3 mb-5 mx-auto display-none" id="spinner">
+        <hr>
+        <h2 class='text-center' th:text="#{loading.text}"/>
+        <div class="spinner-border d-block mx-auto" role="status">
+            <span class="sr-only"/>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const http = (function () {
+            const send = (url, method, body) =>
+                fetch(url, {method, body})
+                    .then(response => response.json());
+
+            const post = (url, body) => send(url, 'POST', body);
+            const get = (url) => send(url, 'GET', null);
+            return {
+                send,
+                post,
+                get
+            };
+        }());
+
+        const loadViruses = () => {
+            const $title = $("#title");
+            const $content = $("#content");
+            const $spinner = $("#spinner");
+
+            $title.text([[#{viruses.all.title}]]);
+            $content.empty();
+            $spinner.show();
+
+            http.get([[${T(org.softuni.residentevil.config.WebConfig).REST_API_VIRUS}]])
+                .then(viruses => {
+                    const $tbody = $("<tbody>");
+                    viruses.forEach((virus, index) => {
+                        const $tr = $(` <tr>
+                                            <td class="font-weight-bold" scope="row">${index + 1}</td>
+                                            <td scope="row">${virus.name}</td>
+                                            <td scope="row">${virus.magnitude}</td>
+                                            <td scope="row">${virus.releasedOn}</td>
+                                            <td scope="row">
+                                                <form class="d-inline mr-3"
+                                                      action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}]]
+                                                      method="post">
+                                                    <input hidden name="id" value="${virus.id}">
+                                                    <button class="btn btn-light btn-sm border-dark table-button" type="submit">
+                                                            [(#{viruses.all.table-button.edit})]
+                                                     </button>
+                                                </form>
+                                            </td>
+                                            <td scope="row">
+                                                <form class="d-inline mr-3"
+                                                      action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}]]
+                                                      method="post">
+                                                    <input hidden name="id" value="${virus.id}">
+                                                    <button class="btn btn-light btn-sm border-dark table-button" type="submit">
+                                                            [(#{viruses.all.table-button.delete})]
+                                                     </button>
+                                                </form>
+                                            </td>
+                                        </tr>`);
+                        $tr.appendTo($tbody);
+                    });
+                    const $table = $("<table class='table'>");
+                    const $header = $(` <thead>
+                                    <tr>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.index})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.name})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.magnitude})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.released-on})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.actions})]</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>`);
+                    $header.appendTo($table);
+                    $tbody.appendTo($table);
+                    $table.appendTo($content);
+                    $spinner.hide();
+                });
+        };
+
+        const loadCapitals = () => {
+            const $title = $("#title");
+            const $content = $("#content");
+            const $spinner = $("#spinner");
+
+            $title.text([[#{capitals.all.title}]]);
+            $content.empty();
+            $spinner.show();
+
+            http.get([[${T(org.softuni.residentevil.config.WebConfig).REST_API_CAPITAL}]])
+                .then(capitals => {
+                    const $tbody = $("<tbody>");
+                    capitals.forEach((capital, index) => {
+                        const $tr = $(` <tr>
+                                            <td class="font-weight-bold" scope="row">${index + 1}</td>
+                                            <td scope="row">${capital.name}</td>
+                                            <td scope="row">${capital.latitude}</td>
+                                            <td scope="row">${capital.longitude}</td>
+                                        </tr>`);
+                        $tr.appendTo($tbody);
+                    });
+                    const $table = $("<table class='table'>");
+                    const $header = $(` <thead>
+                                    <tr>
+                                        <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.index})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.name})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.latitude})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.longitude})]</th>
+                                    </tr>
+                                </thead>`);
+                    $header.appendTo($table);
+                    $tbody.appendTo($table);
+                    $table.appendTo($content);
+                    $spinner.hide();
+                });
+        };
+
+        window.onload = () => {
+            $('#virusesRadio').on("click", loadViruses);
+            $('#capitalsRadio').on("click", loadCapitals);
+        };
+    </script>
+</th:block>

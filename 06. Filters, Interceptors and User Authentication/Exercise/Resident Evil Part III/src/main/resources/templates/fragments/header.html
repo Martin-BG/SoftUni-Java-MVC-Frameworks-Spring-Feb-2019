@@ -1,0 +1,39 @@
+<th:block th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-expand-lg navbar-dark rounded re-color">
+        <a class="navbar-brand ml-3" th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_INDEX}__}"
+           th:text="#{nav-bar.title}"/>
+        <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarNav" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item ml-3">
+                    <a class="nav-link active"
+                       th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_INDEX}__}"
+                       th:text="#{nav-bar.home}"/>
+                </li>
+                <li class="nav-item ml-3">
+                    <a class="nav-link active"
+                       th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_ALL}__}"
+                       th:text="#{nav-bar.all}"/>
+                </li>
+                <li class="nav-item dropdown ml-3">
+                    <a aria-expanded="false" aria-haspopup="true" class="nav-link active dropdown-toggle"
+                       data-toggle="dropdown"
+                       href="#" id="navbarDropdown" role="button" th:text="#{nav-bar.viruses}"/>
+                    <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                        <a class="dropdown-item"
+                           th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ALL}__}"
+                           th:text="#{nav-bar.viruses.show}"/>
+                        <a class="dropdown-item"
+                           th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ADD}__}"
+                           th:text="#{nav-bar.viruses.add}"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
