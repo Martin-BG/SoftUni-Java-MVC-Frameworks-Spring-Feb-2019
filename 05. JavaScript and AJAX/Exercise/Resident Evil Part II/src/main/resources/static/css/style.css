@@ -30,3 +30,7 @@ div.form-group label {
 .table-button {
     width: 4rem;
 }
+
+.display-none {
+    display: none;
+}
