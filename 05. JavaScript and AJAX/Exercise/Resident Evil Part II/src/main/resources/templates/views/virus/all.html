@@ -21,7 +21,7 @@
                 <td class="font-weight-bold" scope="row" th:text="${iStat.index + 1}"/>
                 <td th:text="*{name}"/>
                 <td th:text="*{magnitude.label}"/>
-                <td th:text="${#dates.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
+                <td th:text="${#dates.format(virus.getReleasedOn(), @environment.getProperty('resident.evil.date.format'))}"/>
                 <td>
                     <form class="d-inline mr-3"
                           th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__}"
