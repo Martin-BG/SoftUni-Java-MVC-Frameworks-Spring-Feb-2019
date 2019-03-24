@@ -1,5 +1,7 @@
 package org.softuni.residentevil.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +25,7 @@ public enum Magnitude {
         return label == null ? null : LABEL_TO_ENUM_MAP.get(label);
     }
 
+    @JsonValue
     public String getLabel() {
         return label;
     }
