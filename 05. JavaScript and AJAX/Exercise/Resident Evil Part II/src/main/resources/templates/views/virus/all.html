@@ -1,0 +1,47 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <table class="table mt-3 mb-5 w-75 mx-auto">
+        <h2 class="header mt-3 mb-4 w-75 mx-auto" th:text="#{viruses.all.title}"/>
+        <thead>
+        <tr class="font-weight-bold">
+            <th scope="col" th:text="#{viruses.all.table-header.index}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.name}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.magnitude}"/>
+            <th scope="col" th:text="#{viruses.all.table-header.released-on}"/>
+            <th scope="col"/>
+            <th scope="col"/>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block
+                th:each="virus, iStat : ${__${T(org.softuni.residentevil.web.controllers.virus.BaseVirusController).VIRUSES}__}"
+                th:object="${virus}">
+            <tr>
+                <td class="font-weight-bold" scope="row" th:text="${iStat.index + 1}"/>
+                <td th:text="*{name}"/>
+                <td th:text="*{magnitude.label}"/>
+                <td th:text="${#dates.format(virus.getReleasedOn(), 'dd-MMM-yyyy')}"/>
+                <td>
+                    <form class="d-inline mr-3"
+                          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__}"
+                          th:method="post">
+                        <input hidden name="id" th:value="*{id}">
+                        <button class="btn btn-light btn-sm border-dark table-button"
+                                th:text="#{viruses.all.table-button.edit}"
+                                type="submit"/>
+                    </form>
+                </td>
+                <td>
+                    <form class="d-inline"
+                          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}__}"
+                          th:method="post">
+                        <input hidden name="id" th:value="*{id}">
+                        <button class="btn btn-light btn-sm border-dark table-button"
+                                th:text="#{viruses.all.table-button.delete}"
+                                type="submit"/>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</th:block>

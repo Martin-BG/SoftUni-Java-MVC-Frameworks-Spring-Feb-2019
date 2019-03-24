@@ -1,0 +1,32 @@
+.re-color {
+    background-color: #900C45;
+    color: white;
+}
+
+.re-error {
+    color: #900C45;
+}
+
+.re-error-border {
+    border-color: #900C45;
+}
+
+div.form-group label {
+    margin-top: 0.7rem;
+}
+
+.no-resize {
+    resize: none;
+}
+
+.disabled {
+    color: gray;
+}
+
+.radio label {
+    margin-bottom: 0;
+}
+
+.table-button {
+    width: 4rem;
+}
