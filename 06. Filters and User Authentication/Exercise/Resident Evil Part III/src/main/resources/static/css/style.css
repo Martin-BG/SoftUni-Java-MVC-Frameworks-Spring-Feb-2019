@@ -34,3 +34,17 @@ div.form-group label {
 .display-none {
     display: none;
 }
+
+.logout-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.logout-button:hover {
+    cursor: pointer;
+}
+
+.logout-button:focus {
+    outline: none;
+}

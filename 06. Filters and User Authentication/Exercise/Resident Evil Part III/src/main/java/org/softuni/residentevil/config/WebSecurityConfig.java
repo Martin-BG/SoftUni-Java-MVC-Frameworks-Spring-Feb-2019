@@ -14,7 +14,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String REMEMBER_ME_TOKEN_NAME = "rememberMe";
+    private static final String REMEMBER_ME_TOKEN_NAME = "rememberMe";
     private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * 30; // 30 Days
 
     private static CsrfTokenRepository csrfTokenRepository() {
@@ -51,7 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl(WebConfig.URL_USER_LOGOUT)
-                .logoutSuccessUrl(WebConfig.URL_INDEX).and()
+                .logoutSuccessUrl(WebConfig.URL_INDEX)
+                .deleteCookies(REMEMBER_ME_TOKEN_NAME)
+                .permitAll()
+                .and()
                 .exceptionHandling().accessDeniedPage(WebConfig.URL_UNAUTHORIZED);
     }
 }
