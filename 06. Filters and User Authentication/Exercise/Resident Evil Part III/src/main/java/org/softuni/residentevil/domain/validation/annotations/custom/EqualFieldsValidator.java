@@ -45,7 +45,9 @@ public class EqualFieldsValidator implements ConstraintValidator<EqualFields, Ob
     @Override
     public void initialize(EqualFields constraintAnnotation) {
         fieldsToValidate = Arrays
-                .stream(constraintAnnotation.value())
+                .stream(constraintAnnotation.value().length > 0 ?
+                        constraintAnnotation.value() :
+                        constraintAnnotation.fields())
                 .collect(Collectors.toUnmodifiableList());
     }
 
