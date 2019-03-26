@@ -1,5 +1,7 @@
 package org.softuni.residentevil.domain.validation.annotations.custom;
 
+import org.springframework.core.annotation.AliasFor;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
@@ -24,7 +26,11 @@ public @interface EqualFields {
 
     Class<? extends Payload>[] payload() default {};
 
+    @AliasFor("fields")
     String[] value() default {};
+
+    @AliasFor("value")
+    String[] fields() default {};
 
     /**
      * Defines several {@link EqualFields} annotations on the same element.
