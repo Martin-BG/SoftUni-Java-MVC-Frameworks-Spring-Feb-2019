@@ -14,6 +14,7 @@ import org.softuni.residentevil.domain.validation.annotations.composite.user.Val
 
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -34,10 +35,16 @@ public class UserBindingModel implements Bindable<User>, Serializable {
     private String email;
 
     @ValidUserEntityAuthorities
-    private Set<@Valid RoleBindingModel> authorities;
+    private Set<@Valid RoleBindingModel> authorities = new HashSet<>();
 
-    private boolean isAccountNonLocked;
-    private boolean isAccountNonExpired;
-    private boolean isCredentialsNonExpired;
-    private boolean isEnabled;
+    private boolean isAccountNonLocked = true;
+    private boolean isAccountNonExpired = true;
+    private boolean isCredentialsNonExpired = true;
+    private boolean isEnabled = true;
+
+    public UserBindingModel(String username, String email, String password) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }
