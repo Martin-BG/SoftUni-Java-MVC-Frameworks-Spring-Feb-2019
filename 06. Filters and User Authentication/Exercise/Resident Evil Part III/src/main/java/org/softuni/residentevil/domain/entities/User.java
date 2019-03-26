@@ -3,12 +3,12 @@ package org.softuni.residentevil.domain.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEmail;
+import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityAuthorities;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityPassword;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserUsername;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public class User extends BaseUuidEntity implements UserDetails {
     @Column(unique = true, nullable = false, length = ValidUserEmail.MAX_LENGTH)
     private String email;
 
-    @NotEmpty
+    @ValidUserEntityAuthorities
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
