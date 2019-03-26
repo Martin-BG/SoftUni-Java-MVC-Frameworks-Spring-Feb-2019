@@ -25,6 +25,10 @@
     </div>
 
     <script th:inline="javascript">
+        let csrfToken;
+        let csrfHeader;
+
+
         const http = (function () {
             const send = (url, method, body) =>
                 fetch(url, {method, body})
@@ -62,6 +66,7 @@
                                                       action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}]]
                                                       method="post">
                                                     <input hidden name="id" value="${virus.id}">
+                                                    <input type="hidden" name="_csrf" value="${csrfToken}"/>
                                                     <button class="btn btn-light btn-sm border-dark table-button" type="submit">
                                                             [(#{viruses.all.table-button.edit})]
                                                      </button>
@@ -72,6 +77,7 @@
                                                       action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}]]
                                                       method="post">
                                                     <input hidden name="id" value="${virus.id}">
+                                                    <input type="hidden" name="_csrf" value="${csrfToken}"/>
                                                     <button class="btn btn-light btn-sm border-dark table-button" type="submit">
                                                             [(#{viruses.all.table-button.delete})]
                                                      </button>
@@ -136,6 +142,8 @@
         };
 
         window.onload = () => {
+            csrfToken = $("meta[name='_csrf']").attr("content");
+            csrfHeader = $("meta[name='_csrf_header']").attr("content");
             $('#virusesRadio').on("click", loadViruses);
             $('#capitalsRadio').on("click", loadCapitals);
         };
