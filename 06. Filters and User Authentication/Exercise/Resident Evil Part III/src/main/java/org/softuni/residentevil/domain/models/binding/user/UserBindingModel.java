@@ -6,18 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.softuni.residentevil.domain.api.Bindable;
 import org.softuni.residentevil.domain.entities.User;
+import org.softuni.residentevil.domain.models.binding.role.RoleBindingModel;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEmail;
-import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserPassword;
+import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityAuthorities;
+import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityPassword;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserUsername;
-import org.softuni.residentevil.domain.validation.annotations.custom.EqualFields;
 
+import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"username"})
 @NoArgsConstructor
-@EqualFields(message = "{user.password.not-match}", fields = {"password", "confirmPassword"})
 public class UserBindingModel implements Bindable<User>, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,12 +27,17 @@ public class UserBindingModel implements Bindable<User>, Serializable {
     @ValidUserUsername
     private String username;
 
-    @ValidUserPassword
+    @ValidUserEntityPassword
     private String password;
-
-    @ValidUserPassword
-    private String confirmPassword;
 
     @ValidUserEmail
     private String email;
+
+    @ValidUserEntityAuthorities
+    private Set<@Valid RoleBindingModel> authorities;
+
+    private boolean isAccountNonLocked;
+    private boolean isAccountNonExpired;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 }
