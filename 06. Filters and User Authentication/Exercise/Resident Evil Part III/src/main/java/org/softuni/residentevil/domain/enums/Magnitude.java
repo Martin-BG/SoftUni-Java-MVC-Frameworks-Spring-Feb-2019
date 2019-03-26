@@ -13,7 +13,7 @@ public enum Magnitude {
     HIGH("High");
 
     private static final Map<String, Magnitude> LABEL_TO_ENUM_MAP = Stream.of(Magnitude.values())
-            .collect(Collectors.toUnmodifiableMap(Magnitude::getLabel, sector -> sector));
+            .collect(Collectors.toUnmodifiableMap(Magnitude::getLabel, magnitude -> magnitude));
 
     private final String label;
 
