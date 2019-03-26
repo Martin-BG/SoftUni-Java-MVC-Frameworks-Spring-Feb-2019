@@ -6,13 +6,18 @@
         <h2 class="header mt-4 mb-4" th:text="#{user.login-form.title}"/>
 
         <div class="form-group">
-            <label th:for="${#ids.next('username')}" th:text="#{user.login-form.username}"></label>
-            <input class="form-control" name="username" type="text"/>
+            <label for="username" th:text="#{user.login-form.username}"></label>
+            <input class="form-control" id="username" name="username" type="text"/>
         </div>
 
         <div class="form-group">
-            <label th:for="${#ids.next('password')}" th:text="#{user.login-form.password}"></label>
-            <input class="form-control" name="password" type="password"/>
+            <label for="password" th:text="#{user.login-form.password}"></label>
+            <input class="form-control" id="password" name="password" type="password"/>
+        </div>
+
+        <div class="form-group">
+            <input id="remember_me" name="remember-me" type="checkbox"/>
+            <label class="inline" for="remember_me" th:text="#{user.login-form.remember-me}"/>
         </div>
 
         <div class="form-actions mx-auto text-center">
