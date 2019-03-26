@@ -55,6 +55,7 @@
                                th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ALL}__}"
                                th:text="#{nav-bar.viruses.show}"/>
                             <a class="dropdown-item"
+                               sec:authorize="hasAnyAuthority('ROLE_MODERATOR')"
                                th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ADD}__}"
                                th:text="#{nav-bar.viruses.add}"/>
                         </div>
