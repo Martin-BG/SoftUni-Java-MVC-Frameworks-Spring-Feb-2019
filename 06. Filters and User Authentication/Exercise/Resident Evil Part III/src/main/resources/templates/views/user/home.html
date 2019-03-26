@@ -1,0 +1,25 @@
+<th:block xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+          xmlns:th="http://www.thymeleaf.org">
+    <div class="jumbotron mt-3 re-color">
+        <h1 class="mt-4" th:text="#{user.home.title(${#authentication.getPrincipal().getUsername()})}"/>
+        <hr class="my-4"/>
+        <h5 class="mb-4" th:text="#{user.home.text}"/>
+
+        <div sec:authorize="isAuthenticated()">
+            This content is only shown to authenticated users.
+        </div>
+        <div sec:authorize="hasRole('ROLE_ROOT')">
+            This content is only shown to Root.
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            This content is only shown to administrators.
+        </div>
+        <div sec:authorize="hasRole('ROLE_MODERATOR')">
+            This content is only shown to moderators.
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+            This content is only shown to users.
+        </div>
+
+    </div>
+</th:block>
