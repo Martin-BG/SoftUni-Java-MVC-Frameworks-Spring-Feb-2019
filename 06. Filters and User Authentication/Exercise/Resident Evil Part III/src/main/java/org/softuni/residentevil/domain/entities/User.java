@@ -3,8 +3,8 @@ package org.softuni.residentevil.domain.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEmail;
+import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEncryptedPassword;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityAuthorities;
-import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityPassword;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserUsername;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,8 +26,8 @@ public class User extends BaseUuidEntity implements UserDetails {
     @Column(unique = true, nullable = false, updatable = false, length = ValidUserUsername.MAX_LENGTH)
     private String username;
 
-    @ValidUserEntityPassword
-    @Column(nullable = false)
+    @ValidUserEncryptedPassword
+    @Column(nullable = false, length = ValidUserEncryptedPassword.MAX_LENGTH)
     private String password;
 
     @ValidUserEmail

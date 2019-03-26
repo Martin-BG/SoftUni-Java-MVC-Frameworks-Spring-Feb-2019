@@ -8,8 +8,8 @@ import org.softuni.residentevil.domain.api.Bindable;
 import org.softuni.residentevil.domain.entities.User;
 import org.softuni.residentevil.domain.models.binding.role.RoleBindingModel;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEmail;
+import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEncryptedPassword;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityAuthorities;
-import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityPassword;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserUsername;
 
 import javax.validation.Valid;
@@ -28,7 +28,7 @@ public class UserBindingModel implements Bindable<User>, Serializable {
     @ValidUserUsername
     private String username;
 
-    @ValidUserEntityPassword
+    @ValidUserEncryptedPassword
     private String password;
 
     @ValidUserEmail
