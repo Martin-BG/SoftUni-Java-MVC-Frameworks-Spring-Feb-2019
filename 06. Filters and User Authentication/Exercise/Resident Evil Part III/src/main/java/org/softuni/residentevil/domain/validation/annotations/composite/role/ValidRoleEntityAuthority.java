@@ -14,7 +14,9 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Should start with ROLE_, contain only A-Z and _ (cannot be last character), length {@value MIN_LENGTH}-{@value MAX_LENGTH}
+ * Should start with ROLE_,
+ * contain only A-Z and _ (cannot be last character),
+ * length {@value MIN_LENGTH}-{@value MAX_LENGTH}
  */
 
 @NotBlank
