@@ -42,8 +42,8 @@ public class User extends BaseUuidEntity implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> authorities = new HashSet<>();
 
-    private boolean isAccountNonLocked = true;
-    private boolean isAccountNonExpired = true;
-    private boolean isCredentialsNonExpired = true;
-    private boolean isEnabled = true;
+    private boolean isAccountNonLocked;
+    private boolean isAccountNonExpired;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 }
