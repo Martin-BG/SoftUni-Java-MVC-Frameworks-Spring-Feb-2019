@@ -81,7 +81,7 @@
                         $tr.appendTo($tbody);
                     });
                     const $table = $("<table class='table'>");
-                    const $header = $(` <thead>
+                    const $thead = $(` <thead>
                                     <tr>
                                         <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.index})]</th>
                                         <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.name})]</th>
@@ -91,7 +91,7 @@
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>`);
-                    $header.appendTo($table);
+                    $thead.appendTo($table);
                     $tbody.appendTo($table);
                     $table.appendTo($content);
                     $spinner.hide();
@@ -120,7 +120,7 @@
                         $tr.appendTo($tbody);
                     });
                     const $table = $("<table class='table'>");
-                    const $header = $(` <thead>
+                    const $thead = $(` <thead>
                                     <tr>
                                         <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.index})]</th>
                                         <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.name})]</th>
@@ -128,7 +128,7 @@
                                         <th scope="col" class="font-weight-bold">[(#{capitals.all.table-header.longitude})]</th>
                                     </tr>
                                 </thead>`);
-                    $header.appendTo($table);
+                    $thead.appendTo($table);
                     $tbody.appendTo($table);
                     $table.appendTo($content);
                     $spinner.hide();
