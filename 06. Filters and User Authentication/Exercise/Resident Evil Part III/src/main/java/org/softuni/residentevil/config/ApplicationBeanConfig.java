@@ -16,7 +16,7 @@ import java.util.TimeZone;
 
 @Configuration
 @EnableCaching
-public class ApplicationConfig {
+public class ApplicationBeanConfig {
 
     private static final String SYSTEM_TIME_ZONE = "UTC";
 
