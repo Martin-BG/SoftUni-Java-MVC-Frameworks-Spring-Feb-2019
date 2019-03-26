@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
  * </ul>
  * see {@link EqualFields}
  */
+
 @Log
 public class EqualFieldsValidator implements ConstraintValidator<EqualFields, Object> {
 

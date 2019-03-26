@@ -10,6 +10,7 @@ import java.lang.annotation.*;
  * Fields could be of any type that implements equals().
  * {@code null} values are also included in validation.
  */
+
 @Repeatable(EqualFields.List.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -17,7 +18,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface EqualFields {
 
-    String message() default "{equalfields.default}";
+    String message() default "{equal-fields.default}";
 
     Class<?>[] groups() default {};
 
