@@ -6,6 +6,7 @@ import org.softuni.residentevil.domain.entities.Capital;
 import org.softuni.residentevil.domain.models.projections.capital.CapitalAllProjection;
 import org.softuni.residentevil.domain.models.view.capital.CapitalSimpleViewModel;
 import org.softuni.residentevil.repository.CapitalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +27,7 @@ public class CapitalServiceImpl extends BaseService<Capital, Long, CapitalReposi
     public static final String CAPITALS = "capitals";
     private static final Sort SORT_ASC_BY_NAME = Sort.by(Sort.Direction.ASC, "name");
 
+    @Autowired
     public CapitalServiceImpl(CapitalRepository repository, ModelMapper mapper) {
         super(repository, mapper);
     }
