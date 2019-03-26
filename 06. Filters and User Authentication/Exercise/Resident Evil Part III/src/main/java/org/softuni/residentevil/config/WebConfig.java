@@ -19,6 +19,12 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_VIRUS_DELETE = "/viruses/delete";
     public static final String URL_VIRUS_EDIT = "/viruses/edit";
     public static final String URL_ALL = "/all";
+    public static final String URL_USER_REGISTER = "/user/register";
+    public static final String URL_USER_LOGIN = "/user/login";
+    public static final String URL_USER_LOGOUT = "/user/logout";
+    public static final String URL_USER_HOME = "/user/home";
+    public static final String URL_USER_ALL = "/user";
+
 
     public static final String REST_API_CAPITAL = "/api/capital";
     public static final String REST_API_VIRUS = "/api/virus";
