@@ -1,10 +1,15 @@
-<th:block xmlns:th="http://www.thymeleaf.org">
+<th:block xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+          xmlns:th="http://www.thymeleaf.org">
     <div class="header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
         <h2 id="title" th:text="#{all.title}"/>
         <div class="my-auto">
-            <div class="radio d-inline mx-5">
+            <div class="radio d-inline mx-5" sec:authorize="!hasAuthority('ROLE_MODERATOR')">
                 <input id="virusesRadio" name="selection" type="radio">
                 <label for="virusesRadio" th:text="#{all.radio.label.viruses}"/>
+            </div>
+            <div class="radio d-inline mx-5" sec:authorize="hasAuthority('ROLE_MODERATOR')">
+                <input id="virusesRadioModerator" name="selection" type="radio">
+                <label for="virusesRadioModerator" th:text="#{all.radio.label.viruses}"/>
             </div>
             <div class="radio d-inline mx-5">
                 <input id="capitalsRadio" name="selection" type="radio">
@@ -43,7 +48,7 @@
             };
         }());
 
-        const loadViruses = () => {
+        const loadVirusesModerator = () => {
             const $title = $("#title");
             const $content = $("#content");
             const $spinner = $("#spinner");
@@ -104,6 +109,43 @@
                 });
         };
 
+        const loadViruses = () => {
+            const $title = $("#title");
+            const $content = $("#content");
+            const $spinner = $("#spinner");
+
+            $title.text([[#{viruses.all.title}]]);
+            $content.empty();
+            $spinner.show();
+
+            http.get([[${T(org.softuni.residentevil.config.WebConfig).REST_API_VIRUS}]])
+                .then(viruses => {
+                    const $tbody = $("<tbody>");
+                    viruses.forEach((virus, index) => {
+                        const $tr = $(` <tr>
+                                            <td class="font-weight-bold" scope="row">${index + 1}</td>
+                                            <td scope="row">${virus.name}</td>
+                                            <td scope="row">${virus.magnitude}</td>
+                                            <td scope="row">${virus.releasedOn}</td>
+                                        </tr>`);
+                        $tr.appendTo($tbody);
+                    });
+                    const $table = $("<table class='table'>");
+                    const $thead = $(` <thead>
+                                    <tr>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.index})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.name})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.magnitude})]</th>
+                                        <th scope="col" class="font-weight-bold">[(#{viruses.all.table-header.released-on})]</th>
+                                    </tr>
+                                </thead>`);
+                    $thead.appendTo($table);
+                    $tbody.appendTo($table);
+                    $table.appendTo($content);
+                    $spinner.hide();
+                });
+        };
+
         const loadCapitals = () => {
             const $title = $("#title");
             const $content = $("#content");
@@ -145,6 +187,7 @@
             csrfToken = $("meta[name='_csrf']").attr("content");
             csrfHeader = $("meta[name='_csrf_header']").attr("content");
             $('#virusesRadio').on("click", loadViruses);
+            $('#virusesRadioModerator').on("click", loadVirusesModerator);
             $('#capitalsRadio').on("click", loadCapitals);
         };
     </script>
