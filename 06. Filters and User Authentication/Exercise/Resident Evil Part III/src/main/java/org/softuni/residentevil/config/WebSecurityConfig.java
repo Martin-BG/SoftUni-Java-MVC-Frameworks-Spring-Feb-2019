@@ -51,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl(WebConfig.URL_USER_LOGOUT)
-                .logoutSuccessUrl(WebConfig.URL_INDEX);
+                .logoutSuccessUrl(WebConfig.URL_INDEX).and()
+                .exceptionHandling().accessDeniedPage(WebConfig.URL_UNAUTHORIZED);
     }
 }
