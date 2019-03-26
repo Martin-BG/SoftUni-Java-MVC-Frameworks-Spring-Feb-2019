@@ -1,0 +1,49 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <form class="mt-5 center-block w-75 mx-auto"
+          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_REGISTER}__}"
+          th:method="post"
+          th:object="${__${T(org.softuni.residentevil.web.controllers.user.RegisterUserController).USER}__}">
+
+        <h2 class="header mt-4 mb-4" th:text="#{user.register-form.title}"/>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('username')}" th:text="#{user.register-form.username}"></label>
+            <input class="form-control" th:classappend="${#fields.hasErrors('username')}? re-error-border"
+                   th:field="*{username}"
+                   type="text"/>
+            <small class="re-error" th:errors="*{username}" th:if="${#fields.hasErrors('username')}"/>
+        </div>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('email')}" th:text="#{user.register-form.email}"></label>
+            <input class="form-control" th:classappend="${#fields.hasErrors('email')}? re-error-border"
+                   th:field="*{email}"
+                   type="email"/>
+            <small class="re-error" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"/>
+        </div>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('password')}" th:text="#{user.register-form.password}"></label>
+            <input class="form-control" th:classappend="${#fields.hasErrors('password')}? re-error-border"
+                   th:field="*{password}"
+                   type="password"/>
+            <small class="re-error" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"/>
+        </div>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('confirmPassword')}" th:text="#{user.register-form.confirmPassword}"></label>
+            <input class="form-control" th:classappend="${#fields.hasErrors('confirmPassword')}? re-error-border"
+                   th:field="*{confirmPassword}"
+                   type="password"/>
+            <small class="re-error" th:errors="*{confirmPassword}" th:if="${#fields.hasErrors('confirmPassword')}"/>
+        </div>
+
+        <th:block th:if="${#fields.hasErrors('global')}">
+            <small class="re-error" th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
+        </th:block>
+
+        <div class="form-actions mx-auto text-center">
+            <button class="btn re-color my-button" th:text="#{user.register-form.button}" type="submit"/>
+        </div>
+    </form>
+</th:block>
