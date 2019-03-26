@@ -20,6 +20,10 @@
             <label class="inline" for="remember_me" th:text="#{user.login-form.remember-me}"/>
         </div>
 
+        <th:block th:if="${param.error}" th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+            <div class="re-error" th:text="${errorMsg}"/>
+        </th:block>
+
         <div class="form-actions mx-auto text-center">
             <button class="btn re-color my-button" th:text="#{user.login-form.button}" type="submit"/>
         </div>
