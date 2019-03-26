@@ -1,4 +1,5 @@
-<th:block xmlns:th="http://www.thymeleaf.org">
+<th:block xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+          xmlns:th="http://www.thymeleaf.org">
     <div class="header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
         <h2 th:text="#{viruses.all.title}"/>
     </div>
@@ -9,8 +10,10 @@
             <th scope="col" th:text="#{viruses.all.table-header.name}"/>
             <th scope="col" th:text="#{viruses.all.table-header.magnitude}"/>
             <th scope="col" th:text="#{viruses.all.table-header.released-on}"/>
-            <th scope="col" th:text="#{viruses.all.table-header.actions}"/>
-            <th scope="col"/>
+            <th:block sec:authorize="hasRole('ROLE_MODERATOR')">
+                <th scope="col" th:text="#{viruses.all.table-header.actions}"/>
+                <th scope="col"/>
+            </th:block>
         </tr>
         </thead>
         <tbody>
@@ -22,26 +25,28 @@
                 <td th:text="*{name}"/>
                 <td th:text="*{magnitude.label}"/>
                 <td th:text="${#dates.format(virus.getReleasedOn(), @environment.getProperty('resident.evil.date.format'))}"/>
-                <td>
-                    <form class="d-inline mr-3"
-                          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__}"
-                          th:method="post">
-                        <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark table-button"
-                                th:text="#{viruses.all.table-button.edit}"
-                                type="submit"/>
-                    </form>
-                </td>
-                <td>
-                    <form class="d-inline"
-                          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}__}"
-                          th:method="post">
-                        <input hidden name="id" th:value="*{id}">
-                        <button class="btn btn-light btn-sm border-dark table-button"
-                                th:text="#{viruses.all.table-button.delete}"
-                                type="submit"/>
-                    </form>
-                </td>
+                <th:block sec:authorize="hasRole('ROLE_MODERATOR')">
+                    <td>
+                        <form class="d-inline mr-3"
+                              th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}__}"
+                              th:method="post">
+                            <input hidden name="id" th:value="*{id}">
+                            <button class="btn btn-light btn-sm border-dark table-button"
+                                    th:text="#{viruses.all.table-button.edit}"
+                                    type="submit"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form class="d-inline"
+                              th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}__}"
+                              th:method="post">
+                            <input hidden name="id" th:value="*{id}">
+                            <button class="btn btn-light btn-sm border-dark table-button"
+                                    th:text="#{viruses.all.table-button.delete}"
+                                    type="submit"/>
+                        </form>
+                    </td>
+                </th:block>
             </tr>
         </th:block>
         </tbody>
