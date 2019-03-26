@@ -1,0 +1,22 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <form class="mt-5 center-block w-75 mx-auto"
+          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_LOGIN}__}"
+          th:method="post">
+
+        <h2 class="header mt-4 mb-4" th:text="#{user.login-form.title}"/>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('username')}" th:text="#{user.login-form.username}"></label>
+            <input class="form-control" name="username" type="text"/>
+        </div>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('password')}" th:text="#{user.login-form.password}"></label>
+            <input class="form-control" name="password" type="password"/>
+        </div>
+
+        <div class="form-actions mx-auto text-center">
+            <button class="btn re-color my-button" th:text="#{user.login-form.button}" type="submit"/>
+        </div>
+    </form>
+</th:block>
