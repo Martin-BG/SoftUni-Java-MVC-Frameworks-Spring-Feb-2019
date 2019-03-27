@@ -70,7 +70,7 @@ public class BaseController {
     /**
      * List of text field names that should be read without any modification by this controller's methods
      *
-     * @return List of strings (ex. List.of("password", "confirmPassword")
+     * @return List of strings (ex. List.of("password", "confirmPassword"))
      */
     protected List<String> getUnmodifiedTextFieldsList() {
         return List.of();
