@@ -19,9 +19,9 @@ System and IDE should be configured to use:
 Configure IDE to recognize [Lombok](https://projectlombok.org/) - [instructions](https://projectlombok.org/setup/overview)
 ___
 #### Project configuration
-* [pom.xml](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%2C%20Interceptors%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/pom.xml)
-* [application.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%2C%20Interceptors%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/resources/application.properties) - 
-customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%2C%20Interceptors%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/config/MySQL8UnicodeDialect.java)**, 
+* [pom.xml](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/pom.xml)
+* [application.properties](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/resources/application.properties) - 
+customized **[MySQL8UnicodeDialect](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/config/MySQL8UnicodeDialect.java)**, 
 **logging**, messages settings, **compression**, static resources [**caching**](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#headers-cache-control) 
 [**[1]**](https://stackoverflow.com/a/35640540/7598851)
 [**[2]**](https://www.baeldung.com/cachable-static-assets-with-spring-mvc)
