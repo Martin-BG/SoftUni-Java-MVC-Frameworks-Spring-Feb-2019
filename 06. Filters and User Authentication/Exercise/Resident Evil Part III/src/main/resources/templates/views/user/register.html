@@ -42,7 +42,7 @@
             <small class="re-error" th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
         </th:block>
 
-        <div class="form-actions mx-auto text-center">
+        <div class="form-actions mx-auto text-center mt-4">
             <button class="btn re-color my-button" th:text="#{user.register-form.button}" type="submit"/>
         </div>
     </form>
