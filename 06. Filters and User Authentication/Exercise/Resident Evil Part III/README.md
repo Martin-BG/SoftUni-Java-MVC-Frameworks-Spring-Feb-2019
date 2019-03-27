@@ -31,3 +31,55 @@ ___
 [**Part I**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil) 
 and
 [**Part II**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/05.%20JavaScript%20and%20AJAX/Exercise/Resident%20Evil%20Part%20II)
+___
+## Notes to myself
+* [Disable](https://www.gamefromscratch.com/post/2015/02/01/Preventing-IntelliJ-code-auto-formatting-from-ruining-your-day.aspx) 
+code formatting in IntelliJ on places where it fails:
+```java
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    //...
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http
+            .cors()
+                .disable()
+            .csrf()
+                .csrfTokenRepository(csrfTokenRepository())
+                .and()
+            .authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/images/**")
+                    .permitAll()
+                .antMatchers(WebConfig.URL_INDEX)
+                    .permitAll()
+                .antMatchers(WebConfig.URL_USER_REGISTER, WebConfig.URL_USER_LOGIN)
+                    .anonymous()
+                .antMatchers(WebConfig.URL_USER_ALL)
+                    .hasAuthority(Authority.ADMIN.role())
+                .antMatchers(WebConfig.URL_VIRUS_EDIT, WebConfig.URL_VIRUS_DELETE, WebConfig.URL_VIRUS_ADD)
+                    .hasAuthority(Authority.MODERATOR.role())
+                .anyRequest()
+                    .authenticated()
+                .and()
+            .formLogin()
+                .loginPage(WebConfig.URL_USER_LOGIN)
+                .defaultSuccessUrl(WebConfig.URL_USER_HOME)
+                .and()
+            .rememberMe()
+                .userDetailsService(userService)
+                .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS)
+                .and()
+            .logout()
+                .logoutUrl(WebConfig.URL_USER_LOGOUT)
+                .deleteCookies(J_SESSION_ID)
+                .logoutSuccessUrl(WebConfig.URL_USER_LOGIN + "?logout")
+                .and()
+            .exceptionHandling()
+                .accessDeniedPage(WebConfig.URL_UNAUTHORIZED)
+            .and()
+                .sessionManagement()
+                .invalidSessionUrl(WebConfig.URL_USER_LOGIN + "?expired");
+        // @formatter:on
+    }
+}
+```
