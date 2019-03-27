@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 @Log
-@Service
+@Service("userDetailsService")
 @Validated
 @Transactional
 public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {
