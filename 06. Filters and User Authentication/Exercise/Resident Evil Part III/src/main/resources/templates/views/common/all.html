@@ -71,7 +71,7 @@
                                                       action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_EDIT}]]
                                                       method="post">
                                                     <input hidden name="id" value="${virus.id}">
-                                                    <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                                                    <input type="hidden" name="${csrfHeader}" value="${csrfToken}"/>
                                                     <button class="btn btn-light btn-sm border-dark table-button" type="submit">
                                                             [(#{viruses.all.table-button.edit})]
                                                      </button>
@@ -82,7 +82,7 @@
                                                       action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}]]
                                                       method="post">
                                                     <input hidden name="id" value="${virus.id}">
-                                                    <input type="hidden" name="_csrf" value="${csrfToken}"/>
+                                                    <input type="hidden" name="${csrfHeader}" value="${csrfToken}"/>
                                                     <button class="btn btn-light btn-sm border-dark table-button" type="submit">
                                                             [(#{viruses.all.table-button.delete})]
                                                      </button>
@@ -185,7 +185,7 @@
 
         window.onload = () => {
             csrfToken = $("meta[name='_csrf']").attr("content");
-            csrfHeader = $("meta[name='_csrf_header']").attr("content");
+            csrfHeader = $("meta[name='_csrf_param']").attr("content");
             $('#virusesRadio').on("click", loadViruses);
             $('#virusesRadioModerator').on("click", loadVirusesModerator);
             $('#capitalsRadio').on("click", loadCapitals);
