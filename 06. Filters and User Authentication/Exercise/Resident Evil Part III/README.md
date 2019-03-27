@@ -31,6 +31,271 @@ ___
 [**Part I**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/04.%20Thymeleaf%20and%20Controllers/Exercise/Resident%20Evil) 
 and
 [**Part II**](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/05.%20JavaScript%20and%20AJAX/Exercise/Resident%20Evil%20Part%20II)
+* Spring Security [configuration](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/config/WebSecurityConfig.java)
+* GrantedAuthority [implementation](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/entities/Role.java):
+```java
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "roles")
+public class Role extends BaseLongEntity implements GrantedAuthority {
+
+    private static final long serialVersionUID = 1L;
+
+    @ValidRoleEntityAuthority
+    @Column(unique = true, nullable = false, length = ValidRoleEntityAuthority.MAX_LENGTH)
+    private String authority;
+}
+```
+* UserDetails [implementation](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/entities/User.java),
+lazy authorities initialization thanks to a named query:
+```java
+@Getter
+@NoArgsConstructor
+@Entity
+@Table(name = "users")
+@NamedQuery(name = "User.findUserEager",
+        query = "SELECT u FROM User u LEFT JOIN FETCH u.authorities AS a WHERE u.username = :username")
+public class User extends BaseUuidEntity implements UserDetails {
+
+    private static final long serialVersionUID = 1L;
+
+    @ValidUserUsername
+    @Column(unique = true, nullable = false, updatable = false, length = ValidUserUsername.MAX_LENGTH)
+    private String username;
+
+    @ValidUserEncryptedPassword
+    @Column(nullable = false, length = ValidUserEncryptedPassword.MAX_LENGTH)
+    private String password;
+
+    @ValidUserEmail
+    @Column(unique = true, nullable = false, length = ValidUserEmail.MAX_LENGTH)
+    private String email;
+
+    @ValidUserEntityAuthorities
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> authorities = new HashSet<>();
+
+    private boolean isAccountNonLocked;
+    private boolean isAccountNonExpired;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
+}
+```
+* UserDetailsService [implementation](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/service/UserServiceImpl.java):
+```java
+public interface UserService extends Service<User, UUID>, UserDetailsService {
+    // ..
+}
+
+@Log
+@Service("userDetailsService")
+@Validated
+@Transactional
+@CacheConfig(cacheNames = UserServiceImpl.USERS)
+public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {
+    //..
+    
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(cacheNames = USERS, key = "#username")
+    public UserDetails loadUserByUsername(String username) {
+        return repository
+                .findUserEager(username)
+                .orElseThrow(() -> USERNAME_NOT_FOUND_EXCEPTION);
+    }
+}
+```
+* [Named queries](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/entities/User.java) 
+can be used directly as [repository methods](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/repository/UserRepository.java):
+```java
+@Table(name = "users")
+@NamedQuery(name = "User.findUserEager",
+        query = "SELECT u FROM User u LEFT JOIN FETCH u.authorities AS a WHERE u.username = :username")
+public class User extends BaseUuidEntity implements UserDetails {
+    //..
+}
+
+@Validated
+@Repository
+public interface UserRepository extends GenericRepository<User, UUID> {
+
+    Optional<User> findUserEager(@ValidUserUsername String username);
+    
+    //...
+}
+```
+* **Remember Me** functionality:
+```java
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * 30; // 30 Days
+
+    private final UserDetailsService userService;
+
+    @Autowired
+    public WebSecurityConfig(@Qualifier("userDetailsService") UserDetailsService userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        
+        http
+            .rememberMe()
+                .userDetailsService(userService)
+                .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS);
+                //..
+    }
+    //..
+}
+
+public interface UserService extends Service<User, UUID>, UserDetailsService {
+    // ..
+}
+
+@Log
+@Service("userDetailsService")
+@Validated
+@Transactional
+@CacheConfig(cacheNames = UserServiceImpl.USERS)
+public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {
+    //..
+    
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(cacheNames = USERS, key = "#username")
+    public UserDetails loadUserByUsername(String username) {
+        return repository
+                .findUserEager(username)
+                .orElseThrow(() -> USERNAME_NOT_FOUND_EXCEPTION);
+    }
+}
+```
+```html
+    <form class="mt-5 center-block w-75 mx-auto"
+          th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_LOGIN}__}"
+          th:method="post">
+        <!--...-->
+        <div class="form-group">
+            <input id="remember_me" name="remember-me" type="checkbox"/>
+            <label class="inline" for="remember_me" th:text="#{user.login-form.remember-me}"/>
+        </div>
+
+        <div class="form-actions mx-auto text-center mt-4">
+            <button class="btn re-color my-button" th:text="#{user.login-form.button}" type="submit"/>
+        </div>
+    </form>
+```
+* CSRF with [Thymeleaf](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/resources/templates/fragments/head.html) 
+and [AJAX](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/resources/templates/views/common/all.html) 
+requests:
+```java
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    //..
+    private static CsrfTokenRepository csrfTokenRepository() {
+        final String CSRF_ATTRIBUTE_NAME = "_csrf";
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setSessionAttributeName(CSRF_ATTRIBUTE_NAME);
+        return repository;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf()
+                .csrfTokenRepository(csrfTokenRepository())
+                .and();
+        //..
+    }
+}
+```
+```html
+    <!--save csrf token in <head>...</head>-->
+    <meta th:content="${_csrf.token}" th:name="_csrf"/>
+    <meta th:content="${_csrf.parameterName}" th:name="_csrf_param"/>
+    
+    <!--get values in JS-->
+    window.onload = () => {
+        csrfToken = $("meta[name='_csrf']").attr("content");
+        csrfHeader = $("meta[name='_csrf_param']").attr("content");
+        $('#virusesRadio').on("click", loadViruses);
+        $('#virusesRadioModerator').on("click", loadVirusesModerator);
+        $('#capitalsRadio').on("click", loadCapitals);
+    };
+    
+    
+    <!--use to create dynamic content-->
+    <form class="d-inline mr-3"
+          action=[[${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_DELETE}]]
+          method="post">
+        <input hidden name="id" value="${virus.id}">
+        <input type="hidden" name="${csrfHeader}" value="${csrfToken}"/>
+        <button class="btn btn-light btn-sm border-dark table-button" type="submit">
+                [(#{viruses.all.table-button.delete})]
+         </button>
+    </form>
+```
+* Custom class-type validation annotation [@EqualFields](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/validation/annotations/custom/EqualFields.java):
+```java
+//..
+@EqualFields(message = "{user.password.not-match}", fields = {"password", "confirmPassword"})
+public class UserRegisterBindingModel implements Bindable<User>, Serializable {
+    //..
+    
+    @ValidUserPassword
+    private String password;
+
+    @ValidUserPassword
+    private String confirmPassword;
+}
+```
+* Trim all text input fields except for password/confirmPassword. 
+Default behaviour is defined in [BaseController](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/web/controllers/BaseController.java) 
+and configured as needed in child classes 
+[[1]](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/web/controllers/user/RegisterUserController.java)
+[[2]](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/web/controllers/user/LoginUserController.java):
+```java
+@Log
+public class BaseController {
+
+    // .. Javadoc omitted too
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(isEmptyInputStringsNull()));
+
+        preventTextModificationForFields(binder, getUnmodifiedTextFieldsList());
+    }
+
+    protected List<String> getUnmodifiedTextFieldsList() {
+        return List.of();
+    }
+}
+
+@Layout
+@Controller
+@RequestMapping(WebConfig.URL_USER_REGISTER)
+public class RegisterUserController extends BaseController {
+
+    //..
+
+    @Override
+    protected List<String> getUnmodifiedTextFieldsList() {
+        return List.of("password", "confirmPassword");
+    }
+}
+```
 ___
 ## Notes to myself
 * [Disable](https://www.gamefromscratch.com/post/2015/02/01/Preventing-IntelliJ-code-auto-formatting-from-ruining-your-day.aspx) 
