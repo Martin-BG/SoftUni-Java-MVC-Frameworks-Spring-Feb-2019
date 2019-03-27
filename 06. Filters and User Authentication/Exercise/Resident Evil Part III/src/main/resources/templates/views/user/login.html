@@ -24,7 +24,15 @@
             <div class="re-error" th:text="#{user.login-form.invalid-credentials}"/>
         </th:block>
 
-        <div class="form-actions mx-auto text-center">
+        <th:block th:if="${param.expired}">
+            <div class="re-error" th:text="#{user.login-form.session-expired}"/>
+        </th:block>
+
+        <th:block th:if="${param.logout}">
+            <div class="re-error" th:text="#{user.login-form.logout}"/>
+        </th:block>
+
+        <div class="form-actions mx-auto text-center mt-4">
             <button class="btn re-color my-button" th:text="#{user.login-form.button}" type="submit"/>
         </div>
     </form>
