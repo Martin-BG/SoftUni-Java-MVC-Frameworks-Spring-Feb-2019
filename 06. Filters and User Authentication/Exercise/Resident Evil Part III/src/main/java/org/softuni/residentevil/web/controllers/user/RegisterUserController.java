@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Layout
 @Controller
@@ -28,6 +29,11 @@ public class RegisterUserController extends BaseController {
 
     public RegisterUserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @Override
+    protected List<String> getUnmodifiedTextFieldsList() {
+        return List.of("password", "confirmPassword");
     }
 
     @GetMapping
