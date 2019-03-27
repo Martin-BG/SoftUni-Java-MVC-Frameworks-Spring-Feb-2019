@@ -24,7 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_USER_LOGOUT = "/user/logout";
     public static final String URL_USER_HOME = "/user/home";
     public static final String URL_USER_ALL = "/user";
-    public static final String URL_UNAUTHORIZED = "/unauthorized";
+    public static final String URL_ERROR_UNAUTHORIZED = "/unauthorized";
 
 
     public static final String REST_API_CAPITAL = "/api/capital";

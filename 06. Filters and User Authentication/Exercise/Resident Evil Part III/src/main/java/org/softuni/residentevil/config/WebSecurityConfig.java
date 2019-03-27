@@ -71,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl(WebConfig.URL_USER_LOGIN + "?logout")
                 .and()
             .exceptionHandling()
-                .accessDeniedPage(WebConfig.URL_UNAUTHORIZED)
+                .accessDeniedPage(WebConfig.URL_ERROR_UNAUTHORIZED)
             .and()
                 .sessionManagement()
                 .invalidSessionUrl(WebConfig.URL_USER_LOGIN + "?expired");
