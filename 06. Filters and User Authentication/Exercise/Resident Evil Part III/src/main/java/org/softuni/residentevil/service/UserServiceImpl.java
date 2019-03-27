@@ -8,6 +8,8 @@ import org.softuni.residentevil.domain.models.binding.role.RoleBindingModel;
 import org.softuni.residentevil.domain.models.binding.user.UserBindingModel;
 import org.softuni.residentevil.domain.models.binding.user.UserRegisterBindingModel;
 import org.softuni.residentevil.repository.UserRepository;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +27,10 @@ import java.util.logging.Logger;
 @Service("userDetailsService")
 @Validated
 @Transactional
+@CacheConfig(cacheNames = UserServiceImpl.USERS)
 public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {
+
+    public static final String USERS = "users";
 
     private static final UsernameNotFoundException USERNAME_NOT_FOUND_EXCEPTION =
             new UsernameNotFoundException("Username not found");
@@ -50,6 +55,7 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = USERS, key = "#username")
     public UserDetails loadUserByUsername(String username) {
         return repository
                 .findUserEager(username)
