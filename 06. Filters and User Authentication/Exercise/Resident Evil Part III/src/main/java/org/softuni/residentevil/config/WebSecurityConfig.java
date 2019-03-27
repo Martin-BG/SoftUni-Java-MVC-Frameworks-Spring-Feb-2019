@@ -1,14 +1,17 @@
 package org.softuni.residentevil.config;
 
 import org.softuni.residentevil.domain.enums.Authority;
+import org.softuni.residentevil.web.handlers.AccessDeniedHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -71,10 +74,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl(WebConfig.URL_USER_LOGIN + "?logout")
                 .and()
             .exceptionHandling()
-                .accessDeniedPage(WebConfig.URL_ERROR_UNAUTHORIZED)
+                .accessDeniedHandler(accessDeniedHandler())
             .and()
                 .sessionManagement()
                 .invalidSessionUrl(WebConfig.URL_USER_LOGIN + "?expired");
         // @formatter:on
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new AccessDeniedHandlerImpl();
     }
 }
