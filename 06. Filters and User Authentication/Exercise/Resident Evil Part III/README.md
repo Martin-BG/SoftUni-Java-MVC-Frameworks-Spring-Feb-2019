@@ -296,6 +296,49 @@ public class RegisterUserController extends BaseController {
     }
 }
 ```
+* Custom [AccessDeniedHandler](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/web/handlers/AccessDeniedHandlerImpl.java) 
+implementation with proper redirect and HTTP status code:
+```java
+public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
+
+    @Override
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        //...
+        response.sendRedirect(request.getContextPath() + WebConfig.URL_ERROR_UNAUTHORIZED);
+    }
+}
+
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    //..
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            //..
+            .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler());
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new AccessDeniedHandlerImpl();
+    }
+}
+
+@Layout
+@Controller
+public class UnauthorizedController extends BaseController {
+
+    private static final String VIEW_ERROR_UNAUTHORIZED = "error/unauthorized";
+
+    @GetMapping(WebConfig.URL_ERROR_UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String get() {
+        return VIEW_ERROR_UNAUTHORIZED;
+    }
+}
+```
 ___
 ## Notes to myself
 * [Disable](https://www.gamefromscratch.com/post/2015/02/01/Preventing-IntelliJ-code-auto-formatting-from-ruining-your-day.aspx) 
