@@ -15,6 +15,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.util.NestedServletException;
 
 import static junit.framework.TestCase.assertTrue;
@@ -28,6 +29,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class UsersControllerTest {
+
+    private static final String URL_USERS_LOGIN = "/users/login";
+    private static final String URL_USERS_REGISTER = "/users/register";
+
+    private static final String REDIRECT_URL_PATTERN_LOGIN = "**/login";
+
+    private static final String VIEW_LOGIN = "login";
+    private static final String VIEW_REGISTER = "register";
+
+    private static final String USER_USERNAME = "username";
+    private static final String USER_EMAIL = "mail@email.com";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_WRONG_CONFIRM_PASSWORD = "another password";
+
+    private static final String PARAM_USERNAME = "username";
+    private static final String PARAM_PASSWORD = "password";
+    private static final String PARAM_CONFIRM_PASSWORD = "confirmPassword";
+    private static final String PARAM_EMAIL = "email";
+
+    private final static MockHttpServletRequestBuilder POST_USER_VALID_DATA = post(URL_USERS_REGISTER)
+            .param(PARAM_USERNAME, USER_USERNAME)
+            .param(PARAM_PASSWORD, USER_PASSWORD)
+            .param(PARAM_CONFIRM_PASSWORD, USER_PASSWORD)
+            .param(PARAM_EMAIL, USER_EMAIL);
+
+    private final static MockHttpServletRequestBuilder POST_USER_WRONG_CONFIRM_PASSWORD = post(URL_USERS_REGISTER)
+            .param(PARAM_USERNAME, USER_USERNAME)
+            .param(PARAM_PASSWORD, USER_PASSWORD)
+            .param(PARAM_CONFIRM_PASSWORD, USER_WRONG_CONFIRM_PASSWORD)
+            .param(PARAM_EMAIL, USER_EMAIL);
+
+    private static final String EMPTY_VALUE = "";
+    private final static MockHttpServletRequestBuilder POST_USER_EMPTY_FIELDS = post(URL_USERS_REGISTER)
+            .param(PARAM_USERNAME, EMPTY_VALUE)
+            .param(PARAM_PASSWORD, EMPTY_VALUE)
+            .param(PARAM_CONFIRM_PASSWORD, EMPTY_VALUE)
+            .param(PARAM_EMAIL, EMPTY_VALUE);
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,90 +84,82 @@ public class UsersControllerTest {
     @Test
     @WithAnonymousUser
     public void login_withAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
-        mockMvc.perform(get("/users/login"))
+        mockMvc.perform(get(URL_USERS_LOGIN))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name(VIEW_LOGIN));
     }
 
     @Test
     @WithMockUser
     public void login_withAuthenticatedUser_isForbidden() throws Exception {
-        mockMvc.perform(get("/users/login"))
+        mockMvc.perform(get(URL_USERS_LOGIN))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithAnonymousUser
-    public void register_get_WithAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
-        mockMvc.perform(get("/users/register"))
+    public void register_get_withAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
+        mockMvc.perform(get(URL_USERS_REGISTER))
                 .andExpect(status().isOk())
-                .andExpect(view().name("register"));
+                .andExpect(view().name(VIEW_REGISTER));
     }
 
     @Test
     @WithMockUser
-    public void register_get_WithAuthenticatedUser_isForbidden() throws Exception {
-        mockMvc.perform(get("/users/register"))
+    public void register_get_withAuthenticatedUser_isForbidden() throws Exception {
+        mockMvc.perform(get(URL_USERS_REGISTER))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser
-    public void register_post_WithAuthenticatedUser_isForbidden() throws Exception {
-        mockMvc.perform(post("/users/register"))
+    public void register_post_withAuthenticatedUser_isForbidden() throws Exception {
+        mockMvc.perform(post(URL_USERS_REGISTER))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithAnonymousUser
-    public void register_post_ValidDataWithAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
-        mockMvc
-                .perform(
-                        post("/users/register")
-                                .param("username", "pesho")
-                                .param("password", "pws")
-                                .param("confirmPassword", "pwd")
-                                .param("email", "pesho@mail.com"))
+    public void register_post_validDataWithAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
+        mockMvc.perform(POST_USER_VALID_DATA)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
+                .andExpect(redirectedUrlPattern(REDIRECT_URL_PATTERN_LOGIN));
     }
 
     @Test
     @WithAnonymousUser
-    public void register_post_ValidDataWithAnonymousUser_registersNewUser() throws Exception {
-        mockMvc
-                .perform(
-                        post("/users/register")
-                                .param("username", "pesho")
-                                .param("password", "pws")
-                                .param("confirmPassword", "pwd")
-                                .param("email", "pesho@mail.com"));
+    public void register_post_validDataWithAnonymousUser_registersNewUser() throws Exception {
+        mockMvc.perform(POST_USER_VALID_DATA);
 
-        User user = userRepository.findByUsername("pesho").orElseThrow();
+        User user = userRepository.findByUsername(USER_USERNAME).orElseThrow();
         assertNotNull(user.getId());
-        assertNotEquals("", user.getId());
-        assertEquals("pesho", user.getUsername());
-        assertEquals("pesho@mail.com", user.getEmail());
-        assertTrue(passwordEncoder.matches("pws", user.getPassword()));
+        assertFalse(user.getId().isEmpty());
+        assertEquals(USER_USERNAME, user.getUsername());
+        assertEquals(USER_EMAIL, user.getEmail());
+        assertTrue(passwordEncoder.matches(USER_PASSWORD, user.getPassword()));
     }
 
     @Test(expected = NestedServletException.class)
     @WithAnonymousUser
-    public void register_post_DuplicateUsernameWithAnonymousUser_throwsException() throws Exception {
-        mockMvc
-                .perform(
-                        post("/users/register")
-                                .param("username", "pesho")
-                                .param("password", "pws")
-                                .param("confirmPassword", "pwd")
-                                .param("email", "pesho@mail.com"));
+    public void register_post_duplicateUsernameWithAnonymousUser_throwsException() throws Exception {
+        mockMvc.perform(POST_USER_VALID_DATA);
+        mockMvc.perform(POST_USER_VALID_DATA);
+    }
 
-        mockMvc
-                .perform(
-                        post("/users/register")
-                                .param("username", "pesho")
-                                .param("password", "pws")
-                                .param("confirmPassword", "pwd")
-                                .param("email", "pesho@mail.com"));
+
+    @Test(expected = Exception.class)
+    @WithAnonymousUser
+    public void register_post_invalidConfirmPasswordWithAnonymousUser_throwsException() throws Exception {
+        // This test exposes a bug in controller/service logic
+        // as password is never checked against confirmPassword
+        mockMvc.perform(POST_USER_WRONG_CONFIRM_PASSWORD);
+    }
+
+    @Test(expected = Exception.class)
+    @WithAnonymousUser
+    public void register_post_emptyFieldsWithAnonymousUser_throwsException() throws Exception {
+        // This test exposes a bug in controller/service logic
+        // as input data is not validated at all (empty fields accepted)
+        mockMvc.perform(POST_USER_EMPTY_FIELDS);
     }
 }
