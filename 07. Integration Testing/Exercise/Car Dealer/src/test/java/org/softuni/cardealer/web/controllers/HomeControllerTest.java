@@ -18,37 +18,45 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class HomeControllerTest {
 
+    private static final String URL_INDEX = "/";
+    private static final String URL_HOME = "/home";
+
+    private static final String REDIRECT_URL_PATTERN_LOGIN = "**/users/login";
+
+    private static final String VIEW_INDEX = "index";
+    private static final String VIEW_HOME = "home";
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @WithAnonymousUser
     public void index_withAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get(URL_INDEX))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+                .andExpect(view().name(VIEW_INDEX));
     }
 
     @Test
     @WithMockUser
     public void index_withAuthenticatedUser_isForbidden() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get(URL_INDEX))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser
     public void home_withAuthenticatedUser_returnsCorrectViewAndStatus() throws Exception {
-        mockMvc.perform(get("/home"))
+        mockMvc.perform(get(URL_HOME))
                 .andExpect(status().isOk())
-                .andExpect(view().name("home"));
+                .andExpect(view().name(VIEW_HOME));
     }
 
     @Test
     @WithAnonymousUser
     public void home_withAnonymousUser_redirectsToLoginPage() throws Exception {
-        mockMvc.perform(get("/home"))
+        mockMvc.perform(get(URL_HOME))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/users/login"));
+                .andExpect(redirectedUrlPattern(REDIRECT_URL_PATTERN_LOGIN));
     }
 }

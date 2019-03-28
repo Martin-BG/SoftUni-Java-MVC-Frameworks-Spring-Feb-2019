@@ -33,8 +33,6 @@ public class UsersControllerTest {
     private static final String URL_USERS_LOGIN = "/users/login";
     private static final String URL_USERS_REGISTER = "/users/register";
 
-    private static final String REDIRECT_URL_PATTERN_LOGIN = "**/login";
-
     private static final String VIEW_LOGIN = "login";
     private static final String VIEW_REGISTER = "register";
 
@@ -121,9 +119,12 @@ public class UsersControllerTest {
     @Test
     @WithAnonymousUser
     public void register_post_validDataWithAnonymousUser_returnsCorrectViewAndStatus() throws Exception {
+        // This test exposes a flaw in controller redirect logic:
+        // use of relative from current url (/user/register) redirect to "login",
+        // instead of using absolute url ("/users/login")
         mockMvc.perform(POST_USER_VALID_DATA)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern(REDIRECT_URL_PATTERN_LOGIN));
+                .andExpect(redirectedUrl(URL_USERS_LOGIN));
     }
 
     @Test
@@ -145,7 +146,6 @@ public class UsersControllerTest {
         mockMvc.perform(POST_USER_VALID_DATA);
         mockMvc.perform(POST_USER_VALID_DATA);
     }
-
 
     @Test(expected = Exception.class)
     @WithAnonymousUser
