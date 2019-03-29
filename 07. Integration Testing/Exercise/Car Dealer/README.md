@@ -21,4 +21,4 @@ ___
   * [Integration Testing of Spring MVC Applications: Controllers](https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-controllers/)
   * [Integration Testing of Spring MVC Applications: Security](https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-security/)
 * [Spring Security for Spring Boot Integration Tests](https://www.baeldung.com/spring-security-integration-tests)
-* [https://www.baeldung.com/spring-boot-testresttemplate](https://www.baeldung.com/spring-boot-testresttemplate)
+* [Exploring the Spring Boot TestRestTemplate](https://www.baeldung.com/spring-boot-testresttemplate)
