@@ -45,13 +45,14 @@ public class PartsControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
 
-    private static final String URL_PARTS_ADD = "/parts/add";
-    private static final String URL_PARTS_EDIT = "/parts/edit";
-    private static final String URL_PARTS_EDIT_INVALID_ID = "/parts/edit/invalid-id";
-    private static final String URL_PARTS_DELETE = "/parts/delete";
-    private static final String URL_PARTS_DELETE_INVALID_ID = "/parts/delete/invalid-id";
-    private static final String URL_PARTS_ALL = "/parts/all";
-    private static final String URL_PARTS_FETCH = "/parts/fetch";
+    private static final String URL_PARTS_BASE = "/parts";
+    private static final String URL_PARTS_ADD = URL_PARTS_BASE + "/add";
+    private static final String URL_PARTS_EDIT = URL_PARTS_BASE + "/edit";
+    private static final String URL_PARTS_EDIT_INVALID_ID = URL_PARTS_EDIT + "/invalid-id";
+    private static final String URL_PARTS_DELETE = URL_PARTS_BASE + "/delete";
+    private static final String URL_PARTS_DELETE_INVALID_ID = URL_PARTS_DELETE + "/invalid-id";
+    private static final String URL_PARTS_ALL = URL_PARTS_BASE + "/all";
+    private static final String URL_PARTS_FETCH = URL_PARTS_BASE + "/fetch";
 
     private static final String REDIRECT_URL_PATTERN_LOGIN = "**/users/login";
 
