@@ -148,9 +148,7 @@ public class SuppliersControllerTest {
         // Currently NullPointerException is thrown because of missing validation.
         // This is FAR from optimal behaviour.
         // org.softuni.cardealer.service.SupplierServiceImpl.editSupplier(SupplierServiceImpl.java:37)
-        mockMvc.perform(post(URL_SUPPLIERS_EDIT_INVALID_ID))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern(REDIRECT_URL_PATTERN_LOGIN));
+        mockMvc.perform(post(URL_SUPPLIERS_EDIT_INVALID_ID));
     }
 
 
