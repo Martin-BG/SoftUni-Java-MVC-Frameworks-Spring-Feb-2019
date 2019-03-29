@@ -103,6 +103,7 @@ public class SuppliersControllerTest {
         // This test exposes a flaw in controller redirect logic:
         // use of relative from current url (/suppliers/add) redirect to "all",
         // instead of using absolute url ("/suppliers/all")
+
         mockMvc.perform(POST_ADD_SUPPLIER_VALID_DATA_IMPORTER)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(URL_SUPPLIERS_ALL));
@@ -158,6 +159,7 @@ public class SuppliersControllerTest {
         // Currently NullPointerException is thrown because of missing validation.
         // This is FAR from optimal behaviour.
         // org.softuni.cardealer.service.SupplierServiceImpl.editSupplier(SupplierServiceImpl.java:37)
+
         mockMvc.perform(post(URL_SUPPLIERS_EDIT_INVALID_ID));
     }
 
@@ -203,6 +205,7 @@ public class SuppliersControllerTest {
         // Currently NestedServletException is thrown because of missing validation.
         // This is FAR from optimal behaviour.
         // org.softuni.cardealer.service.SupplierServiceImpl.deleteSupplier(SupplierServiceImpl.java:48)
+
         mockMvc.perform(post(URL_SUPPLIERS_DELETE_INVALID_ID));
     }
 
@@ -279,8 +282,6 @@ public class SuppliersControllerTest {
         List<Supplier> suppliers = supplierRepository.findAll();
 
         mockMvc.perform(get(URL_SUPPLIERS_FETCH))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(suppliers.size())))
                 .andExpect(jsonPath("$[0].id", is(suppliers.get(0).getId())))
                 .andExpect(jsonPath("$[0].name", is(suppliers.get(0).getName())))
