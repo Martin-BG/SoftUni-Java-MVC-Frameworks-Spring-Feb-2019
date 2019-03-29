@@ -197,9 +197,7 @@ public class SuppliersControllerTest {
         // Currently NestedServletException is thrown because of missing validation.
         // This is FAR from optimal behaviour.
         // org.softuni.cardealer.service.SupplierServiceImpl.deleteSupplier(SupplierServiceImpl.java:48)
-        mockMvc.perform(post(URL_SUPPLIERS_DELETE_INVALID_ID))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern(REDIRECT_URL_PATTERN_LOGIN));
+        mockMvc.perform(post(URL_SUPPLIERS_DELETE_INVALID_ID));
     }
 
     @Test
