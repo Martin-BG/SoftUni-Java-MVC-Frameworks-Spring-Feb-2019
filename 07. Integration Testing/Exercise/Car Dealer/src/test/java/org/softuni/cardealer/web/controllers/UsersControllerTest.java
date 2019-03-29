@@ -30,8 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class UsersControllerTest {
 
-    private static final String URL_USERS_LOGIN = "/users/login";
-    private static final String URL_USERS_REGISTER = "/users/register";
+    private static final String URL_USERS_BASE = "/users";
+    private static final String URL_USERS_LOGIN = URL_USERS_BASE + "/login";
+    private static final String URL_USERS_REGISTER = URL_USERS_BASE + "/register";
 
     private static final String VIEW_LOGIN = "login";
     private static final String VIEW_REGISTER = "register";

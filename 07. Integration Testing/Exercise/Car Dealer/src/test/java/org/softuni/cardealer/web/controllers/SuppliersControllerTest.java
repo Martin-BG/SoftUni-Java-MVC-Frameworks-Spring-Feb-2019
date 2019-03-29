@@ -40,13 +40,14 @@ public class SuppliersControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
 
-    private static final String URL_SUPPLIERS_ADD = "/suppliers/add";
-    private static final String URL_SUPPLIERS_EDIT = "/suppliers/edit";
-    private static final String URL_SUPPLIERS_EDIT_INVALID_ID = "/suppliers/edit/invalid-id";
-    private static final String URL_SUPPLIERS_DELETE = "/suppliers/delete";
-    private static final String URL_SUPPLIERS_DELETE_INVALID_ID = "/suppliers/delete/invalid-id";
-    private static final String URL_SUPPLIERS_ALL = "/suppliers/all";
-    private static final String URL_SUPPLIERS_FETCH = "/suppliers/fetch";
+    private static final String URL_SUPPLIERS_BASE = "/suppliers";
+    private static final String URL_SUPPLIERS_ADD = URL_SUPPLIERS_BASE + "/add";
+    private static final String URL_SUPPLIERS_EDIT = URL_SUPPLIERS_BASE + "/edit";
+    private static final String URL_SUPPLIERS_EDIT_INVALID_ID = URL_SUPPLIERS_EDIT + "/invalid-id";
+    private static final String URL_SUPPLIERS_DELETE = URL_SUPPLIERS_BASE + "/delete";
+    private static final String URL_SUPPLIERS_DELETE_INVALID_ID = URL_SUPPLIERS_DELETE + "/invalid-id";
+    private static final String URL_SUPPLIERS_ALL = URL_SUPPLIERS_BASE + "/all";
+    private static final String URL_SUPPLIERS_FETCH = URL_SUPPLIERS_BASE + "/fetch";
 
     private static final String REDIRECT_URL_PATTERN_LOGIN = "**/users/login";
 
