@@ -1,5 +1,6 @@
 package org.softuni.cardealer.web.controllers;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
@@ -66,6 +68,8 @@ public class SuppliersControllerTest {
     private static final MockHttpServletRequestBuilder POST_ADD_SUPPLIER_VALID_DATA_NOT_IMPORTER =
             post(URL_SUPPLIERS_ADD)
                     .param(PARAM_NAME, SUPPLIER_NAME);
+    private static final String VIEW_ALL_SUPPLIERS = "all-suppliers";
+    private static final String ATTRIBUTE_SUPPLIERS = "suppliers";
 
 
     @Autowired
@@ -77,6 +81,12 @@ public class SuppliersControllerTest {
     @Before
     public void setUp() {
         supplierRepository.deleteAll();
+    }
+
+    private Supplier createSupplier() {
+        Supplier supplier = new Supplier();
+        supplier.setName(SUPPLIER_NAME);
+        return supplierRepository.save(supplier);
     }
 
     @Test
@@ -155,11 +165,9 @@ public class SuppliersControllerTest {
     @Test
     @WithMockUser
     public void editSupplier_post_validDataChangeNameWithAuthenticatedUser_returnsCorrectViewAndStatus() throws Exception {
-        Supplier supplier = new Supplier();
-        supplier.setName(SUPPLIER_NAME);
-        Supplier entity = supplierRepository.save(supplier);
+        Supplier supplier = createSupplier();
 
-        mockMvc.perform(post(URL_SUPPLIERS_EDIT + "/" + entity.getId())
+        mockMvc.perform(post(URL_SUPPLIERS_EDIT + "/" + supplier.getId())
                 .param(PARAM_NAME, SUPPLIER_NAME_NEW))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(URL_SUPPLIERS_ALL));
@@ -168,15 +176,13 @@ public class SuppliersControllerTest {
     @Test
     @WithMockUser
     public void editSupplier_post_validDataWithAuthenticatedUser_updateSucceeds() throws Exception {
-        Supplier supplier = new Supplier();
-        supplier.setName(SUPPLIER_NAME);
-        Supplier entity = supplierRepository.save(supplier);
+        Supplier supplier = createSupplier();
 
-        mockMvc.perform(post(URL_SUPPLIERS_EDIT + "/" + entity.getId())
+        mockMvc.perform(post(URL_SUPPLIERS_EDIT + "/" + supplier.getId())
                 .param(PARAM_NAME, SUPPLIER_NAME_NEW)
                 .param(PARAM_IS_IMPORTER, SUPPLIER_IMPORTER));
 
-        Optional<Supplier> updated = supplierRepository.findById(entity.getId());
+        Optional<Supplier> updated = supplierRepository.findById(supplier.getId());
 
         assertTrue("Updated Supplier not found in DB", updated.isPresent());
         assertEquals("Supplier name not updated", SUPPLIER_NAME_NEW, updated.get().getName());
@@ -203,13 +209,11 @@ public class SuppliersControllerTest {
     @Test
     @WithMockUser
     public void deleteSupplier_post_validIdWithAuthenticatedUser_deleteSucceeds() throws Exception {
-        Supplier supplier = new Supplier();
-        supplier.setName(SUPPLIER_NAME);
-        Supplier entity = supplierRepository.save(supplier);
+        Supplier supplier = createSupplier();
 
-        mockMvc.perform(post(URL_SUPPLIERS_DELETE + "/" + entity.getId()));
+        mockMvc.perform(post(URL_SUPPLIERS_DELETE + "/" + supplier.getId()));
 
-        Optional<Supplier> updated = supplierRepository.findById(entity.getId());
+        Optional<Supplier> updated = supplierRepository.findById(supplier.getId());
 
         assertFalse("Supplier not removed from DB", updated.isPresent());
     }
@@ -217,11 +221,9 @@ public class SuppliersControllerTest {
     @Test
     @WithMockUser
     public void deleteSupplier_post_validIdWithAuthenticatedUser_returnsCorrectViewAndStatus() throws Exception {
-        Supplier supplier = new Supplier();
-        supplier.setName(SUPPLIER_NAME);
-        Supplier entity = supplierRepository.save(supplier);
+        Supplier supplier = createSupplier();
 
-        mockMvc.perform(post(URL_SUPPLIERS_DELETE + "/" + entity.getId()))
+        mockMvc.perform(post(URL_SUPPLIERS_DELETE + "/" + supplier.getId()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(URL_SUPPLIERS_ALL));
     }
@@ -237,9 +239,13 @@ public class SuppliersControllerTest {
     @Test
     @WithMockUser
     public void allSuppliers_get_withAuthenticatedUser_returnsCorrectViewAndStatus() throws Exception {
+        createSupplier();
+
         mockMvc.perform(get(URL_SUPPLIERS_ALL))
                 .andExpect(status().isOk())
-                .andExpect(view().name("all-suppliers"));
+                .andExpect(view().name(VIEW_ALL_SUPPLIERS))
+                .andExpect(model().attributeExists(ATTRIBUTE_SUPPLIERS))
+                .andExpect(model().attribute(ATTRIBUTE_SUPPLIERS, Matchers.hasSize(equalTo(1))));
     }
 
     @Test
