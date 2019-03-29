@@ -75,7 +75,7 @@ public class UsersControllerTest {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Before
-    public void init() {
+    public void setUp() {
         userRepository.deleteAll();
     }
 
