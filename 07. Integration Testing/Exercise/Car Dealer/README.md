@@ -15,6 +15,7 @@ ___
 ## Useful resources
 * [Spring Integration Testing](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/testing.html#integration-testing)
 * [Spring Security Testing](https://docs.spring.io/autorepo/docs/spring-security/current/reference/html/test.html)
+* [Spring Security Test: Web Security](https://spring.io/blog/2014/05/23/preview-spring-security-test-web-security)
 * [Spring MVC Test Tutorial](https://www.petrikainulainen.net/spring-mvc-test-tutorial/)
   * [Unit Testing of Spring MVC Controllers: REST API](https://www.petrikainulainen.net/programming/spring-framework/unit-testing-of-spring-mvc-controllers-rest-api/)
   * [Integration Testing of Spring MVC Applications: Controllers](https://www.petrikainulainen.net/programming/spring-framework/integration-testing-of-spring-mvc-applications-controllers/)
