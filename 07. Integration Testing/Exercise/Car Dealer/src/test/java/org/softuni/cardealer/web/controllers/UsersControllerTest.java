@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.util.NestedServletException;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -133,11 +133,10 @@ public class UsersControllerTest {
         mockMvc.perform(POST_USER_VALID_DATA);
 
         User user = userRepository.findByUsername(USER_USERNAME).orElseThrow();
-        assertNotNull(user.getId());
-        assertFalse(user.getId().isEmpty());
-        assertEquals(USER_USERNAME, user.getUsername());
-        assertEquals(USER_EMAIL, user.getEmail());
-        assertTrue(passwordEncoder.matches(USER_PASSWORD, user.getPassword()));
+
+        assertEquals("Incorrect username", USER_USERNAME, user.getUsername());
+        assertEquals("Incorrect email", USER_EMAIL, user.getEmail());
+        assertTrue("Incorrect password", passwordEncoder.matches(USER_PASSWORD, user.getPassword()));
     }
 
     @Test(expected = NestedServletException.class)
