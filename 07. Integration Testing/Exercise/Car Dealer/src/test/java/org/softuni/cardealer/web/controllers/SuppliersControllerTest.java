@@ -163,7 +163,6 @@ public class SuppliersControllerTest {
         mockMvc.perform(post(URL_SUPPLIERS_EDIT_INVALID_ID));
     }
 
-
     @Test
     @WithMockUser
     public void editSupplier_post_validDataChangeNameWithAuthenticatedUser_returnsCorrectViewAndStatus() throws Exception {
