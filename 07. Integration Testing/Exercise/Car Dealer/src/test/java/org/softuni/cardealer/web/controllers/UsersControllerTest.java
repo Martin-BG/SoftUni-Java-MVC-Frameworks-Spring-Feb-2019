@@ -16,7 +16,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.web.util.NestedServletException;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -123,6 +122,7 @@ public class UsersControllerTest {
         // This test exposes a flaw in controller redirect logic:
         // use of relative from current url (/user/register) redirect to "login",
         // instead of using absolute url ("/users/login")
+
         mockMvc.perform(POST_USER_VALID_DATA)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(URL_USERS_LOGIN));
@@ -140,9 +140,13 @@ public class UsersControllerTest {
         assertTrue("Incorrect password", passwordEncoder.matches(USER_PASSWORD, user.getPassword()));
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test(expected = Exception.class)
     @WithAnonymousUser
     public void register_post_duplicateUsernameWithAnonymousUser_throwsException() throws Exception {
+        // Currently NestedServletException is thrown because of missing validation logic or custom exception handling.
+        // This is FAR from optimal behaviour.
+        // org.softuni.cardealer.service.UserServiceImpl.java:43
+
         mockMvc.perform(POST_USER_VALID_DATA);
         mockMvc.perform(POST_USER_VALID_DATA);
     }
@@ -152,6 +156,7 @@ public class UsersControllerTest {
     public void register_post_invalidConfirmPasswordWithAnonymousUser_throwsException() throws Exception {
         // This test exposes a bug in controller/service logic
         // as password is never checked against confirmPassword
+
         mockMvc.perform(POST_USER_WRONG_CONFIRM_PASSWORD);
     }
 
@@ -160,6 +165,7 @@ public class UsersControllerTest {
     public void register_post_emptyFieldsWithAnonymousUser_throwsException() throws Exception {
         // This test exposes a bug in controller/service logic
         // as input data is not validated at all (empty fields accepted)
+
         mockMvc.perform(POST_USER_EMPTY_FIELDS);
     }
 }
