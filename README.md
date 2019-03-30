@@ -85,7 +85,7 @@ lazy authorities initialization thanks to a named query
 and [AJAX](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/resources/templates/views/common/all.html) 
 requests
 ___
-### [Web Layer **Integration Tests** (Car Dealer)]
+### [Web Layer **Integration Tests** (Car Dealer)](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/tree/master/07.%20Integration%20Testing/Exercise/Car%20Dealer)
 
 [Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/07.%20Integration%20Testing/07.%20Integration%20Testing%20-%20Exercise.pdf) 
 is to write Web layer Integration tests of the given application.
