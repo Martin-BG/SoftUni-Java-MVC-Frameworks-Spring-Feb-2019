@@ -47,7 +47,7 @@ public class RoleServiceImpl extends BaseService<Role, Long, RoleRepository> imp
     public void initRoles() {
         if (repository.count() == 0L) {
             Set<Role> roles = Arrays.stream(Authority.values())
-                    .map(authority -> new Role(authority.role()))
+                    .map(Role::new)
                     .collect(Collectors.toSet());
             repository.saveAll(roles);
         }
