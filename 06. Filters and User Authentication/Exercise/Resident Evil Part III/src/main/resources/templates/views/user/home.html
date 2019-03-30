@@ -1,7 +1,7 @@
 <th:block xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
           xmlns:th="http://www.thymeleaf.org">
     <div class="jumbotron mt-3 re-color">
-        <h1 class="mt-4" th:text="#{user.home.title(${#authentication.getPrincipal().getUsername()})}"/>
+        <h1 class="mt-4" th:text="#{user.home.title(${#authentication.getName()})}"/>
         <hr class="my-4"/>
         <h5 class="mb-4" th:text="#{user.home.text}"/>
 
