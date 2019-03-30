@@ -2,9 +2,9 @@ package org.softuni.residentevil.domain.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserAuthorities;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEmail;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEncryptedPassword;
-import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserEntityAuthorities;
 import org.softuni.residentevil.domain.validation.annotations.composite.user.ValidUserUsername;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,7 +34,7 @@ public class User extends BaseUuidEntity implements UserDetails {
     @Column(unique = true, nullable = false, length = ValidUserEmail.MAX_LENGTH)
     private String email;
 
-    @ValidUserEntityAuthorities
+    @ValidUserAuthorities
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",

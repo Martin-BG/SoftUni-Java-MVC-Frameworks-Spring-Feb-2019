@@ -20,13 +20,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 
 @NotBlank
-@Length(min = ValidRoleEntityAuthority.MIN_LENGTH, max = ValidRoleEntityAuthority.MAX_LENGTH)
+@Length(min = ValidRoleAuthority.MIN_LENGTH, max = ValidRoleAuthority.MAX_LENGTH)
 @Pattern(regexp = "^ROLE_[A-Z_]{1,27}(?<=[^_])$")
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidRoleEntityAuthority {
+public @interface ValidRoleAuthority {
 
     int MIN_LENGTH = 1;
     int MAX_LENGTH = 32;

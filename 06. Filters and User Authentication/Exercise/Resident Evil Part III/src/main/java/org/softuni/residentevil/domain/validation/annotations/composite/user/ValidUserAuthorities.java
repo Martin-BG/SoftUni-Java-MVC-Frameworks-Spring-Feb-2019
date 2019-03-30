@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidUserEntityAuthorities {
+public @interface ValidUserAuthorities {
 
     String message() default "";
 

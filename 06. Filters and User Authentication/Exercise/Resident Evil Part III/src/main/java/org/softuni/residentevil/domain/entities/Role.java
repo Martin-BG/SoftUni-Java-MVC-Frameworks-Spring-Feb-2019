@@ -3,7 +3,7 @@ package org.softuni.residentevil.domain.entities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.softuni.residentevil.domain.validation.annotations.composite.role.ValidRoleEntityAuthority;
+import org.softuni.residentevil.domain.validation.annotations.composite.role.ValidRoleAuthority;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -19,7 +19,7 @@ public class Role extends BaseLongEntity implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
-    @ValidRoleEntityAuthority
-    @Column(unique = true, nullable = false, length = ValidRoleEntityAuthority.MAX_LENGTH)
+    @ValidRoleAuthority
+    @Column(unique = true, nullable = false, length = ValidRoleAuthority.MAX_LENGTH)
     private String authority;
 }
