@@ -89,3 +89,6 @@ ___
 
 [Task](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/07.%20Integration%20Testing/07.%20Integration%20Testing%20-%20Exercise.pdf) 
 is to write Web layer Integration tests of the given application.
+* Spring **MVC mock**
+* **H2** in-memory database use
+* **REST API** [test](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/07.%20Integration%20Testing/Exercise/Car%20Dealer/src/test/java/org/softuni/cardealer/web/controllers/SuppliersControllerTest.java)
