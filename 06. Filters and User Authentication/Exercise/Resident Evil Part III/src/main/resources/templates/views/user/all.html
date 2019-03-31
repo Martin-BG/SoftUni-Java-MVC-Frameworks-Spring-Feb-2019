@@ -1,0 +1,73 @@
+<th:block
+        xmlns:th="http://www.thymeleaf.org">
+    <div class="header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
+        <h2 th:text="#{users.title}"/>
+    </div>
+    <table class="table mt-4 mb-5 w-75 mx-auto">
+        <thead>
+        <tr class="font-weight-bold">
+            <th scope="col" th:text="#{users.table-header.index}"/>
+            <th scope="col" th:text="#{users.table-header.username}"/>
+            <th scope="col" th:text="#{users.table-header.email}"/>
+            <th scope="col" th:text="#{users.table-header.role}"/>
+            <th scope="col" th:text="#{users.table-header.actions}"/>
+            <th scope="col"/>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block
+                th:each="user, iStat : ${__${T(org.softuni.residentevil.web.controllers.user.AllUserController).USERS}__}"
+                th:object="${user}"
+                th:with="canChangeRoles=*{authority} != ${T(org.softuni.residentevil.domain.enums.Authority).ROOT} and ${#authentication.getName()} != *{username}">
+            <tr>
+                <td class="font-weight-bold" scope="row" th:text="${iStat.index + 1}"/>
+                <td th:text="*{username}"/>
+                <td th:text="*{email}"/>
+                <td th:text="*{authority.name()}"/>
+                <th:block th:unless="${canChangeRoles}">
+                    <td/>
+                    <td/>
+                </th:block>
+                <th:block th:if="${canChangeRoles}">
+                    <td th:if="*{authority} != ${T(org.softuni.residentevil.domain.enums.Authority).USER}">
+                        <form class="d-inline mr-3"
+                              th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
+                              th:method="patch">
+                            <input hidden name="id" th:value="*{id}">
+                            <input hidden name="role"
+                                   th:value="${T(org.softuni.residentevil.domain.enums.Authority).USER.role()}">
+                            <button class="btn btn-light btn-sm border-dark table-button-large"
+                                    th:text="#{users.table-button.user}"
+                                    type="submit"/>
+                        </form>
+                    </td>
+                    <td th:if="*{authority} != ${T(org.softuni.residentevil.domain.enums.Authority).MODERATOR}">
+                        <form class="d-inline"
+                              th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
+                              th:method="patch">
+                            <input hidden name="id" th:value="*{id}">
+                            <input hidden name="role"
+                                   th:value="${T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role()}">
+                            <button class="btn btn-light btn-sm border-dark table-button-large"
+                                    th:text="#{users.table-button.moderator}"
+                                    type="submit"/>
+                        </form>
+                    </td>
+                    <td th:if="*{authority} != ${T(org.softuni.residentevil.domain.enums.Authority).ADMIN}">
+                        <form class="d-inline"
+                              th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
+                              th:method="patch">
+                            <input hidden name="id" th:value="*{id}">
+                            <input hidden name="role"
+                                   th:value="${T(org.softuni.residentevil.domain.enums.Authority).ADMIN.role()}">
+                            <button class="btn btn-light btn-sm border-dark table-button-large"
+                                    th:text="#{users.table-button.admin}"
+                                    type="submit"/>
+                        </form>
+                    </td>
+                </th:block>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</th:block>
