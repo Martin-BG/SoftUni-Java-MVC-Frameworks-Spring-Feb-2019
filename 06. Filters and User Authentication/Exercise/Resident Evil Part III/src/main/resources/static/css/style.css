@@ -31,6 +31,10 @@ div.form-group label {
     width: 4rem;
 }
 
+.table-button-large {
+    width: 6rem;
+}
+
 .display-none {
     display: none;
 }
