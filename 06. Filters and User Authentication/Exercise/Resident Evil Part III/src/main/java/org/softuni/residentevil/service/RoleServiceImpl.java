@@ -59,7 +59,7 @@ public class RoleServiceImpl extends BaseService<Role, Long, RoleRepository> imp
     public <V extends Viewable<Role>> Optional<V>
     findByAuthority(@NotNull Authority authority, @NotNull Class<V> viewModelClass) {
         return repository
-                .findRoleByAuthority(authority.role())
+                .findRoleByAuthority(authority)
                 .map(role -> mapper.map(role, viewModelClass));
     }
 
