@@ -46,6 +46,11 @@
                            th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_ALL}__}"
                            th:text="#{nav-bar.all}"/>
                     </li>
+                    <li class="nav-item ml-3" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                        <a class="nav-link active"
+                           th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
+                           th:text="#{nav-bar.users}"/>
+                    </li>
                     <li class="nav-item dropdown ml-3">
                         <a aria-expanded="false" aria-haspopup="true" class="nav-link active dropdown-toggle"
                            data-toggle="dropdown"
