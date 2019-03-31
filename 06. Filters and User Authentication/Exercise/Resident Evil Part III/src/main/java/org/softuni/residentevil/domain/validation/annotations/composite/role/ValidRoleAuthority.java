@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -19,6 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * length {@value MIN_LENGTH}-{@value MAX_LENGTH}
  */
 
+@NotNull
 @NotBlank
 @Length(min = ValidRoleAuthority.MIN_LENGTH, max = ValidRoleAuthority.MAX_LENGTH)
 @Pattern(regexp = "^ROLE_[A-Z_]{1,27}(?<=[^_])$")
