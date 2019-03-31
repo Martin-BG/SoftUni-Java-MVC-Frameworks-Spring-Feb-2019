@@ -7,7 +7,6 @@ import org.softuni.residentevil.domain.entities.Role;
 import org.softuni.residentevil.domain.enums.Authority;
 import org.softuni.residentevil.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 @Service
 @Validated
 @Transactional
-@CacheConfig(cacheNames = RoleServiceImpl.ROLES)
 public class RoleServiceImpl extends BaseService<Role, Long, RoleRepository> implements RoleService {
 
-    public static final String ROLES = "roles";
+    private static final String ROLES = "rolesCache";
+    private static final String ROLES_FOR_AUTHORITY = "rolesForAuthorityCache";
 
     @Autowired
     public RoleServiceImpl(RoleRepository repository, ModelMapper mapper) {
@@ -43,7 +43,7 @@ public class RoleServiceImpl extends BaseService<Role, Long, RoleRepository> imp
 
     @PostConstruct
     @Transactional
-    @CacheEvict
+    @CacheEvict(cacheNames = {ROLES, ROLES_FOR_AUTHORITY}, allEntries = true)
     public void initRoles() {
         if (repository.count() == 0L) {
             Set<Role> roles = Arrays.stream(Authority.values())
@@ -61,5 +61,27 @@ public class RoleServiceImpl extends BaseService<Role, Long, RoleRepository> imp
         return repository
                 .findRoleByAuthority(authority.role())
                 .map(role -> mapper.map(role, viewModelClass));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(cacheNames = ROLES_FOR_AUTHORITY, key = "#authority")
+    public List<Role> getRolesForAuthority(@NotNull Authority authority) {
+        List<Role> roles = repository.findAll();
+
+        roles.removeIf(role -> role.getAuthority().equals(Authority.ROOT.role()));
+
+        switch (authority) {
+        case MODERATOR:
+            roles.removeIf(role -> role.getAuthority().equals(Authority.ADMIN.role()));
+            break;
+        case USER:
+            roles.removeIf(role -> !role.getAuthority().equals(Authority.USER.role()));
+            break;
+        default:
+            break;
+        }
+
+        return roles;
     }
 }
