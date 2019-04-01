@@ -144,6 +144,10 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
                     "Invalid role: " + userRoleBindingModel.getRole());
         }
 
+        if (authority == Authority.ROOT) {
+            throw new IllegalArgumentException("ROOT role cannot be added to users.");
+        }
+
         User user = repository
                 .findUserEager(userRoleBindingModel.getUsername())
                 .filter(UserServiceImpl::isNotRoot)
