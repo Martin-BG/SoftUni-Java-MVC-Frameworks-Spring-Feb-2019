@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Layout
@@ -40,8 +41,10 @@ public class AllUserController extends BaseController {
     }
 
     @PatchMapping
-    public String patch(@ModelAttribute UserRoleBindingModel userRoleBindingModel) {
-        service.updateRole(userRoleBindingModel);
+    public String patch(@ModelAttribute UserRoleBindingModel userRoleBindingModel, Principal principal) {
+        if (!principal.getName().equals(userRoleBindingModel.getUsername())) {
+            service.updateRole(userRoleBindingModel);
+        }
 
         return redirect(WebConfig.URL_USER_ALL);
     }
