@@ -21,7 +21,9 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * 30; // 30 Days
-    private static final String J_SESSION_ID = "JSESSIONID";
+    private static final String REMEMBER_ME_KEY = "remember-me-key";
+    private static final String REMEMBER_ME_COOKIE = "remember-me";
+    private static final String SESSION_COOKIE = "JSESSIONID";
 
     private final UserDetailsService userService;
 
@@ -67,10 +69,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .rememberMe()
                 .userDetailsService(userService)
                 .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS)
+                .key(REMEMBER_ME_KEY)
+                .rememberMeCookieName(REMEMBER_ME_COOKIE)
                 .and()
             .logout()
                 .logoutUrl(WebConfig.URL_USER_LOGOUT)
-                .deleteCookies(J_SESSION_ID)
+                .deleteCookies(SESSION_COOKIE, REMEMBER_ME_COOKIE)
                 .logoutSuccessUrl(WebConfig.URL_USER_LOGIN + "?logout")
                 .and()
             .exceptionHandling()
