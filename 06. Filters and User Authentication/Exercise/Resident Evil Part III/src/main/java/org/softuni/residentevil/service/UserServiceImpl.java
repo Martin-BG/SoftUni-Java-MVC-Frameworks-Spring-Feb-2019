@@ -134,7 +134,7 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
     @Override
     @Caching(evict = {
             @CacheEvict(cacheNames = ALL_USERS, allEntries = true),
-            @CacheEvict(cacheNames = USERS, key = "#userRoleBindingModel.id")})
+            @CacheEvict(cacheNames = USERS, key = "#userRoleBindingModel.username")})
     public void updateRole(@NotNull @Valid UserRoleBindingModel userRoleBindingModel) {
         Authority authority = Authority
                 .fromRole(userRoleBindingModel.getRole());
@@ -145,10 +145,10 @@ public class UserServiceImpl extends BaseService<User, UUID, UserRepository> imp
         }
 
         User user = repository
-                .findById(userRoleBindingModel.getId())
+                .findUserEager(userRoleBindingModel.getUsername())
                 .filter(UserServiceImpl::isNotRoot)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "User not found or not allowed for edit: " + userRoleBindingModel.getId()));
+                        "User not found or not allowed for edit: " + userRoleBindingModel.getUsername()));
 
         List<Role> rolesForAuthority = roleService
                 .getRolesForAuthority(authority);

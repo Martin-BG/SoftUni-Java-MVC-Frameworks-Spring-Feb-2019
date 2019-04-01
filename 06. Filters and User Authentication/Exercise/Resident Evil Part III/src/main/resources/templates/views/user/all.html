@@ -33,7 +33,7 @@
                         <form class="d-inline mr-3"
                               th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
                               th:method="patch">
-                            <input hidden name="id" th:value="*{id}">
+                            <input hidden name="username" th:value="*{username}">
                             <input hidden name="role"
                                    th:value="${T(org.softuni.residentevil.domain.enums.Authority).USER.role()}">
                             <button class="btn btn-light btn-sm border-dark table-button-large"
@@ -45,7 +45,7 @@
                         <form class="d-inline"
                               th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
                               th:method="patch">
-                            <input hidden name="id" th:value="*{id}">
+                            <input hidden name="username" th:value="*{username}">
                             <input hidden name="role"
                                    th:value="${T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role()}">
                             <button class="btn btn-light btn-sm border-dark table-button-large"
@@ -57,7 +57,7 @@
                         <form class="d-inline"
                               th:action="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
                               th:method="patch">
-                            <input hidden name="id" th:value="*{id}">
+                            <input hidden name="username" th:value="*{username}">
                             <input hidden name="role"
                                    th:value="${T(org.softuni.residentevil.domain.enums.Authority).ADMIN.role()}">
                             <button class="btn btn-light btn-sm border-dark table-button-large"
