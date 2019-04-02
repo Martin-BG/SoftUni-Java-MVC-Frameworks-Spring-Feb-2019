@@ -46,7 +46,8 @@
                            th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_ALL}__}"
                            th:text="#{nav-bar.all}"/>
                     </li>
-                    <li class="nav-item ml-3" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <li class="nav-item ml-3"
+                        sec:authorize="hasAuthority(T(org.softuni.residentevil.domain.enums.Authority).ADMIN.role())">
                         <a class="nav-link active"
                            th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_USER_ALL}__}"
                            th:text="#{nav-bar.users}"/>
@@ -60,7 +61,7 @@
                                th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ALL}__}"
                                th:text="#{nav-bar.viruses.show}"/>
                             <a class="dropdown-item"
-                               sec:authorize="hasAnyAuthority('ROLE_MODERATOR')"
+                               sec:authorize="hasAnyAuthority(T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role())"
                                th:href="@{__${T(org.softuni.residentevil.config.WebConfig).URL_VIRUS_ADD}__}"
                                th:text="#{nav-bar.viruses.add}"/>
                         </div>
