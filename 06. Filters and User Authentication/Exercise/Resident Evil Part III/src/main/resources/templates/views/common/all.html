@@ -184,8 +184,8 @@
         };
 
         window.onload = () => {
-            csrfToken = $("meta[name='_csrf']").attr("content");
-            csrfHeader = $("meta[name='_csrf_param']").attr("content");
+            csrfToken = /*[[${__${T(org.softuni.residentevil.config.WebSecurityConfig).CSRF_ATTRIBUTE_NAME}__.token}]]*/"token";
+            csrfHeader = /*[[${__${T(org.softuni.residentevil.config.WebSecurityConfig).CSRF_ATTRIBUTE_NAME}__.parameterName}]]*/"header";
             $('#virusesRadio').on("click", loadViruses);
             $('#virusesRadioModerator').on("click", loadVirusesModerator);
             $('#capitalsRadio').on("click", loadCapitals);
