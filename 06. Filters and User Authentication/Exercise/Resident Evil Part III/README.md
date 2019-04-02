@@ -203,9 +203,9 @@ requests:
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static final String CSRF_ATTRIBUTE_NAME = "_csrf";
     //..
     private static CsrfTokenRepository csrfTokenRepository() {
-        final String CSRF_ATTRIBUTE_NAME = "_csrf";
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setSessionAttributeName(CSRF_ATTRIBUTE_NAME);
         return repository;
@@ -222,18 +222,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 ```html
-    <!--save csrf token in <head>...</head>-->
-    <meta th:content="${_csrf.token}" th:name="_csrf"/>
-    <meta th:content="${_csrf.parameterName}" th:name="_csrf_param"/>
-    
     <!--get values in JS-->
-    window.onload = () => {
-        csrfToken = $("meta[name='_csrf']").attr("content");
-        csrfHeader = $("meta[name='_csrf_param']").attr("content");
-        $('#virusesRadio').on("click", loadViruses);
-        $('#virusesRadioModerator').on("click", loadVirusesModerator);
-        $('#capitalsRadio').on("click", loadCapitals);
-    };
+        window.onload = () => {
+            csrfToken = /*[[${__${T(org.softuni.residentevil.config.WebSecurityConfig).CSRF_ATTRIBUTE_NAME}__.token}]]*/"token";
+            csrfHeader = /*[[${__${T(org.softuni.residentevil.config.WebSecurityConfig).CSRF_ATTRIBUTE_NAME}__.parameterName}]]*/"header";
+            $('#virusesRadio').on("click", loadViruses);
+            $('#virusesRadioModerator').on("click", loadVirusesModerator);
+            $('#capitalsRadio').on("click", loadCapitals);
+        };
     
     
     <!--use to create dynamic content-->
@@ -376,14 +372,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .rememberMe()
                 .userDetailsService(userService)
                 .tokenValiditySeconds(REMEMBER_ME_TOKEN_VALIDITY_SECONDS)
+                .key(REMEMBER_ME_KEY)
+                .rememberMeCookieName(REMEMBER_ME_COOKIE)
                 .and()
             .logout()
                 .logoutUrl(WebConfig.URL_USER_LOGOUT)
-                .deleteCookies(J_SESSION_ID)
+                .deleteCookies(SESSION_COOKIE, REMEMBER_ME_COOKIE)
                 .logoutSuccessUrl(WebConfig.URL_USER_LOGIN + "?logout")
                 .and()
             .exceptionHandling()
-                .accessDeniedPage(WebConfig.URL_UNAUTHORIZED)
+                .accessDeniedHandler(accessDeniedHandler())
             .and()
                 .sessionManagement()
                 .invalidSessionUrl(WebConfig.URL_USER_LOGIN + "?expired");
