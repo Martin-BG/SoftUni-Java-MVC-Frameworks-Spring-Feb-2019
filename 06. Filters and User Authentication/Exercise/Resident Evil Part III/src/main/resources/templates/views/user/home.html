@@ -8,16 +8,16 @@
         <div sec:authorize="isAuthenticated()">
             This content is only shown to authenticated users.
         </div>
-        <div sec:authorize="hasRole('ROLE_ROOT')">
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).ROOT.role())">
             This content is only shown to Root.
         </div>
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).ADMIN.role())">
             This content is only shown to administrators.
         </div>
-        <div sec:authorize="hasRole('ROLE_MODERATOR')">
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role())">
             This content is only shown to moderators.
         </div>
-        <div sec:authorize="hasRole('ROLE_USER')">
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).USER.role())">
             This content is only shown to users.
         </div>
 
