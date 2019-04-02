@@ -243,6 +243,48 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          </button>
     </form>
 ```
+* Avoid using role literals for security in Thymeleaf templates:
+```java
+public enum Authority {
+    ROOT,
+    ADMIN,
+    MODERATOR,
+    USER;
+
+    private static final Map<String, Authority> LABEL_TO_ENUM_MAP = Stream.of(Authority.values())
+            .collect(Collectors.toUnmodifiableMap(Authority::role, authority -> authority));
+
+    private static final String ROLE_PREFIX = "ROLE_";
+
+    private final String role;
+
+    Authority() {
+        this.role = ROLE_PREFIX + name();
+    }
+
+    public static Authority fromRole(String role) {
+        return role == null ? null : LABEL_TO_ENUM_MAP.get(role);
+    }
+
+    public String role() {
+        return role;
+    }
+}
+```
+```html
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).ROOT.role())">
+            This content is only shown to Root.
+        </div>
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).ADMIN.role())">
+            This content is only shown to administrators.
+        </div>
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role())">
+            This content is only shown to moderators.
+        </div>
+        <div sec:authorize="hasRole(T(org.softuni.residentevil.domain.enums.Authority).USER.role())">
+            This content is only shown to users.
+        </div>
+```
 * Custom class-type validation annotation [@EqualFields](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/validation/annotations/custom/EqualFields.java):
 ```java
 //..
