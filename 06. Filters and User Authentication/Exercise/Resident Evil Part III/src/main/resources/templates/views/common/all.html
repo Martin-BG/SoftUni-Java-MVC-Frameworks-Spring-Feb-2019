@@ -3,11 +3,13 @@
     <div class="header mt-5 mb-4 w-75 mx-auto d-flex justify-content-between">
         <h2 id="title" th:text="#{all.title}"/>
         <div class="my-auto">
-            <div class="radio d-inline mx-5" sec:authorize="!hasAuthority('ROLE_MODERATOR')">
+            <div class="radio d-inline mx-5"
+                 sec:authorize="!hasAuthority(T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role())">
                 <input id="virusesRadio" name="selection" type="radio">
                 <label for="virusesRadio" th:text="#{all.radio.label.viruses}"/>
             </div>
-            <div class="radio d-inline mx-5" sec:authorize="hasAuthority('ROLE_MODERATOR')">
+            <div class="radio d-inline mx-5"
+                 sec:authorize="hasAuthority(T(org.softuni.residentevil.domain.enums.Authority).MODERATOR.role())">
                 <input id="virusesRadioModerator" name="selection" type="radio">
                 <label for="virusesRadioModerator" th:text="#{all.radio.label.viruses}"/>
             </div>
