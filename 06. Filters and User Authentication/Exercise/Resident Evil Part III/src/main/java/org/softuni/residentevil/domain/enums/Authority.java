@@ -10,7 +10,7 @@ public enum Authority {
     MODERATOR,
     USER;
 
-    private static final Map<String, Authority> LABEL_TO_ENUM_MAP = Stream.of(Authority.values())
+    private static final Map<String, Authority> STRING_TO_ENUM = Stream.of(Authority.values())
             .collect(Collectors.toUnmodifiableMap(Authority::role, authority -> authority));
 
     private static final String ROLE_PREFIX = "ROLE_";
@@ -22,7 +22,7 @@ public enum Authority {
     }
 
     public static Authority fromRole(String role) {
-        return role == null ? null : LABEL_TO_ENUM_MAP.get(role);
+        return role == null ? null : STRING_TO_ENUM.get(role);
     }
 
     public String role() {
