@@ -34,7 +34,32 @@ and
 * Spring Security [configuration](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/config/WebSecurityConfig.java)
 * GrantedAuthority [implementation](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/entities/Role.java):
 ```java
-@Getter
+public enum Authority {
+    ROOT,
+    ADMIN,
+    MODERATOR,
+    USER;
+
+    private static final Map<String, Authority> LABEL_TO_ENUM_MAP = Stream.of(Authority.values())
+            .collect(Collectors.toUnmodifiableMap(Authority::role, authority -> authority));
+
+    private static final String ROLE_PREFIX = "ROLE_";
+
+    private final String role;
+
+    Authority() {
+        this.role = ROLE_PREFIX + name();
+    }
+
+    public static Authority fromRole(String role) {
+        return role == null ? null : LABEL_TO_ENUM_MAP.get(role);
+    }
+
+    public String role() {
+        return role;
+    }
+}
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -43,9 +68,15 @@ public class Role extends BaseLongEntity implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
-    @ValidRoleEntityAuthority
-    @Column(unique = true, nullable = false, length = ValidRoleEntityAuthority.MAX_LENGTH)
-    private String authority;
+    @ValidRoleAuthority
+    @Convert(converter = AuthorityConverter.class)
+    @Column(unique = true, nullable = false, length = ValidRoleAuthority.MAX_LENGTH)
+    private Authority authority;
+
+    @Override
+    public String getAuthority() {
+        return authority.role();
+    }
 }
 ```
 * UserDetails [implementation](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2019/blob/master/06.%20Filters%20and%20User%20Authentication/Exercise/Resident%20Evil%20Part%20III/src/main/java/org/softuni/residentevil/domain/entities/User.java),
