@@ -173,7 +173,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userService;
 
     @Autowired
-    public WebSecurityConfig(@Qualifier("userDetailsService") UserDetailsService userService) {
+    public WebSecurityConfig(@Qualifier("UserServiceImpl") UserDetailsService userService) {
         this.userService = userService;
     }
 
@@ -194,7 +194,7 @@ public interface UserService extends Service<User, UUID>, UserDetailsService {
 }
 
 @Log
-@Service("userDetailsService")
+@Service("UserServiceImpl")
 @Validated
 @Transactional
 @CacheConfig(cacheNames = UserServiceImpl.USERS)
@@ -231,22 +231,29 @@ and [AJAX](https://github.com/Martin-BG/SoftUni-Java-MVC-Frameworks-Spring-Feb-2
 requests:
 ```java
 @Configuration
+public class ApplicationBeanConfig {
+    // ...
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setSessionAttributeName(WebSecurityConfig.CSRF_ATTRIBUTE_NAME);
+        return repository;
+    }
+}
+
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String CSRF_ATTRIBUTE_NAME = "_csrf";
     //..
-    private static CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setSessionAttributeName(CSRF_ATTRIBUTE_NAME);
-        return repository;
-    }
-
+    private final CsrfTokenRepository csrfTokenRepository;
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf()
-                .csrfTokenRepository(csrfTokenRepository())
+                .csrfTokenRepository(csrfTokenRepository)
                 .and();
         //..
     }
@@ -379,19 +386,25 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     }
 }
 
+@Configuration
+public class ApplicationBeanConfig {
+    //..
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new AccessDeniedHandlerImpl();
+    }
+}
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //..
+    private final AccessDeniedHandler accessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             //..
             .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler());
-    }
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return new AccessDeniedHandlerImpl();
+                .accessDeniedHandler(accessDeniedHandler);
     }
 }
 
@@ -422,10 +435,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
                 .disable()
             .csrf()
-                .csrfTokenRepository(csrfTokenRepository())
+                .csrfTokenRepository(csrfTokenRepository)
                 .and()
             .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/images/**")
+                .antMatchers(STATIC_RESOURCES_ANT_PATTERNS)
                     .permitAll()
                 .antMatchers(WebConfig.URL_INDEX)
                     .permitAll()
@@ -454,7 +467,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl(WebConfig.URL_USER_LOGIN + "?logout")
                 .and()
             .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler())
+                .accessDeniedHandler(accessDeniedHandler)
             .and()
                 .sessionManagement()
                 .invalidSessionUrl(WebConfig.URL_USER_LOGIN + "?expired");
