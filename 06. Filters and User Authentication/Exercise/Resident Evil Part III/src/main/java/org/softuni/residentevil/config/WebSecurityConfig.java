@@ -19,6 +19,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String CSRF_ATTRIBUTE_NAME = "_csrf";
 
+    private static final String[] STATIC_RESOURCES_ANT_PATTERNS = {
+            "/css/**",
+            "/js/**",
+            "/images/**"
+    };
+
     private static final int REMEMBER_ME_TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * 30; // 30 Days
     private static final String REMEMBER_ME_KEY = "remember-me-key";
     private static final String REMEMBER_ME_COOKIE = "remember-me";
@@ -47,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(csrfTokenRepository)
                 .and()
             .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/images/**")
+                .antMatchers(STATIC_RESOURCES_ANT_PATTERNS)
                     .permitAll()
                 .antMatchers(WebConfig.URL_INDEX)
                     .permitAll()
