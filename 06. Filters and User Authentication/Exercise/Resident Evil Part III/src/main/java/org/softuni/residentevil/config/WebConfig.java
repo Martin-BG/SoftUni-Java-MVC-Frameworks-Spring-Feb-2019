@@ -1,12 +1,9 @@
 package org.softuni.residentevil.config;
 
-import org.softuni.residentevil.web.converters.CreatorToStringConverter;
-import org.softuni.residentevil.web.converters.StringToCapitalBindingModelConverter;
-import org.softuni.residentevil.web.converters.StringToCreatorConverter;
-import org.softuni.residentevil.web.converters.StringToUuidConverter;
-import org.softuni.residentevil.web.interceptors.ThymeleafLayoutInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -26,26 +23,18 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_USER_ALL = "/user";
     public static final String URL_ERROR_UNAUTHORIZED = "/unauthorized";
 
-
     public static final String REST_API_CAPITAL = "/api/capital";
     public static final String REST_API_VIRUS = "/api/virus";
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(
-                ThymeleafLayoutInterceptor
-                        .builder()
-                        .withDefaultLayout("/layouts/default")
-                        .withViewAttribute("view")
-                        .withViewPrefix("/views/")
-                        .build());
+    private final HandlerInterceptor thymeleafLayoutInterceptor;
+
+    @Autowired
+    public WebConfig(@Qualifier("ThymeleafLayoutInterceptor") HandlerInterceptor thymeleafLayoutInterceptor) {
+        this.thymeleafLayoutInterceptor = thymeleafLayoutInterceptor;
     }
 
     @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToCreatorConverter());
-        registry.addConverter(new CreatorToStringConverter());
-        registry.addConverter(new StringToCapitalBindingModelConverter());
-        registry.addConverter(new StringToUuidConverter());
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(thymeleafLayoutInterceptor);
     }
 }

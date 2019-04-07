@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Log
-@Service("userDetailsService")
+@Service("UserServiceImpl")
 @Validated
 @Transactional
 public class UserServiceImpl extends BaseService<User, UUID, UserRepository> implements UserService {

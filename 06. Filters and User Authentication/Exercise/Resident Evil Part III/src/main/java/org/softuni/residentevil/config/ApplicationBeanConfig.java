@@ -3,11 +3,17 @@ package org.softuni.residentevil.config;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.modelmapper.ModelMapper;
+import org.softuni.residentevil.web.handlers.AccessDeniedHandlerImpl;
+import org.softuni.residentevil.web.interceptors.ThymeleafLayoutInterceptor;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Validation;
@@ -86,5 +92,28 @@ public class ApplicationBeanConfig {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new AccessDeniedHandlerImpl();
+    }
+
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setSessionAttributeName(WebSecurityConfig.CSRF_ATTRIBUTE_NAME);
+        return repository;
+    }
+
+    @Bean("ThymeleafLayoutInterceptor")
+    public HandlerInterceptor thymeleafLayoutInterceptor() {
+        return ThymeleafLayoutInterceptor
+                .builder()
+                .withDefaultLayout("/layouts/default")
+                .withViewAttribute("view")
+                .withViewPrefix("/views/")
+                .build();
     }
 }
