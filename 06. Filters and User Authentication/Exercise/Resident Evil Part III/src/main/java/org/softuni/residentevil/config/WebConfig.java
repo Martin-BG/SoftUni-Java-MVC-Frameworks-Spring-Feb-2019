@@ -27,8 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
     public static final String URL_VIRUS_DELETE = VIRUS_BASE_URL + "/delete";
     public static final String URL_VIRUS_EDIT = VIRUS_BASE_URL + "/edit";
 
-    public static final String REST_API_CAPITAL = "/api/capital";
-    public static final String REST_API_VIRUS = "/api/virus";
+    private static final String API_BASE_URL = "/api";
+    public static final String REST_API_CAPITAL = API_BASE_URL + "/capital";
+    public static final String REST_API_VIRUS = API_BASE_URL + VIRUS_BASE_URL;
 
     private final HandlerInterceptor thymeleafLayoutInterceptor;
 
