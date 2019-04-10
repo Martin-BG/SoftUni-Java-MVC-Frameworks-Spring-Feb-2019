@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.softuni.residentevil.domain.converters.AuthorityConverter;
 import org.softuni.residentevil.domain.enums.Authority;
+import org.softuni.residentevil.domain.validation.annotations.composite.role.ValidAuthority;
 import org.softuni.residentevil.domain.validation.annotations.composite.role.ValidRoleAuthority;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -20,7 +21,7 @@ public class Role extends BaseLongEntity implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
-    @ValidRoleAuthority
+    @ValidAuthority
     @Convert(converter = AuthorityConverter.class)
     @Column(unique = true, nullable = false, length = ValidRoleAuthority.MAX_LENGTH)
     private Authority authority;
